@@ -21,6 +21,7 @@ A guide batch for [You-Get](https://github.com/soimort/you-get) installation and
 6. The two batches created on the Desktop are used to start and upgrade You-Get.  
    You can move or rename the two batches optionally. If you know how to start CMD and the command to upgrade You-Get, you can even delete them.
 
+If the script runs with error codes, try downloading `install_en.bat` from [here](https://github.com/LussacZheng/you-get_install_win/releases/latest) instead.
 
 ---
 
@@ -47,6 +48,7 @@ A guide batch for [You-Get](https://github.com/soimort/you-get) installation and
 6. 创建在桌面的两个脚本分别用于打开和更新 You-Get 。  
    你可以任意移动或重命名这两个脚本。如果你知道如何打开 CMD 和更新 You-Get 的命令，你也可以删除它们。
 
+如果脚本运行时出现乱码，尝试从[这里](https://github.com/LussacZheng/you-get_install_win/releases/latest)重新下载 `install_zh-GB18030.bat`。
 
 ---
 
