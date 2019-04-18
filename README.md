@@ -19,7 +19,7 @@ A guide batch for [You-Get](https://github.com/soimort/you-get) installation and
 5. Run `install_en.bat` , and follow the instructions to finish installation.
 
 6. The two batches created on the Desktop are used to start and upgrade You-Get.  
-   You are move or rename these batches optionally. If you know how to start CMD and the command to upgrade You-Get, you can even delete them.
+   You can move or rename the two batches optionally. If you know how to start CMD and the command to upgrade You-Get, you can even delete them.
 
 
 ---
