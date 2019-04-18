@@ -1,5 +1,5 @@
-rem - coding:gb18030; mode:batch; language: zh-CN -
-:: You-Get 安装脚本 
+rem - coding:utf-8; mode:batch; language: en -
+:: You-Get Install Batch
 :: Author: Lussac
 :: Last updated: 2019/04/18
 :: Version: 0.1.1
@@ -9,48 +9,48 @@ set version=0.1.1
 set date=2019/04/18
 
 :: START OF TRANSLATION
-title You-Get 安装脚本  -- By Lussac
+title You-Get Install Batch  -- By Lussac
 :: Notification
-set warning==========安装过程中请勿关闭本窗口!!!=========
-set no-python-exe=未找到Python安装包。
-set info-add-python-to-path1=接下来安装Python时需要先勾选"Add Python to PATH"再点击"Install Now"，务必记得先勾选。
-set info-add-python-to-path2=如果你已理解，输入y并按Enter以继续:
-set no-ffmpeg-zip=未找到FFmpeg压缩包。
-set already-installed=已安装。
+set warning====Do NOT close this window when installation!!!===
+set no-python-exe=Python installation package NOT found.
+set info-add-python-to-path1=When installing Python, check "Add Python to PATH" firstly and then click "Install Now". Be sure to check it first.
+set info-add-python-to-path2=If you understand, input 'y' and press Enter to continue:
+set no-ffmpeg-zip=FFmpeg zip file NOT found.
+set already-installed=already installed.
 :: Procedure
-set exit=按任意键退出。
-set run-bat-again=请关闭本窗口后重新运行此脚本!!!
-set please-wait=安装或解压需要一定时间，请耐心等待!!!
-set step1=1. 安装 Python
-set step2=2. 安装 You-Get
-set step3=3. 安装 FFmpeg
-set step4=4. 使用 You-Get
-set opening=正在打开
-set installing-youget=正在安装 You-Get...
-set unzipng=正在解压
+set exit=Press any key to exit.
+set run-bat-again=Please close this window and run the bat AGAIN !!!
+set please-wait=It takes some time to install or unzip, please be patient!
+set step1=1. Install Python
+set step2=2. Install You-Get
+set step3=3. Install FFmpeg
+set step4=4. Start You-Get
+set opening=Opening
+set installing-youget=Installing You-Get...
+set unzipng=Unzipping
 :: Guides of download and update batches
-set dl-guide1=下载视频的命令为：
-set dl-guide2=you-get+空格+视频网址
-set dl-guide3=例如：
-set dl-guide4=you-get https://v.youku.com/v_show/id_aBCdefGh.html
-set dl-guide5=默认下载最高清晰度。下载文件默认保存在当前脚本所在的目录。
-set dl-guide6=如果你想选择清晰度、更改默认路径，或想了解You-Get其他的用法，请参考官方wiki：
-set dl-guide7=https://github.com/soimort/you-get/wiki/中文说明
-set up-guide1=当前版本：
-set up-guide2=正在检查更新...
-set up-guide3=更新完成，已是最新版本。
+set dl-guide1=The command to download a video is:
+set dl-guide2=you-get+'Space'+'video url'
+set dl-guide3=For example:
+set dl-guide4=you-get https://www.youtube.com/watch?v=aBCdefGh
+set dl-guide5=By default, you will get the video of highest quality. And the files downloaded will be saved in the directory where this batch locates.
+set dl-guide6=If you want to choose the quality of video, change the directory saved in, or learn more usage of You-Get, please refer the Official wiki:
+set dl-guide7=https://github.com/soimort/you-get#download-a-video
+set up-guide1=Current version:
+set up-guide2=Checking for upgrading...
+set up-guide3=Upgrading completes. The latest version is installed.
 :: Quick start batch content
-set download-bat=You-Get下载视频
-set update-bat=You-Get检查更新
-set create-bat-done=已在桌面创建You-Get 启动脚本"%download-bat%" 和 更新脚本"%update-bat%" 。
+set download-bat=You-Get_Download_video
+set update-bat=You-Get_Check_for_upgrading
+set create-bat-done=The You-Get starting batch "%download-bat%" and upgrading batch "%update-bat%" has been created on the Desktop.
 set download-bat-content=start cmd /k "title %download-bat%&&echo %dl-guide1%&&echo %dl-guide2%&&echo.&&echo %dl-guide3%&&echo %dl-guide4%&&echo.&&echo %dl-guide5%&&echo.&&echo %dl-guide6%&&echo %dl-guide7%"
 set update-bat-content=start cmd /k "title %update-bat%&&echo %up-guide1%&&you-get -V&&echo %up-guide2%&&pip install --upgrade you-get&&echo %up-guide3%&&echo %exit%&&pause>NUL&&exit"
-:: (set desktop=桌面)
+
 :: Welcome Info
 cls
 echo =============================================
 echo =============================================
-echo ======== You-Get安装脚本 (By Lussac) ========
+echo ===== You-Get Install Batch (By Lussac) =====
 echo =============================================
 echo ======== Version: %version% (%date%) ========
 echo =============================================
@@ -118,8 +118,8 @@ echo.&echo %step4%
 :: Create two quick-start batches to use and update You-Get
 echo %download-bat-content% > %USERPROFILE%\Desktop\%download-bat%.bat
 echo %update-bat-content%  > %USERPROFILE%\Desktop\%update-bat%.bat
-::echo %download-bat-content% > %USERPROFILE%\%desktop%\%download-bat%.bat
-::echo %update-bat-content%  > %USERPROFILE%\%desktop%\%update-bat%.bat
+
+
 echo %create-bat-done%
 echo.&echo %exit%
 pause>NUL

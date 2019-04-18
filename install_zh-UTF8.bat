@@ -1,4 +1,4 @@
-rem - coding:utf-8; mode:batch -
+rem - coding:utf-8; mode:batch; language: zh-CN -
 :: You-Get 安装脚本 
 :: Author: Lussac
 :: Last updated: 2019/04/18
