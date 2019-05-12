@@ -1,12 +1,12 @@
-rem - coding:gb18030; mode:batch; language: zh-CN -
+rem - Encoding:gb18030; Mode:batch; Language: zh-CN -
 :: You-Get °²×°½Å±¾ 
 :: Author: Lussac
-:: Last updated: 2019/04/18
-:: Version: 0.1.1
+:: Last updated: 2019/05/12
+:: Version: 0.1.2
 :: http://blog.lussac.net
 @echo off
-set version=0.1.1
-set date=2019/04/18
+set version=0.1.2
+set date=2019/05/12
 
 :: START OF TRANSLATION
 title You-Get °²×°½Å±¾  -- By Lussac
@@ -17,6 +17,7 @@ set info-add-python-to-path1=½ÓÏÂÀ´°²×°PythonÊ±ÐèÒªÏÈ¹´Ñ¡"Add Python to PATH"ÔÙµ
 set info-add-python-to-path2=Èç¹ûÄãÒÑÀí½â£¬ÊäÈëy²¢°´EnterÒÔ¼ÌÐø:
 set no-ffmpeg-zip=Î´ÕÒµ½FFmpegÑ¹Ëõ°ü¡£
 set already-installed=ÒÑ°²×°¡£
+set no-unzip-exe=Î´ÕÒµ½ "unzip.exe" ¡£
 :: Procedure
 set exit=°´ÈÎÒâ¼üÍË³ö¡£
 set run-bat-again=Çë¹Ø±Õ±¾´°¿ÚºóÖØÐÂÔËÐÐ´Ë½Å±¾!!!
@@ -27,8 +28,8 @@ set step3=3. °²×° FFmpeg
 set step4=4. Ê¹ÓÃ You-Get
 set opening=ÕýÔÚ´ò¿ª
 set installing-youget=ÕýÔÚ°²×° You-Get...
-set unzipng=ÕýÔÚ½âÑ¹
-:: Guides of download and update batches
+set unzipping=ÕýÔÚ½âÑ¹
+:: Guides of download and upgrade batches
 set dl-guide1=ÏÂÔØÊÓÆµµÄÃüÁîÎª£º
 set dl-guide2=you-get+¿Õ¸ñ+ÊÓÆµÍøÖ·
 set dl-guide3=ÀýÈç£º
@@ -39,13 +40,12 @@ set dl-guide7=https://github.com/soimort/you-get/wiki/ÖÐÎÄËµÃ÷
 set up-guide1=µ±Ç°°æ±¾£º
 set up-guide2=ÕýÔÚ¼ì²é¸üÐÂ...
 set up-guide3=¸üÐÂÍê³É£¬ÒÑÊÇ×îÐÂ°æ±¾¡£
-:: Quick start batch content
+:: Contents of download and upgrade batches
 set download-bat=You-GetÏÂÔØÊÓÆµ
-set update-bat=You-Get¼ì²é¸üÐÂ
-set create-bat-done=ÒÑÔÚ×ÀÃæ´´½¨You-Get Æô¶¯½Å±¾"%download-bat%" ºÍ ¸üÐÂ½Å±¾"%update-bat%" ¡£
+set upgrade-bat=You-Get¼ì²é¸üÐÂ
+set create-bat-done=ÒÑÔÚ×ÀÃæ´´½¨ You-Get Æô¶¯½Å±¾"%download-bat%" ºÍ ¸üÐÂ½Å±¾"%upgrade-bat%" ¡£
 set download-bat-content=start cmd /k "title %download-bat%&&echo %dl-guide1%&&echo %dl-guide2%&&echo.&&echo %dl-guide3%&&echo %dl-guide4%&&echo.&&echo %dl-guide5%&&echo.&&echo %dl-guide6%&&echo %dl-guide7%"
-set update-bat-content=start cmd /k "title %update-bat%&&echo %up-guide1%&&you-get -V&&echo %up-guide2%&&pip install --upgrade you-get&&echo %up-guide3%&&echo %exit%&&pause>NUL&&exit"
-:: (set desktop=×ÀÃæ)
+set upgrade-bat-content=start cmd /k "title %upgrade-bat%&&echo %up-guide1%&&you-get -V&&echo.&&echo %up-guide2%&&python -m pip install --upgrade pip&&pip install --upgrade you-get&&echo.&&echo %up-guide3%&&echo %exit%&&pause>NUL&&exit"
 :: Welcome Info
 cls
 echo =============================================
@@ -66,12 +66,10 @@ echo.&echo %step1%
 echo %PATH%|findstr /i "Python">NUL&&goto install-youget||goto check-python-exe
 
 :check-python-exe
-:: Check whether python-x.x.x.exe exist
+:: Check whether "python-x.x.x.exe" exist
 for /f "delims=" %%i in ('dir /b /a:a python*.exe') do (set PythonExe-FileName=%%i&goto loop)
-echo %no-python-exe%
-echo %exit%
-pause>NUL
-exit
+echo.&echo %no-python-exe%
+goto EOF
 
 :loop 
 echo %info-add-python-to-path1%
@@ -83,8 +81,7 @@ If /i %flag%==y (goto install-python) else (goto loop)
 echo.&echo %opening% %PythonExe-FileName%...&echo %please-wait%
 start /wait %PythonExe-FileName% & echo %PythonExe-FileName% %already-installed%
 echo.&echo %run-bat-again%
-pause>NUL
-exit
+goto EOF
 
 :: Step 2
 :install-youget
@@ -98,29 +95,43 @@ echo You-Get %already-installed%
 
 :: Step 3
 echo.&echo %step3%
-:: Check whether ffmpeg-x.x.x.zip exist
+:: Check whether FFmpeg already installed
+echo %PATH%|findstr /i "ffmpeg">NUL&&goto start-youget||goto check-ffmpeg-zip
+
+:check-ffmpeg-zip
+:: Check whether "ffmpeg-x.x.x.zip" exist
 for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do (set FFmpegZip-FileName=%%i&goto install-ffmpeg)
-echo %no-ffmpeg-zip%
-echo %exit%
-pause>NUL
-exit
+echo.&echo %no-ffmpeg-zip%
+goto EOF
 
 :install-ffmpeg
-echo %unzipng% %FFmpegZip-FileName% ...&echo %please-wait%
+echo %unzipping% %FFmpegZip-FileName% ...&echo %please-wait%
+:: Check whether "unzip.exe" exist
+for /f "delims=" %%i in ('dir /b /a:a unzip.exe') do (goto install-ffmpeg_unzipping)
+echo.&echo %no-unzip-exe%
+goto EOF
+
+:install-ffmpeg_unzipping
 unzip -oq %FFmpegZip-FileName% -d C:\
 move C:\ffmpeg* C:\ffmpeg
 ::setx "Path" "%Path%;C:\ffmpeg\bin" /m
 setx "Path" "%Path%;C:\ffmpeg\bin"
-echo FFmpeg %already-installed%
 
 :: Step 4
+:start-youget
+echo FFmpeg %already-installed%
 echo.&echo %step4%
-:: Create two quick-start batches to use and update You-Get
+:: Create two quick-start batches to use and upgrade You-Get
 echo %download-bat-content% > %USERPROFILE%\Desktop\%download-bat%.bat
-echo %update-bat-content%  > %USERPROFILE%\Desktop\%update-bat%.bat
-::echo %download-bat-content% > %USERPROFILE%\%desktop%\%download-bat%.bat
-::echo %update-bat-content%  > %USERPROFILE%\%desktop%\%update-bat%.bat
+echo %upgrade-bat-content%  > %USERPROFILE%\Desktop\%upgrade-bat%.bat
 echo %create-bat-done%
+
+:: END OF FILE
+:EOF
 echo.&echo %exit%
 pause>NUL
 exit
+
+:: (set desktop=×ÀÃæ)
+::echo %download-bat-content% > %USERPROFILE%\%desktop%\%download-bat%.bat
+::echo %upgrade-bat-content%  > %USERPROFILE%\%desktop%\%upgrade-bat%.bat

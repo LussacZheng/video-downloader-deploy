@@ -1,12 +1,12 @@
-rem - coding:utf-8; mode:batch; language: en -
+rem - Encoding:utf-8; Mode:batch; Language: en -
 :: You-Get Install Batch
 :: Author: Lussac
-:: Last updated: 2019/04/18
-:: Version: 0.1.1
+:: Last updated: 2019/05/12
+:: Version: 0.1.2
 :: http://blog.lussac.net
 @echo off
-set version=0.1.1
-set date=2019/04/18
+set version=0.1.2
+set date=2019/05/12
 
 :: START OF TRANSLATION
 title You-Get Install Batch  -- By Lussac
@@ -17,6 +17,7 @@ set info-add-python-to-path1=When installing Python, check "Add Python to PATH" 
 set info-add-python-to-path2=If you understand, input 'y' and press Enter to continue:
 set no-ffmpeg-zip=FFmpeg zip file NOT found.
 set already-installed=already installed.
+set no-unzip-exe="unzip.exe" NOT found.
 :: Procedure
 set exit=Press any key to exit.
 set run-bat-again=Please close this window and run the bat AGAIN !!!
@@ -27,8 +28,8 @@ set step3=3. Install FFmpeg
 set step4=4. Start You-Get
 set opening=Opening
 set installing-youget=Installing You-Get...
-set unzipng=Unzipping
-:: Guides of download and update batches
+set unzipping=Unzipping
+:: Guides of download and upgrade batches
 set dl-guide1=The command to download a video is:
 set dl-guide2=you-get+'Space'+'video url'
 set dl-guide3=For example:
@@ -39,13 +40,12 @@ set dl-guide7=https://github.com/soimort/you-get#download-a-video
 set up-guide1=Current version:
 set up-guide2=Checking for upgrading...
 set up-guide3=Upgrading completes. The latest version is installed.
-:: Quick start batch content
+:: Contents of download and upgrade batches
 set download-bat=You-Get_Download_video
-set update-bat=You-Get_Check_for_upgrading
-set create-bat-done=The You-Get starting batch "%download-bat%" and upgrading batch "%update-bat%" has been created on the Desktop.
+set upgrade-bat=You-Get_Check_for_upgrading
+set create-bat-done=The You-Get starting batch "%download-bat%" and upgrading batch "%upgrade-bat%" has been created on the Desktop.
 set download-bat-content=start cmd /k "title %download-bat%&&echo %dl-guide1%&&echo %dl-guide2%&&echo.&&echo %dl-guide3%&&echo %dl-guide4%&&echo.&&echo %dl-guide5%&&echo.&&echo %dl-guide6%&&echo %dl-guide7%"
-set update-bat-content=start cmd /k "title %update-bat%&&echo %up-guide1%&&you-get -V&&echo %up-guide2%&&pip install --upgrade you-get&&echo %up-guide3%&&echo %exit%&&pause>NUL&&exit"
-
+set upgrade-bat-content=start cmd /k "title %upgrade-bat%&&echo %up-guide1%&&you-get -V&&echo.&&echo %up-guide2%&&python -m pip install --upgrade pip&&pip install --upgrade you-get&&echo.&&echo %up-guide3%&&echo %exit%&&pause>NUL&&exit"
 :: Welcome Info
 cls
 echo =============================================
@@ -66,12 +66,10 @@ echo.&echo %step1%
 echo %PATH%|findstr /i "Python">NUL&&goto install-youget||goto check-python-exe
 
 :check-python-exe
-:: Check whether python-x.x.x.exe exist
+:: Check whether "python-x.x.x.exe" exist
 for /f "delims=" %%i in ('dir /b /a:a python*.exe') do (set PythonExe-FileName=%%i&goto loop)
-echo %no-python-exe%
-echo %exit%
-pause>NUL
-exit
+echo.&echo %no-python-exe%
+goto EOF
 
 :loop 
 echo %info-add-python-to-path1%
@@ -83,8 +81,7 @@ If /i %flag%==y (goto install-python) else (goto loop)
 echo.&echo %opening% %PythonExe-FileName%...&echo %please-wait%
 start /wait %PythonExe-FileName% & echo %PythonExe-FileName% %already-installed%
 echo.&echo %run-bat-again%
-pause>NUL
-exit
+goto EOF
 
 :: Step 2
 :install-youget
@@ -98,29 +95,39 @@ echo You-Get %already-installed%
 
 :: Step 3
 echo.&echo %step3%
-:: Check whether ffmpeg-x.x.x.zip exist
+:: Check whether FFmpeg already installed
+echo %PATH%|findstr /i "ffmpeg">NUL&&goto start-youget||goto check-ffmpeg-zip
+
+:check-ffmpeg-zip
+:: Check whether "ffmpeg-x.x.x.zip" exist
 for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do (set FFmpegZip-FileName=%%i&goto install-ffmpeg)
-echo %no-ffmpeg-zip%
-echo %exit%
-pause>NUL
-exit
+echo.&echo %no-ffmpeg-zip%
+goto EOF
 
 :install-ffmpeg
-echo %unzipng% %FFmpegZip-FileName% ...&echo %please-wait%
+echo %unzipping% %FFmpegZip-FileName% ...&echo %please-wait%
+:: Check whether "unzip.exe" exist
+for /f "delims=" %%i in ('dir /b /a:a unzip.exe') do (goto install-ffmpeg_unzipping)
+echo.&echo %no-unzip-exe%
+goto EOF
+
+:install-ffmpeg_unzipping
 unzip -oq %FFmpegZip-FileName% -d C:\
 move C:\ffmpeg* C:\ffmpeg
 ::setx "Path" "%Path%;C:\ffmpeg\bin" /m
 setx "Path" "%Path%;C:\ffmpeg\bin"
-echo FFmpeg %already-installed%
 
 :: Step 4
+:start-youget
+echo FFmpeg %already-installed%
 echo.&echo %step4%
-:: Create two quick-start batches to use and update You-Get
+:: Create two quick-start batches to use and upgrade You-Get
 echo %download-bat-content% > %USERPROFILE%\Desktop\%download-bat%.bat
-echo %update-bat-content%  > %USERPROFILE%\Desktop\%update-bat%.bat
-
-
+echo %upgrade-bat-content%  > %USERPROFILE%\Desktop\%upgrade-bat%.bat
 echo %create-bat-done%
+
+:: END OF FILE
+:EOF
 echo.&echo %exit%
 pause>NUL
 exit

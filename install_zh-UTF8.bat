@@ -1,12 +1,12 @@
-rem - coding:utf-8; mode:batch; language: zh-CN -
+rem - Encoding:utf-8; Mode:batch; Language: zh-CN -
 :: You-Get 安装脚本 
 :: Author: Lussac
-:: Last updated: 2019/04/18
-:: Version: 0.1.1
+:: Last updated: 2019/05/12
+:: Version: 0.1.2
 :: http://blog.lussac.net
 @echo off
-set version=0.1.1
-set date=2019/04/18
+set version=0.1.2
+set date=2019/05/12
 
 :: START OF TRANSLATION
 title You-Get 安装脚本  -- By Lussac
@@ -17,6 +17,7 @@ set info-add-python-to-path1=接下来安装Python时需要先勾选"Add Python 
 set info-add-python-to-path2=如果你已理解，输入y并按Enter以继续:
 set no-ffmpeg-zip=未找到FFmpeg压缩包。
 set already-installed=已安装。
+set no-unzip-exe=未找到 "unzip.exe" 。
 :: Procedure
 set exit=按任意键退出。
 set run-bat-again=请关闭本窗口后重新运行此脚本!!!
@@ -27,8 +28,8 @@ set step3=3. 安装 FFmpeg
 set step4=4. 使用 You-Get
 set opening=正在打开
 set installing-youget=正在安装 You-Get...
-set unzipng=正在解压
-:: Guides of download and update batches
+set unzipping=正在解压
+:: Guides of download and upgrade batches
 set dl-guide1=下载视频的命令为：
 set dl-guide2=you-get+空格+视频网址
 set dl-guide3=例如：
@@ -39,13 +40,12 @@ set dl-guide7=https://github.com/soimort/you-get/wiki/中文说明
 set up-guide1=当前版本：
 set up-guide2=正在检查更新...
 set up-guide3=更新完成，已是最新版本。
-:: Quick start batch content
+:: Contents of download and upgrade batches
 set download-bat=You-Get下载视频
-set update-bat=You-Get检查更新
-set create-bat-done=已在桌面创建You-Get 启动脚本"%download-bat%" 和 更新脚本"%update-bat%" 。
+set upgrade-bat=You-Get检查更新
+set create-bat-done=已在桌面创建 You-Get 启动脚本"%download-bat%" 和 更新脚本"%upgrade-bat%" 。
 set download-bat-content=start cmd /k "title %download-bat%&&echo %dl-guide1%&&echo %dl-guide2%&&echo.&&echo %dl-guide3%&&echo %dl-guide4%&&echo.&&echo %dl-guide5%&&echo.&&echo %dl-guide6%&&echo %dl-guide7%"
-set update-bat-content=start cmd /k "title %update-bat%&&echo %up-guide1%&&you-get -V&&echo %up-guide2%&&pip install --upgrade you-get&&echo %up-guide3%&&echo %exit%&&pause>NUL&&exit"
-:: (set desktop=桌面)
+set upgrade-bat-content=start cmd /k "title %upgrade-bat%&&echo %up-guide1%&&you-get -V&&echo.&&echo %up-guide2%&&python -m pip install --upgrade pip&&pip install --upgrade you-get&&echo.&&echo %up-guide3%&&echo %exit%&&pause>NUL&&exit"
 :: Welcome Info
 cls
 echo =============================================
@@ -66,12 +66,10 @@ echo.&echo %step1%
 echo %PATH%|findstr /i "Python">NUL&&goto install-youget||goto check-python-exe
 
 :check-python-exe
-:: Check whether python-x.x.x.exe exist
+:: Check whether "python-x.x.x.exe" exist
 for /f "delims=" %%i in ('dir /b /a:a python*.exe') do (set PythonExe-FileName=%%i&goto loop)
-echo %no-python-exe%
-echo %exit%
-pause>NUL
-exit
+echo.&echo %no-python-exe%
+goto EOF
 
 :loop 
 echo %info-add-python-to-path1%
@@ -83,8 +81,7 @@ If /i %flag%==y (goto install-python) else (goto loop)
 echo.&echo %opening% %PythonExe-FileName%...&echo %please-wait%
 start /wait %PythonExe-FileName% & echo %PythonExe-FileName% %already-installed%
 echo.&echo %run-bat-again%
-pause>NUL
-exit
+goto EOF
 
 :: Step 2
 :install-youget
@@ -98,29 +95,43 @@ echo You-Get %already-installed%
 
 :: Step 3
 echo.&echo %step3%
-:: Check whether ffmpeg-x.x.x.zip exist
+:: Check whether FFmpeg already installed
+echo %PATH%|findstr /i "ffmpeg">NUL&&goto start-youget||goto check-ffmpeg-zip
+
+:check-ffmpeg-zip
+:: Check whether "ffmpeg-x.x.x.zip" exist
 for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do (set FFmpegZip-FileName=%%i&goto install-ffmpeg)
-echo %no-ffmpeg-zip%
-echo %exit%
-pause>NUL
-exit
+echo.&echo %no-ffmpeg-zip%
+goto EOF
 
 :install-ffmpeg
-echo %unzipng% %FFmpegZip-FileName% ...&echo %please-wait%
+echo %unzipping% %FFmpegZip-FileName% ...&echo %please-wait%
+:: Check whether "unzip.exe" exist
+for /f "delims=" %%i in ('dir /b /a:a unzip.exe') do (goto install-ffmpeg_unzipping)
+echo.&echo %no-unzip-exe%
+goto EOF
+
+:install-ffmpeg_unzipping
 unzip -oq %FFmpegZip-FileName% -d C:\
 move C:\ffmpeg* C:\ffmpeg
 ::setx "Path" "%Path%;C:\ffmpeg\bin" /m
 setx "Path" "%Path%;C:\ffmpeg\bin"
-echo FFmpeg %already-installed%
 
 :: Step 4
+:start-youget
+echo FFmpeg %already-installed%
 echo.&echo %step4%
-:: Create two quick-start batches to use and update You-Get
+:: Create two quick-start batches to use and upgrade You-Get
 echo %download-bat-content% > %USERPROFILE%\Desktop\%download-bat%.bat
-echo %update-bat-content%  > %USERPROFILE%\Desktop\%update-bat%.bat
-::echo %download-bat-content% > %USERPROFILE%\%desktop%\%download-bat%.bat
-::echo %update-bat-content%  > %USERPROFILE%\%desktop%\%update-bat%.bat
+echo %upgrade-bat-content%  > %USERPROFILE%\Desktop\%upgrade-bat%.bat
 echo %create-bat-done%
+
+:: END OF FILE
+:EOF
 echo.&echo %exit%
 pause>NUL
 exit
+
+:: (set desktop=桌面)
+::echo %download-bat-content% > %USERPROFILE%\%desktop%\%download-bat%.bat
+::echo %upgrade-bat-content%  > %USERPROFILE%\%desktop%\%upgrade-bat%.bat

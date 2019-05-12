@@ -1,3 +1,7 @@
+**[中文说明](#you-get-安装脚本-windows)**
+
+---
+
 # You-Get Install Batch (Windows)
 
 A guide batch for [You-Get](https://github.com/soimort/you-get) installation and quickstart.
@@ -10,9 +14,11 @@ A guide batch for [You-Get](https://github.com/soimort/you-get) installation and
 
 3. Visit the website of Python and FFmpeg. Download the right version of `python-3.x.x.exe` and `ffmpeg-x.x.x-xxx.zip` :
    - [Download Python](https://www.python.org/downloads/)
-   - [Download FFmpeg Builds](https://ffmpeg.zeranoe.com/builds/)  
+   - [Download FFmpeg Builds](https://ffmpeg.zeranoe.com/builds/)
 
-   The latest version (Apr. 18th, 2019) are: `python-3.7.3.exe`, `ffmpeg-4.1.1-win64/32-static.zip` .
+   Or dowload the latest version (Apr. 26th, 2019) in the following: 
+   - [`python-3.7.3.exe`](https://www.python.org/ftp/python/3.7.3/python-3.7.3.exe)
+   - [`ffmpeg-4.1.3-win64-static.zip`](https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.1.3-win64-static.zip)
 
 4. Move `python-3.x.x.exe`, `ffmpeg-x.x.x-xxx.zip`, `unzip.exe`, and `install_en.bat` into a same directory.
 
@@ -39,7 +45,9 @@ If the script runs with error codes, try downloading `install_en.bat` from [here
    - [Download Python](https://www.python.org/downloads/)
    - [Download FFmpeg Builds](https://ffmpeg.zeranoe.com/builds/)  
 
-   目前(2019/4/18)最新版为：`python-3.7.3.exe`, `ffmpeg-4.1.1-win64/32-static.zip` .
+   或直接下载目前 (2019/4/26) 最新版本：
+   - [`python-3.7.3.exe`](https://www.python.org/ftp/python/3.7.3/python-3.7.3.exe)
+   - [`ffmpeg-4.1.3-win64-static.zip`](https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.1.3-win64-static.zip)
 
 4. 将 `python-3.x.x.exe`, `ffmpeg-x.x.x-xxx.zip`, `unzip.exe`, 和 `install_zh-GB18030.bat` 放在同一文件夹下。
 
@@ -56,8 +64,8 @@ If the script runs with error codes, try downloading `install_en.bat` from [here
 
 - `unzip.exe`
   ```
-  version:    v5.51-1
-  md5:        fecf803f7d84d4cfa81277298574d6e6
-  source:     https://sourceforge.net/projects/gnuwin32/files/unzip/5.51-1/
-  from:       unzip-5.51-1-bin.zip \bin\unzip.exe
+  Version:    v5.51-1
+  MD5:        fecf803f7d84d4cfa81277298574d6e6
+  Source:     https://sourceforge.net/projects/gnuwin32/files/unzip/5.51-1/
+  From:       "unzip-5.51-1-bin.zip" \bin\unzip.exe
   ```
