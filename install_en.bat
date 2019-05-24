@@ -1,27 +1,27 @@
 rem - Encoding:utf-8; Mode:batch; Language: en -
-:: You-Get Install Batch
+:: You-Get 安装脚本 
 :: Author: Lussac
-:: Last updated: 2019/05/12
-:: Version: 0.1.2
+:: Last updated: 2019/05/24
+:: Version: 0.2.0
 :: http://blog.lussac.net
 @echo off
-set version=0.1.2
-set date=2019/05/12
+set version=0.2.0
+set date=2019/05/24
 
 :: START OF TRANSLATION
 title You-Get Install Batch  -- By Lussac
 :: Notification
-set warning====Do NOT close this window when installation!!!===
+set warning==DON'T close this window during Installation=
 set no-python-exe=Python installation package NOT found.
-set info-add-python-to-path1=When installing Python, check "Add Python to PATH" firstly and then click "Install Now". Be sure to check it first.
+set info-add-python-to-path1=When installing Python, check "Add Python to PATH" firstly and then click "Install Now / Customize installation". Be sure to check it first.
 set info-add-python-to-path2=If you understand, input 'y' and press Enter to continue:
 set no-ffmpeg-zip=FFmpeg zip file NOT found.
 set already-installed=already installed.
 set no-unzip-exe="unzip.exe" NOT found.
 :: Procedure
 set exit=Press any key to exit.
-set run-bat-again=Please close this window and run the bat AGAIN !!!
-set please-wait=It takes some time to install or unzip, please be patient!
+set run-bat-again=Please close this window and run the bat AGAIN.
+set please-wait=It takes some time to install or unzip, please be patient...
 set step1=1. Install Python
 set step2=2. Install You-Get
 set step3=3. Install FFmpeg

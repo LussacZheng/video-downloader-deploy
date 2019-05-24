@@ -1,5 +1,5 @@
-rem - Encoding:utf-8; Mode:batch; Language: zh-CN -
-:: You-Get å®‰è£…è„šæœ¬ 
+rem - Encoding:gb2312; Mode:batch; Language: zh-CN -
+:: You-Get °²×°½Å±¾ 
 :: Author: Lussac
 :: Last updated: 2019/05/24
 :: Version: 0.2.0
@@ -9,48 +9,48 @@ set version=0.2.0
 set date=2019/05/24
 
 :: START OF TRANSLATION
-title You-Get å®‰è£…è„šæœ¬  -- By Lussac
+title You-Get °²×°½Å±¾  -- By Lussac
 :: Notification
-set warning========== å®‰è£…è¿‡ç¨‹ä¸­ è¯·å‹¿å…³é—­æœ¬çª—å£ =========
-set no-python-exe=æœªæ‰¾åˆ°Pythonå®‰è£…åŒ…ã€‚
-set info-add-python-to-path1=æŽ¥ä¸‹æ¥å®‰è£…Pythonæ—¶éœ€è¦å…ˆå‹¾é€‰"Add Python to PATH"å†ç‚¹å‡»"Install Now / Customize installation"ï¼ŒåŠ¡å¿…è®°å¾—å…ˆå‹¾é€‰ã€‚
-set info-add-python-to-path2=å¦‚æžœä½ å·²ç†è§£ï¼Œè¾“å…¥yå¹¶æŒ‰Enterä»¥ç»§ç»­:
-set no-ffmpeg-zip=æœªæ‰¾åˆ°FFmpegåŽ‹ç¼©åŒ…ã€‚
-set already-installed=å·²å®‰è£…ã€‚
-set no-unzip-exe=æœªæ‰¾åˆ° "unzip.exe" ã€‚
+set warning========== °²×°¹ý³ÌÖÐ ÇëÎð¹Ø±Õ±¾´°¿Ú =========
+set no-python-exe=Î´ÕÒµ½Python°²×°°ü¡£
+set info-add-python-to-path1=½ÓÏÂÀ´°²×°PythonÊ±ÐèÒªÏÈ¹´Ñ¡"Add Python to PATH"ÔÙµã»÷"Install Now / Customize installation"£¬Îñ±Ø¼ÇµÃÏÈ¹´Ñ¡¡£
+set info-add-python-to-path2=Èç¹ûÄãÒÑÀí½â£¬ÊäÈëy²¢°´EnterÒÔ¼ÌÐø:
+set no-ffmpeg-zip=Î´ÕÒµ½FFmpegÑ¹Ëõ°ü¡£
+set already-installed=ÒÑ°²×°¡£
+set no-unzip-exe=Î´ÕÒµ½ "unzip.exe" ¡£
 :: Procedure
-set exit=æŒ‰ä»»æ„é”®é€€å‡ºã€‚
-set run-bat-again=è¯·å…³é—­æœ¬çª—å£åŽé‡æ–°è¿è¡Œ install_zh-latest.bat æˆ– start_zh.bat.
-set please-wait=å®‰è£…æˆ–è§£åŽ‹éœ€è¦ä¸€å®šæ—¶é—´ï¼Œè¯·è€å¿ƒç­‰å¾…...
-set step1=1. å®‰è£… Python
-set step2=2. å®‰è£… You-Get
-set step3=3. å®‰è£… FFmpeg
-set step4=4. ä½¿ç”¨ You-Get
-set opening=æ­£åœ¨æ‰“å¼€
-set installing-youget=æ­£åœ¨å®‰è£… You-Get...
-set unzipping=æ­£åœ¨è§£åŽ‹
+set exit=°´ÈÎÒâ¼üÍË³ö¡£
+set run-bat-again=Çë¹Ø±Õ±¾´°¿ÚºóÖØÐÂÔËÐÐ install_zh-latest.bat »ò start_zh.bat.
+set please-wait=°²×°»ò½âÑ¹ÐèÒªÒ»¶¨Ê±¼ä£¬ÇëÄÍÐÄµÈ´ý...
+set step1=1. °²×° Python
+set step2=2. °²×° You-Get
+set step3=3. °²×° FFmpeg
+set step4=4. Ê¹ÓÃ You-Get
+set opening=ÕýÔÚ´ò¿ª
+set installing-youget=ÕýÔÚ°²×° You-Get...
+set unzipping=ÕýÔÚ½âÑ¹
 :: Guides of download and upgrade batches
-set dl-guide1=ä¸‹è½½è§†é¢‘çš„å‘½ä»¤ä¸ºï¼š
-set dl-guide2=you-get+ç©ºæ ¼+è§†é¢‘ç½‘å€
-set dl-guide3=ä¾‹å¦‚ï¼š
+set dl-guide1=ÏÂÔØÊÓÆµµÄÃüÁîÎª£º
+set dl-guide2=you-get+¿Õ¸ñ+ÊÓÆµÍøÖ·
+set dl-guide3=ÀýÈç£º
 set dl-guide4=you-get https://v.youku.com/v_show/id_aBCdefGh.html
-set dl-guide5=é»˜è®¤ä¸‹è½½æœ€é«˜æ¸…æ™°åº¦ã€‚ä¸‹è½½æ–‡ä»¶é»˜è®¤ä¿å­˜åœ¨å½“å‰è„šæœ¬æ‰€åœ¨çš„ç›®å½•ã€‚
-set dl-guide6=å¦‚æžœä½ æƒ³é€‰æ‹©æ¸…æ™°åº¦ã€æ›´æ”¹é»˜è®¤è·¯å¾„ï¼Œæˆ–æƒ³äº†è§£You-Getå…¶ä»–çš„ç”¨æ³•ï¼Œè¯·å‚è€ƒå®˜æ–¹wikiï¼š
-set dl-guide7=https://github.com/soimort/you-get/wiki/ä¸­æ–‡è¯´æ˜Ž
-set up-guide1=å½“å‰ç‰ˆæœ¬ï¼š
-set up-guide2=æ­£åœ¨æ£€æŸ¥æ›´æ–°...
-set up-guide3=æ›´æ–°å®Œæˆï¼Œå·²æ˜¯æœ€æ–°ç‰ˆæœ¬ã€‚
+set dl-guide5=Ä¬ÈÏÏÂÔØ×î¸ßÇåÎú¶È¡£ÏÂÔØÎÄ¼þÄ¬ÈÏ±£´æÔÚµ±Ç°½Å±¾ËùÔÚµÄÄ¿Â¼¡£
+set dl-guide6=Èç¹ûÄãÏëÑ¡ÔñÇåÎú¶È¡¢¸ü¸ÄÄ¬ÈÏÂ·¾¶£¬»òÏëÁË½âYou-GetÆäËûµÄÓÃ·¨£¬Çë²Î¿¼¹Ù·½wiki£º
+set dl-guide7=https://github.com/soimort/you-get/wiki/ÖÐÎÄËµÃ÷
+set up-guide1=µ±Ç°°æ±¾£º
+set up-guide2=ÕýÔÚ¼ì²é¸üÐÂ...
+set up-guide3=¸üÐÂÍê³É£¬ÒÑÊÇ×îÐÂ°æ±¾¡£
 :: Contents of download and upgrade batches
-set download-bat=You-Getä¸‹è½½è§†é¢‘
-set upgrade-bat=You-Getæ£€æŸ¥æ›´æ–°
-set create-bat-done=å·²åœ¨æ¡Œé¢åˆ›å»º You-Get å¯åŠ¨è„šæœ¬"%download-bat%" å’Œ æ›´æ–°è„šæœ¬"%upgrade-bat%" ã€‚
+set download-bat=You-GetÏÂÔØÊÓÆµ
+set upgrade-bat=You-Get¼ì²é¸üÐÂ
+set create-bat-done=ÒÑÔÚ×ÀÃæ´´½¨ You-Get Æô¶¯½Å±¾"%download-bat%" ºÍ ¸üÐÂ½Å±¾"%upgrade-bat%" ¡£
 set download-bat-content=start cmd /k "title %download-bat%&&echo %dl-guide1%&&echo %dl-guide2%&&echo.&&echo %dl-guide3%&&echo %dl-guide4%&&echo.&&echo %dl-guide5%&&echo.&&echo %dl-guide6%&&echo %dl-guide7%"
 set upgrade-bat-content=start cmd /k "title %upgrade-bat%&&echo %up-guide1%&&you-get -V&&echo.&&echo %up-guide2%&&python -m pip install --upgrade pip&&pip install --upgrade you-get&&echo.&&echo %up-guide3%&&echo %exit%&&pause>NUL&&exit"
 :: Welcome Info
 cls
 echo =============================================
 echo =============================================
-echo ======== You-Getå®‰è£…è„šæœ¬ (By Lussac) ========
+echo ======== You-Get°²×°½Å±¾ (By Lussac) ========
 echo =============================================
 echo ======== Version: %version% (%date%) ========
 echo =============================================
