@@ -20,7 +20,7 @@ set already-installed=already installed.
 set no-unzip-exe="unzip.exe" NOT found.
 :: Procedure
 set exit=Press any key to exit.
-set run-bat-again=Please close this window and run the bat AGAIN.
+set run-bat-again=Please close this window and run the install_en-latest.bat AGAIN.
 set please-wait=It takes some time to install or unzip, please be patient...
 set step1=1. Install Python
 set step2=2. Install You-Get
@@ -81,7 +81,8 @@ If /i %flag%==y (goto install-python) else (goto loop)
 echo.&echo %opening% %PythonExe-FileName%...&echo %please-wait%
 start /wait %PythonExe-FileName% & echo %PythonExe-FileName% %already-installed%
 echo.&echo %run-bat-again%
-goto EOF
+pause>NUL
+exit
 
 :: Step 2
 :install-youget

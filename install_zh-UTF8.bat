@@ -20,7 +20,7 @@ set already-installed=已安装。
 set no-unzip-exe=未找到 "unzip.exe" 。
 :: Procedure
 set exit=按任意键退出。
-set run-bat-again=请关闭本窗口后重新运行 install_zh-latest.bat 或 start_zh.bat.
+set run-bat-again=请关闭本窗口后重新运行 install_zh-latest.bat.
 set please-wait=安装或解压需要一定时间，请耐心等待...
 set step1=1. 安装 Python
 set step2=2. 安装 You-Get
@@ -81,7 +81,8 @@ If /i %flag%==y (goto install-python) else (goto loop)
 echo.&echo %opening% %PythonExe-FileName%...&echo %please-wait%
 start /wait %PythonExe-FileName% & echo %PythonExe-FileName% %already-installed%
 echo.&echo %run-bat-again%
-goto EOF
+pause>NUL
+exit
 
 :: Step 2
 :install-youget
