@@ -1,12 +1,12 @@
-rem - Encoding:utf-8; Mode:batch; Language: zh-CN -
-:: You-Get 安装脚本 
+rem - Encoding:utf-8; Mode:Batch; Language:zh-CN; LineEndings:CRLF -
+:: You-Get 安装脚本
 :: Author: Lussac
-:: Last updated: 2019/05/24
-:: Version: 0.2.0
-:: http://blog.lussac.net
+:: Version: 0.2.1
+:: Last updated: 2019/06/02
+:: https://blog.lussac.net
 @echo off
-set version=0.2.0
-set date=2019/05/24
+set version=0.2.1
+set date=2019/06/02
 
 :: START OF TRANSLATION
 title You-Get 安装脚本  -- By Lussac
@@ -67,7 +67,7 @@ echo %PATH%|findstr /i "Python">NUL&&goto install-youget||goto check-python-exe
 
 :check-python-exe
 :: Check whether "python-x.x.x.exe" exist
-for /f "delims=" %%i in ('dir /b /a:a python*.exe') do (set PythonExe-FileName=%%i&goto loop)
+for /f "delims=" %%i in ('dir /b /a:a python*.exe') do (set pyExe=%%i&goto loop)
 echo.&echo %no-python-exe%
 goto EOF
 
@@ -78,8 +78,8 @@ If NOT DEFINED flag goto loop
 If /i %flag%==y (goto install-python) else (goto loop)
 
 :install-python
-echo.&echo %opening% %PythonExe-FileName%...&echo %please-wait%
-start /wait %PythonExe-FileName% & echo %PythonExe-FileName% %already-installed%
+echo.&echo %opening% %pyExe%...&echo %please-wait%
+start /wait %pyExe% & echo %pyExe% %already-installed%
 echo.&echo %run-bat-again%
 pause>NUL
 exit
@@ -101,19 +101,19 @@ echo %PATH%|findstr /i "ffmpeg">NUL&&goto start-youget||goto check-ffmpeg-zip
 
 :check-ffmpeg-zip
 :: Check whether "ffmpeg-x.x.x.zip" exist
-for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do (set FFmpegZip-FileName=%%i&goto install-ffmpeg)
+for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do (set FFmpegZip=%%i&goto install-ffmpeg)
 echo.&echo %no-ffmpeg-zip%
 goto EOF
 
 :install-ffmpeg
-echo %unzipping% %FFmpegZip-FileName% ...&echo %please-wait%
+echo %unzipping% %FFmpegZip% ...&echo %please-wait%
 :: Check whether "unzip.exe" exist
 for /f "delims=" %%i in ('dir /b /a:a unzip.exe') do (goto install-ffmpeg_unzipping)
 echo.&echo %no-unzip-exe%
 goto EOF
 
 :install-ffmpeg_unzipping
-unzip -oq %FFmpegZip-FileName% -d C:\
+unzip -oq %FFmpegZip% -d C:\
 move C:\ffmpeg* C:\ffmpeg
 ::setx "Path" "%Path%;C:\ffmpeg\bin" /m
 setx "Path" "%Path%;C:\ffmpeg\bin"

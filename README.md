@@ -26,7 +26,7 @@ A guide batch for [You-Get](https://github.com/soimort/you-get) installation and
 
 - The two batches created on the Desktop are used to start and upgrade You-Get.  
   You can move or rename the two batches optionally. If you know how to start CMD and the command to upgrade You-Get, you can even delete them.
-
+- If you don't want to install Python，try "[You-Get portable version](https://github.com/LussacZheng/you-get_install_win/tree/embed)".
 - If the batch has a run-time error, please refer to [FAQ](https://github.com/LussacZheng/you-get_install_win/wiki/FAQ).
 
 ---
@@ -55,7 +55,7 @@ A guide batch for [You-Get](https://github.com/soimort/you-get) installation and
 
 - 创建在桌面的两个脚本分别用于打开和更新 You-Get 。  
    你可以任意移动或重命名这两个脚本。如果你知道如何打开 CMD 和更新 You-Get 的命令，你也可以删除它们。
-
+- 如果你不想安装 Python，你可以尝试 "[You-Get 绿色版](https://github.com/LussacZheng/you-get_install_win/tree/embed)"。
 - 如果脚本运行时出现问题，请查阅 [FAQ](https://github.com/LussacZheng/you-get_install_win/wiki/FAQ)。
 
 ---
