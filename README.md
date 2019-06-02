@@ -35,6 +35,16 @@ A guide batch for a portable version of [You-Get](https://github.com/soimort/you
 1. Download the latest version of `you-get-*.tar.gz` from [here](https://pypi.org/project/you-get/#files). Decompress this file. 
 2. Check the original files in the "you-get" folder, and exactly overwrite the original files with those decompressed correspondly. 
 
+## FFmpeg
+
+> `FFmpeg` is a required dependency, for downloading and joining videos streamed in multiple parts (e.g. on some sites like Youku), and for YouTube videos of 1080p or high resolution.
+
+This portable version does NOT include the configuration of FFmpeg. If FFmpeg is needed, try the following steps:
+1. Save as [config-ffmpeg.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/config-ffmpeg.bat) .
+2. Download [`ffmpeg-x.x.x-xxx.zip`](https://ffmpeg.zeranoe.com/builds/) .
+3. Move `ffmpeg-x.x.x-xxx.zip`, `7za.exe` and `config-ffmpeg.bat` into the a directory.
+4. Run `config-ffmpeg.bat`。
+
 ---
 
 # You-Get (绿色版) 配置脚本 (Windows)
@@ -69,6 +79,16 @@ A guide batch for a portable version of [You-Get](https://github.com/soimort/you
 
 1. 从[这里](https://pypi.org/project/you-get/#files)下载最新的 `you-get-*.tar.gz`。解压该文件。
 2. 查看 "you-get" 文件夹下的原有文件，用解压出来的文件对应覆盖原有文件。
+
+## FFmpeg
+
+> FFmpeg为必要依赖，以下载流式视频以及合并分块视频(例如，类似Youku), 以及YouTube的1080p或更高分辨率.
+
+此绿色版不包括 FFmpeg 的配置。若需要配置 FFmpeg ，请尝试以下步骤：
+1. 另存 [config-ffmpeg.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/config-ffmpeg.bat) 。
+2. 下载 [`ffmpeg-x.x.x-xxx.zip`](https://ffmpeg.zeranoe.com/builds/) 。
+3. 将 `ffmpeg-x.x.x-xxx.zip`, `7za.exe` 和 `config-ffmpeg.bat` 放在同一文件夹下。
+4. 运行 `config-ffmpeg.bat`。
 
 ---
 
