@@ -4,91 +4,63 @@
 
 # You-Get (Portable) Configure Batch (Windows)
 
-A guide batch for a portable version of [You-Get](https://github.com/soimort/you-get) configuration and quickstart, based on the embeddable version of Python.
+A **onekey batch** for the configuration and quickstart of [You-Get](https://github.com/soimort/you-get). It is a portable version based on the embeddable version of Python.
 
 ## Getting Started
 
-1. Save the You-Get configure batch "[config_en.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/config_en.bat)" (Directly clicking the link cannot download it. Right-click and choose "**save as**").
-
-2. Download [7za.exe](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/7za.exe) .
-
-3. Visit the website of Python and PyPI. Download the right version of `python-3.x.x-embed-win32.zip` and `you-get-*.tar.gz` :
-   - [Download Python](https://www.python.org/downloads/)
-   - [Download You-Get](https://pypi.org/project/you-get/#files)
-
-   Or download the latest version (Mar. 25th, 2019) in the following: 
-   - [`python-3.7.3-embed-win32.zip`](https://www.python.org/ftp/python/3.7.3/python-3.7.3-embed-win32.zip)
-   - [`you-get-0.4.1302.tar.gz`](https://files.pythonhosted.org/packages/f6/d1/654c81e572109d91760402edf851220ed5276fdb10d8a135631426771946/you-get-0.4.1302.tar.gz)
-
-4. Create a new directory. Move `python-3.x.x-embed-win32.zip`, `you-get-*.tar.gz`, `7za.exe`, and `config_en.bat` into the same directory.
-
-5. Run `config_en.bat`.
+1. Save the You-Get onekey configure batch "[config_en.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/config_en.bat)" (Directly clicking the link cannot download it. Right-click and select "**save as**").
+2. Create a new folder. Move `config_en.bat` into that folder.
+3. Run `config_en.bat`.
 
 ### Others
 
-- Keep the new directory in step 4 as it is. You can only move or rename the whole folder integrally instead of changing each content in it easily. Once you move or rename the whole folder, run `config_en.bat` again.
+- For the newly created folder in step 2,
+   - You can only move or rename the entire folder as a whole;
+   - Except the video files downloaded under the "Download" directory, please do not change other files inside;
+   - Once you move or rename the whole folder, re-run `config.bat` and select `Fix "yg.cmd"`.
 - If you want the full version，see "[you-get_install_win](https://github.com/LussacZheng/you-get_install_win)".
 - If the batch has a run-time error, please refer to [FAQ](https://github.com/LussacZheng/you-get_install_win/wiki/FAQ).
 
 ## Upgrade You-Get
 
-1. Download the latest version of `you-get-*.tar.gz` from [here](https://pypi.org/project/you-get/#files). Decompress this file. 
-2. Check the original files in the "you-get" folder, and exactly overwrite the original files with those decompressed correspondly. 
+To upgrade You-Get, re-run `config.bat` and select `Upgrade You-Get`.
 
 ## FFmpeg
 
 > `FFmpeg` is a required dependency, for downloading and joining videos streamed in multiple parts (e.g. on some sites like Youku), and for YouTube videos of 1080p or high resolution.
 
-This portable version does NOT include the configuration of FFmpeg. If FFmpeg is needed, try the following steps:
-1. Save as [config-ffmpeg.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/config-ffmpeg.bat) .
-2. Download [`ffmpeg-x.x.x-xxx.zip`](https://ffmpeg.zeranoe.com/builds/) .
-3. Move `ffmpeg-x.x.x-xxx.zip`, `7za.exe` and `config-ffmpeg.bat` into the a directory.
-4. Run `config-ffmpeg.bat`。
+This portable version does NOT configure FFmpeg by default. To configure FFmpeg, re-run `config.bat` and select `Configure FFmpeg`.
 
 ---
 
 # You-Get (绿色版) 配置脚本 (Windows)
 
-一个快速配置和使用 [You-Get](https://github.com/soimort/you-get) 的指导脚本。基于 Python 的 embeddable 版。
+一个快速配置和使用 [You-Get](https://github.com/soimort/you-get) 的**一键配置脚本**。此绿色版基于 Python 的 embeddable 版。
 
 ## 使用方法
 
-1. 保存 You-Get 快速配置的脚本 “[config_zh.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/config_zh.bat)” (直接点击不能下载，须右键点击并选择“**另存为**”)。
-
-2. 下载 [7za.exe](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/7za.exe) .
-
-3. 访问 Python 和 PyPI 官网，下载 `python-3.x.x-embed-win32.zip` 和 `you-get-*.tar.gz` 适合的版本：
-   - [Download Python](https://www.python.org/downloads/)
-   - [Download You-Get](https://pypi.org/project/you-get/#files) 
-
-   或直接下载目前 (2019/3/25) 最新版本：
-   - [`python-3.7.3-embed-win32.zip`](https://www.python.org/ftp/python/3.7.3/python-3.7.3-embed-win32.zip)
-   - [`you-get-0.4.1302.tar.gz`](https://files.pythonhosted.org/packages/f6/d1/654c81e572109d91760402edf851220ed5276fdb10d8a135631426771946/you-get-0.4.1302.tar.gz)
-
-4. 新建一个文件夹，将 `python-3.x.x-embed-win32.zip`, `you-get-*.tar.gz`, `7za.exe` 和 `config_zh.bat` 放在同一文件夹下。
-
-5. 运行 `config_zh.bat`。
+1. 保存 You-Get 一键配置脚本 “[config_zh.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/config_zh.bat)” (直接点击不能下载，须右键点击并选择“**另存为**”)。
+2. 新建一个文件夹，将 `config_zh.bat` 放在此文件夹下。
+3. 运行 `config_zh.bat`。
 
 ### 其他
 
-- 对于步骤4中新建的文件夹，只能整体移动或重命名整个文件夹。请勿随意改变里面的文件。如果你移动或重命名了整个文件夹，请重新运行 `config.bat` 。
+- 对于步骤2中新建的文件夹，
+   - 只能整体移动或重命名整个文件夹；
+   - 除了 "Download" 目录下所下载的视频文件，请勿随意改变里面的其他文件；
+   - 如果你移动或重命名了整个文件夹，请重新运行 `config.bat` 并选择 `修复 "yg.cmd"` 。
 - 如果你需要完整版，另见 "[you-get_install_win](https://github.com/LussacZheng/you-get_install_win)"。
 - 如果脚本运行时出现问题，请查阅 [FAQ](https://github.com/LussacZheng/you-get_install_win/wiki/FAQ)。
 
 ## 更新 You-Get
 
-1. 从[这里](https://pypi.org/project/you-get/#files)下载最新的 `you-get-*.tar.gz`。解压该文件。
-2. 查看 "you-get" 文件夹下的原有文件，用解压出来的文件对应覆盖原有文件。
+若需要更新 You-Get ，请重新运行 `config.bat` 并选择 `更新 You-Get` 。
 
 ## FFmpeg
 
-> FFmpeg为必要依赖，以下载流式视频以及合并分块视频(例如，类似Youku), 以及YouTube的1080p或更高分辨率.
+> `FFmpeg`为必要依赖，以下载流式视频以及合并分块视频(例如，类似Youku), 以及YouTube的1080p或更高分辨率.
 
-此绿色版不包括 FFmpeg 的配置。若需要配置 FFmpeg ，请尝试以下步骤：
-1. 另存 [config-ffmpeg.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/config-ffmpeg.bat) 。
-2. 下载 [`ffmpeg-x.x.x-xxx.zip`](https://ffmpeg.zeranoe.com/builds/) 。
-3. 将 `ffmpeg-x.x.x-xxx.zip`, `7za.exe` 和 `config-ffmpeg.bat` 放在同一文件夹下。
-4. 运行 `config-ffmpeg.bat`。
+此绿色版默认不配置 FFmpeg 。若需要配置 FFmpeg ，请重新运行 `config.bat` 并选择 `配置 FFmpeg` 。
 
 ---
 
@@ -100,6 +72,15 @@ This portable version does NOT include the configuration of FFmpeg. If FFmpeg is
   MD5:        43141e85e7c36e31b52b22ab94d5e574
   Source:     https://sourceforge.net/projects/sevenzip/files/7-Zip/19.00/
   From:       "7z1900-extra.7z" \7za.exe
+  ```
+
+- `wget.exe`
+  ```
+  Version:    v1.20.3 , win32
+  MD5:        f8247397ae65792524d949c825969391
+  Source:     http://www.gnu.org/software/wget/faq.html#download
+              https://eternallybored.org/misc/wget/
+  From:       "wget-1.20.3-win32.zip" \wget.exe
   ```
 
 ---
