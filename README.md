@@ -8,7 +8,7 @@ A guide batch for [You-Get](https://github.com/soimort/you-get) installation and
 
 ## Getting Started
 
-1. Save the You-Get install batch "[start.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/start.bat)" (Directly clicking the link cannot download it. Right-click and choose "**save as**").
+1. Save the You-Get install batch "[start.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/full/start.bat)" (Directly clicking the link cannot download it. Right-click and choose "**save as**").
 
 2. Visit the website of Python and FFmpeg. Download the right version of `python-3.x.x.exe` and `ffmpeg-x.x.x-xxx.zip` :
    - [Download Python](https://www.python.org/downloads/)
@@ -26,7 +26,7 @@ A guide batch for [You-Get](https://github.com/soimort/you-get) installation and
 
 - The two batches created on the Desktop are used to start and upgrade You-Get.  
   You can move or rename the two batches optionally. If you know how to start CMD and the command to upgrade You-Get, you can even delete them.
-- If you don't want to install Python，try "[You-Get portable version](https://github.com/LussacZheng/you-get_install_win/tree/embed)".
+- If you don't want to install Python，try "[You-Get portable version](https://github.com/LussacZheng/you-get_install_win)".
 - If the batch has a run-time error, please refer to [FAQ](https://github.com/LussacZheng/you-get_install_win/wiki/FAQ).
 
 ---
@@ -37,7 +37,7 @@ A guide batch for [You-Get](https://github.com/soimort/you-get) installation and
 
 ## 使用方法
 
-1. 保存 You-Get 快速安装的脚本 “[start.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/start.bat)” (直接点击不能下载，须右键点击并选择“**另存为**”)。
+1. 保存 You-Get 快速安装的脚本 “[start.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/full/start.bat)” (直接点击不能下载，须右键点击并选择“**另存为**”)。
 
 2. 访问 Python 和 FFmpeg 官网，下载 `python-3.x.x.exe` 和 `ffmpeg-x.x.x-xxx.zip` 适合的版本：
    - [Download Python](https://www.python.org/downloads/)
@@ -55,7 +55,7 @@ A guide batch for [You-Get](https://github.com/soimort/you-get) installation and
 
 - 创建在桌面的两个脚本分别用于打开和更新 You-Get 。  
    你可以任意移动或重命名这两个脚本。如果你知道如何打开 CMD 和更新 You-Get 的命令，你也可以删除它们。
-- 如果你不想安装 Python，你可以尝试 "[You-Get 绿色版](https://github.com/LussacZheng/you-get_install_win/tree/embed)"。
+- 如果你不想安装 Python，你可以尝试 "[You-Get 绿色版](https://github.com/LussacZheng/you-get_install_win)"。
 - 如果脚本运行时出现问题，请查阅 [FAQ](https://github.com/LussacZheng/you-get_install_win/wiki/FAQ)。
 
 ---
