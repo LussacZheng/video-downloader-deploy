@@ -1,17 +1,17 @@
 ## Sources List of "you-get_install_win"
 ## For Initial Configuration.
-## https://github.com/LussacZheng/you-get_install_win/tree/embed
-## Last updated: 2019/06/03
+## https://github.com/LussacZheng/you-get_install_win
+## Last updated: 2019/06/04
 
 # wget.exe , v1.20.3 , win32
 # https://eternallybored.org/misc/wget/1.20.3/32/wget.exe
-# https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/res/wget.exe
+# https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res/wget.exe
 
 # sources.txt
-# https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/res/sources.txt
+# https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res/sources.txt
 
 # 7za.exe , v19.00 , win32
-https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/res/7za.exe
+https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res/7za.exe
 
 # python-embed.zip , v3.7.3 , win32
 https://www.python.org/ftp/python/3.7.3/python-3.7.3-embed-win32.zip

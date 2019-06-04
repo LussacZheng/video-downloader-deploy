@@ -1,11 +1,11 @@
 rem - Encoding:gb2312; Mode:Batch; Language:zh-CN; LineEndings:CRLF -
 :: You-Get(绿色版) 配置脚本
 :: Author: Lussac
-:: Version: embed-0.2.1
+:: Version: embed-0.2.2
 :: Last updated: 2019/06/04
 :: https://blog.lussac.net
 @echo off
-set version=embed-0.2.1
+set version=embed-0.2.2
 set date=2019/06/04
 :: START OF TRANSLATION
 set title=You-Get(绿色版) 配置脚本
@@ -17,11 +17,12 @@ set please-init=请先执行 You-Get 初始配置。
 set exit=按任意键退出。
 :: Procedure
 set unzipping=正在解压
+set downloading=正在下载
 set please-choose=请输入选项的序号并按回车: 
 set open-webpage=正在打开网页
 :: Guides of download batch
 set dl-guide-embed1=对于此绿色版，应使用"yg"而不是"you-get"命令。
-set dl-guide-embed2=如果你移动或重命名了整个文件夹，请重新运行 "config_zh.bat" 并选择修复 "yg.cmd"。
+set dl-guide-embed2=如果你移动或重命名了整个文件夹，请重新运行 `config_zh.bat` 并选择 `修复 "yg.cmd"` 。
 set dl-guide1=下载视频的命令为：
 set dl-guide2=yg+空格+视频网址
 set dl-guide3=例如：
@@ -32,13 +33,13 @@ set dl-guide7=https://github.com/soimort/you-get/wiki/中文说明
 :: Contents of download batch
 set download-bat=You-Get下载视频
 set create-bat-done=已创建 You-Get 启动脚本"%download-bat%"。
-set download-bat-content=start cmd /k "title %download-bat%&&echo %dl-guide-embed1%&&echo %dl-guide-embed2%&&echo.&&echo.&&echo %dl-guide1%&&echo %dl-guide2%&&echo.&&echo %dl-guide3%&&echo %dl-guide4%&&echo.&&echo %dl-guide5%&&echo.&&echo.&&echo %dl-guide6%&&echo %dl-guide7%"
 :: Welcome Info
 set opt1=[1] 初次配置 You-Get (无 FFmpeg)
 set opt2=[2] 配置 FFmpeg
 set opt3=[3] 更新 You-Get
 set opt4=[4] 修复 "yg.cmd"
-set opt5=[5] 更新此脚本 (访问GitHub)
+set opt5=[5] 重新创建启动脚本
+set opt6=[6] 更新此脚本 (访问GitHub)
 :: END OF TRANSLATION
 
 :: Start of Configuration
@@ -46,6 +47,7 @@ title %title%  -- By Lussac
 set root=%cd%
 set pySrc=%root%\python-embed
 set ygSrc=%root%\you-get
+set res=https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res
 
 :menu
 cd %root%
@@ -62,7 +64,8 @@ echo.&echo  %opt1%
 echo.&echo  %opt2%
 echo.&echo  %opt3%
 echo.&echo  %opt4%
-echo.&echo  %opt5% 
+echo.&echo  %opt5%
+echo.&echo  %opt6%
 echo.&echo.
 echo =============================================
 set a=0
@@ -72,7 +75,8 @@ if "%a%"=="1" goto init-config
 if "%a%"=="2" goto config-ffmpeg
 if "%a%"=="3" goto upgrade-youget
 if "%a%"=="4" goto reset-ygcmd
-if "%a%"=="5" goto update
+if "%a%"=="5" goto reset-dlbat
+if "%a%"=="6" goto update
 goto menu
 
 rem ================= OPTION 1 =================
@@ -84,7 +88,7 @@ if %isNewDir% GTR 2 ( echo %please-newDir% & goto EXIT )
 
 call :Commom
 del /Q sources.txt >NUL 2>NUL
-wget -q --no-check-certificate https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/res/sources.txt
+wget -q --no-check-certificate %res%/sources.txt
 ::https://stackoverflow.com/questions/4686464/how-to-show-wget-progress-bar-only
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i sources.txt
 ::if exist .wget-hsts del .wget-hsts
@@ -107,8 +111,8 @@ call :Setup-YouGet
 echo You-Get %already-config%
 echo isInitialized:true>isInit.txt
 cd ..
-call :Create-ygcmd
-echo %download-bat-content% > %download-bat%.bat
+call :Create-yg-cmd
+call :Create-download-bat
 echo.
 echo =============================================
 echo %config-ok%
@@ -124,7 +128,7 @@ rem ================= OPTION 2 =================
 echo %PATH%|findstr /i "ffmpeg">NUL && goto ffmpeg-config-ok
 
 call :Commom
-wget -q --no-check-certificate https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/res/sources_ffmpeg.txt
+wget -q --no-check-certificate %res%/sources_ffmpeg.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i sources_ffmpeg.txt
 
 for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do (set FFmpegZip=%%i)
@@ -146,7 +150,7 @@ call :Commom
 del /Q you-get*.tar.gz >NUL 2>NUL
 del /Q sources_youget.txt >NUL 2>NUL
 rd /S /Q "%ygSrc%" >NUL 2>NUL
-wget -q --no-check-certificate https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/res/sources_youget.txt
+wget -q --no-check-certificate %res%/sources_youget.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i sources_youget.txt
 
 call :Setup-YouGet
@@ -158,17 +162,26 @@ rem ================= OPTION 4 =================
 
 :reset-ygcmd
 if NOT exist res\isInit.txt call :Please-Initialize
-call :Create-ygcmd
-::echo @echo @"%%cd%%\python-embed\python.exe" "%%cd%%\you-get\you-get" -o Download %%%%*^>yg.cmd> re-config.cmd
+call :Create-yg-cmd
+::echo @echo @"%%cd%%\python-embed\python.exe" "%%cd%%\you-get\you-get" -o Download %%%%*^>yg.cmd> fix.cmd
 echo.&echo %config-ok%
 pause>NUL
 goto menu
 
 rem ================= OPTION 5 =================
 
+:reset-dlbat
+if NOT exist res\isInit.txt call :Please-Initialize
+call :Create-download-bat
+echo.&echo %create-bat-done%
+pause>NUL
+goto menu
+
+rem ================= OPTION 6 =================
+
 :update
 echo %open-webpage%...
-start https://github.com/LussacZheng/you-get_install_win/tree/embed
+start https://github.com/LussacZheng/you-get_install_win
 pause>NUL
 goto menu
 
@@ -187,10 +200,11 @@ goto :eof
 
 :Get-wget
 if NOT exist wget.exe (
-    echo Downloading "wget.exe"...
+    echo %downloading% "wget.exe"...
     :: use ^) instead of )
-    powershell (New-Object Net.WebClient^).DownloadFile('https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/res/wget.exe', 'wget.exe'^)
+    powershell (New-Object Net.WebClient^).DownloadFile('%res%/wget.exe', 'wget.exe'^)
 )
+echo %downloading%...
 goto :eof
 
 :Setup-YouGet
@@ -202,8 +216,13 @@ set ygDir=%ygZip:~0,-7%
 move %ygDir% "%root%\you-get" > NUL
 goto :eof
 
-:Create-ygcmd
+:Create-yg-cmd
 echo @"%pySrc%\python.exe" "%ygSrc%\you-get" -o Download %%*> yg.cmd
+goto :eof
+
+:Create-download-bat
+set download-bat-content=start cmd /k "title %download-bat%&&echo %dl-guide-embed1%&&echo %dl-guide-embed2%&&echo.&&echo.&&echo %dl-guide1%&&echo %dl-guide2%&&echo.&&echo %dl-guide3%&&echo %dl-guide4%&&echo.&&echo %dl-guide5%&&echo.&&echo.&&echo %dl-guide6%&&echo %dl-guide7%"
+echo %download-bat-content% > %download-bat%.bat
 goto :eof
 
 :Please-Initialize

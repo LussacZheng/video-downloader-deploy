@@ -1,5 +1,5 @@
-rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
-:: You-Get(Portable) Configure Batch
+rem - Encoding:utf-8; Mode:Batch; Language:zh-CN; LineEndings:CRLF -
+:: You-Get(绿色版) 配置脚本
 :: Author: Lussac
 :: Version: embed-0.2.2
 :: Last updated: 2019/06/04
@@ -8,38 +8,38 @@ rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 set version=embed-0.2.2
 set date=2019/06/04
 :: START OF TRANSLATION
-set title=You-Get(Portable) Configure Batch
+set title=You-Get(绿色版) 配置脚本
 :: Notification
-set please-newDir=Please run this batch in a newly created folder.
-set already-config=already configured.
-set config-ok=Configuration completed.
-set please-init=Please perform the initial configuration of You-Get first.
-set exit=Press any key to exit.
+set please-newDir=请在一个新建的文件夹中运行此脚本。
+set already-config=已配置。
+set config-ok=配置已完成。
+set please-init=请先执行 You-Get 初始配置。
+set exit=按任意键退出。
 :: Procedure
-set unzipping=Unzipping
-set downloading=Downloading
-set please-choose=Please input the index number of option and press ENTER:
-set open-webpage=Opening the webpage
+set unzipping=正在解压
+set downloading=正在下载
+set please-choose=请输入选项的序号并按回车: 
+set open-webpage=正在打开网页
 :: Guides of download batch
-set dl-guide-embed1=For this portable version, use "yg" command instead of "you-get".
-set dl-guide-embed2=If you move or rename the whole folder, please re-run `config.bat` and select `Fix "yg.cmd"`.
-set dl-guide1=The command to download a video is:
-set dl-guide2=yg+'Space'+'video url'
-set dl-guide3=For example:
-set dl-guide4=yg https://www.youtube.com/watch?v=aBCdefGh
-set dl-guide5=By default, you will get the video of highest quality. And the files downloaded will be saved in "Download".
-set dl-guide6=If you want to choose the quality of video, change the directory saved in, or learn more usage of You-Get, please refer the Official wiki:
-set dl-guide7=https://github.com/soimort/you-get#download-a-video
+set dl-guide-embed1=对于此绿色版，应使用"yg"而不是"you-get"命令。
+set dl-guide-embed2=如果你移动或重命名了整个文件夹，请重新运行 `config_zh.bat` 并选择 `修复 "yg.cmd"` 。
+set dl-guide1=下载视频的命令为：
+set dl-guide2=yg+空格+视频网址
+set dl-guide3=例如：
+set dl-guide4=yg https://v.youku.com/v_show/id_aBCdefGh.html
+set dl-guide5=默认下载最高清晰度。下载文件默认保存在 Download 目录。
+set dl-guide6=如果你想选择清晰度、更改默认路径，或想了解You-Get其他的用法，请参考官方wiki：
+set dl-guide7=https://github.com/soimort/you-get/wiki/中文说明
 :: Contents of download batch
-set download-bat=You-Get_Download_video
-set create-bat-done=The You-Get starting batch "%download-bat%" has been created.
+set download-bat=You-Get下载视频
+set create-bat-done=已创建 You-Get 启动脚本"%download-bat%"。
 :: Welcome Info
-set opt1=[1] Initial Configuration of You-Get (Without FFmpeg)
-set opt2=[2] Configure FFmpeg
-set opt3=[3] Upgrade You-Get
-set opt4=[4] Fix "yg.cmd"
-set opt5=[5] Re-create the quickstart batch
-set opt6=[6] Update this batch (Visit GitHub)
+set opt1=[1] 初次配置 You-Get (无 FFmpeg)
+set opt2=[2] 配置 FFmpeg
+set opt3=[3] 更新 You-Get
+set opt4=[4] 修复 "yg.cmd"
+set opt5=[5] 重新创建启动脚本
+set opt6=[6] 更新此脚本 (访问GitHub)
 :: END OF TRANSLATION
 
 :: Start of Configuration
@@ -54,7 +54,7 @@ cd %root%
 cls
 echo =============================================
 echo =============================================
-echo %title% (By Lussac)
+echo === %title%  (By Lussac) ===
 echo =============================================
 echo ===== Version: %version% (%date%) =====
 echo =============================================
