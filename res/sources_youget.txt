@@ -1,0 +1,17 @@
+## Sources List of "you-get_install_win"
+## For Upgrade of You-Get.
+## https://github.com/LussacZheng/you-get_install_win/tree/embed
+## Last updated: 2019/03/09
+
+# wget.exe , v1.20.3 , win32
+# https://eternallybored.org/misc/wget/1.20.3/32/wget.exe
+# https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/res/wget.exe
+
+# 7za.exe , v19.00 , win32
+https://raw.githubusercontent.com/LussacZheng/you-get_install_win/embed/res/7za.exe
+
+## Release log
+## https://pypi.org/project/you-get/#history
+
+# you-get.tar.gz , v0.4.1302
+https://files.pythonhosted.org/packages/f6/d1/654c81e572109d91760402edf851220ed5276fdb10d8a135631426771946/you-get-0.4.1302.tar.gz
