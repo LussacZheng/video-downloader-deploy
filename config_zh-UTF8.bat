@@ -1,12 +1,12 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN; LineEndings:CRLF -
 :: You-Get (绿色版) 配置脚本
 :: Author: Lussac
-:: Version: embed-0.2.3
-:: Last updated: 2019/06/07
+:: Version: embed-0.2.4
+:: Last updated: 2019/06/13
 :: https://blog.lussac.net
 @echo off
-set version=embed-0.2.3
-set date=2019/06/07
+set version=embed-0.2.4
+set date=2019/06/13
 set res=https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res
 :: START OF TRANSLATION
 set title=You-Get (绿色版) 配置脚本
@@ -88,7 +88,7 @@ rem ================= OPTION 1 =================
 for /f "delims=" %%i in (' dir /b ') do ( set /a isNewDir+=1 )
 if %isNewDir% GTR 2 ( echo %please-newDir% & goto EXIT )
 
-call :Commom
+call :Common
 :: del /Q sources.txt >NUL 2>NUL
 wget -q --no-check-certificate -nc %res%/sources.txt
 :: https://stackoverflow.com/questions/4686464/how-to-show-wget-progress-bar-only
@@ -130,7 +130,7 @@ rem ================= OPTION 2 =================
 echo %PATH%|findstr /i "ffmpeg">NUL && goto ffmpeg-config-ok
 
 call :CheckForInit
-call :Commom
+call :Common
 wget -q --no-check-certificate -nc %res%/sources_ffmpeg.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i sources_ffmpeg.txt
 
@@ -149,7 +149,7 @@ rem ================= OPTION 3 =================
 
 :upgrade-youget
 call :CheckForInit
-call :Commom
+call :Common
 del /Q you-get*.tar.gz >NUL 2>NUL
 del /Q sources_youget.txt >NUL 2>NUL
 wget -q --no-check-certificate -nc %res%/sources_youget.txt
@@ -195,7 +195,7 @@ echo.&echo %exit%
 pause>NUL
 exit
 
-:Commom
+:Common
 if NOT exist res md res
 cd res
 if NOT exist wget.exe (
@@ -226,9 +226,11 @@ goto :eof
 
 :InitLog
 echo initialized: true> init.log
+echo time: %date:~0,10% %time:~0,8%>> init.log
 echo pyZip: %pyZip%>> init.log
 echo ygZip: %ygZip%>> init.log
-echo time: %date:~0,10% %time:~0,8%>> init.log
+echo pyBin: %pyBin%>> init.log
+echo ygBin: %ygBin%>> init.log
 goto :eof
 
 :CheckForInit

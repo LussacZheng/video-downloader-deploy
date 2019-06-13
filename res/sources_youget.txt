@@ -11,8 +11,8 @@ https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res/7za
 
 ## Release log
 ## https://pypi.org/project/you-get/#history
-## Last released: 2019/05/09
+## Last released: 2019/06/11
 
-# you-get.tar.gz , v0.4.1302
-https://files.pythonhosted.org/packages/f6/d1/654c81e572109d91760402edf851220ed5276fdb10d8a135631426771946/you-get-0.4.1302.tar.gz
-# https://github.com/soimort/you-get/releases/download/v0.4.1302/you-get-0.4.1302.tar.gz
+# you-get.tar.gz , v0.4.1314
+https://files.pythonhosted.org/packages/1f/ab/5e4c6bbeaaa974eb76dbf29b95f63522d9ce8abbe4c77b7374e86e11f31b/you-get-0.4.1314.tar.gz
+# https://github.com/soimort/you-get/releases/download/v0.4.1314/you-get-0.4.1314.tar.gz
