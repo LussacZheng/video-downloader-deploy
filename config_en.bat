@@ -1,18 +1,19 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: You-Get(Portable) Configure Batch
 :: Author: Lussac
-:: Version: embed-0.2.4
-:: Last updated: 2019/06/13
+:: Version: embed-0.2.5
+:: Last updated: 2019/07/09
 :: https://blog.lussac.net
 @echo off
-set version=embed-0.2.4
-set date=2019/06/13
+set version=embed-0.2.5
+set lastUpdated=2019/07/09
 set res=https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res
 :: START OF TRANSLATION
 set title=You-Get(Portable) Configure Batch
 :: Notification
 set please-choose=Please input the index number of option and press ENTER:
 set please-newDir=Please run this batch in a newly created folder.
+set please-wait=Please be patient while waiting for the download
 set please-init=Please perform the initial configuration of You-Get first.
 set already-config=already configured.
 set config-ok=Configuration completed.
@@ -58,7 +59,7 @@ echo ====  %title%  ====
 echo =============================================
 echo ================  By Lussac  ================
 echo =============================================
-echo ====  Version: %version% (%date%)  ====
+echo ====  Version: %version% (%lastUpdated%)  ====
 echo =============================================
 echo =============================================
 echo.
@@ -188,7 +189,7 @@ start https://github.com/LussacZheng/you-get_install_win
 pause>NUL
 goto MENU
 
-rem ================= FUNCTION =================
+rem ================= FUNCTIONS =================
 
 :EXIT
 echo.&echo %exit%
@@ -199,7 +200,7 @@ exit
 if NOT exist res md res
 cd res
 if NOT exist wget.exe (
-    echo %downloading% "wget.exe"...
+    echo %downloading% "wget.exe", %please-wait%...
     :: use ^) instead of )
     powershell (New-Object Net.WebClient^).DownloadFile('%res%/wget.exe', 'wget.exe'^)
 )

@@ -1,18 +1,19 @@
 @rem - Encoding:gb2312; Mode:Batch; Language:zh-CN; LineEndings:CRLF -
 :: You-Get (绿色版) 配置脚本
 :: Author: Lussac
-:: Version: embed-0.2.4
-:: Last updated: 2019/06/13
+:: Version: embed-0.2.5
+:: Last updated: 2019/07/09
 :: https://blog.lussac.net
 @echo off
-set version=embed-0.2.4
-set date=2019/06/13
+set version=embed-0.2.5
+set lastUpdated=2019/07/09
 set res=https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res
 :: START OF TRANSLATION
 set title=You-Get (绿色版) 配置脚本
 :: Notification
 set please-choose=请输入选项的序号并按回车: 
 set please-newDir=请在一个新建的文件夹中运行此脚本。
+set please-wait=请耐心等待下载完成
 set please-init=请先执行 You-Get 初始配置。
 set already-config=已配置。
 set config-ok=配置已完成。
@@ -58,7 +59,7 @@ echo ========  %title%  ========
 echo =============================================
 echo ================  By Lussac  ================
 echo =============================================
-echo ====  Version: %version% (%date%)  ====
+echo ====  Version: %version% (%lastUpdated%)  ====
 echo =============================================
 echo =============================================
 echo.
@@ -188,7 +189,7 @@ start https://github.com/LussacZheng/you-get_install_win
 pause>NUL
 goto MENU
 
-rem ================= FUNCTION =================
+rem ================= FUNCTIONS =================
 
 :EXIT
 echo.&echo %exit%
@@ -199,7 +200,7 @@ exit
 if NOT exist res md res
 cd res
 if NOT exist wget.exe (
-    echo %downloading% "wget.exe"...
+    echo %downloading% "wget.exe", %please-wait%...
     :: use ^) instead of )
     powershell (New-Object Net.WebClient^).DownloadFile('%res%/wget.exe', 'wget.exe'^)
 )
