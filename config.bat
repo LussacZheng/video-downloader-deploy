@@ -1,61 +1,30 @@
-@rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
+@rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: You-Get(Portable) Configure Batch
 :: Author: Lussac
-:: Version: embed-0.2.5
-:: Last updated: 2019/07/09
+:: Version: embed-0.3.0
+:: Last updated: 2019-07-15
 :: https://blog.lussac.net
 @echo off
-set version=embed-0.2.5
-set lastUpdated=2019/07/09
+set version=embed-0.3.0
+set lastUpdated=2019-07-15
 set res=https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res
-:: START OF TRANSLATION
-set title=You-Get(Portable) Configure Batch
-:: Notification
-set please-choose=Please input the index number of option and press ENTER:
-set please-newDir=Please run this batch in a newly created folder.
-set please-wait=Please be patient while waiting for the download
-set please-init=Please perform the initial configuration of You-Get first.
-set already-config=already configured.
-set config-ok=Configuration completed.
-set exit=Press any key to exit.
-:: Procedure
-set unzipping=Unzipping
-set downloading=Downloading
-set open-webpage=Opening the webpage
-:: Guides of download batch
-set dl-guide-embed1=For this portable version, use "yg" command instead of "you-get".
-set dl-guide-embed2=If you move or rename the whole folder, please re-run `config_en.bat` and select `Fix "yg.cmd"`.
-set dl-guide1=The command to download a video is:
-set dl-guide2=yg+'Space'+'video url'
-set dl-guide3=For example:
-set dl-guide4=yg https://www.youtube.com/watch?v=aBCdefGh
-set dl-guide5=By default, you will get the video of highest quality. And the files downloaded will be saved in "Download".
-set dl-guide6=If you want to choose the quality of video, change the directory saved in, or learn more usage of You-Get, please refer the Official wiki:
-set dl-guide7=https://github.com/soimort/you-get#download-a-video
-:: Contents of download batch
-set dl-bat=You-Get_Download_video
-set dl-bat-created=The You-Get starting batch "%dl-bat%" has been created.
-:: Menu Options
-set opt1=[1] Initial Configuration of You-Get (Without FFmpeg)
-set opt2=[2] Configure FFmpeg
-set opt3=[3] Upgrade You-Get
-set opt4=[4] Fix "yg.cmd"
-set opt5=[5] Re-create the quickstart batch
-set opt6=[6] Update this batch (Visit GitHub)
-:: END OF TRANSLATION
+:: Get system language
+chcp|find "936" >NUL && set "_lang=zh" || set "_lang=en"
+::chcp 65001
+call res\scripts\lang_%_lang%.bat
 
 :: Start of Configuration
 title %title%  -- By Lussac
-set root=%cd%
-set pyBin=%root%\python-embed
-set ygBin=%root%\you-get
+set "root=%cd%"
+set "pyBin=%root%\python-embed"
+set "ygBin=%root%\you-get"
 
 :MENU
-cd %root%
+cd "%root%"
 cls
 echo =============================================
 echo =============================================
-echo ====  %title%  ====
+echo ========  %title%  ========
 echo =============================================
 echo ================  By Lussac  ================
 echo =============================================
@@ -85,16 +54,13 @@ goto MENU
 rem ================= OPTION 1 =================
 
 :init-config
-:: Only allow "res" and this batch (totally 2) in this folder when initial configuration.
-for /f "delims=" %%i in (' dir /b ') do ( set /a isNewDir+=1 )
-if %isNewDir% GTR 2 ( echo %please-newDir% & goto EXIT )
-
 call :Common
-:: del /Q sources.txt >NUL 2>NUL
-wget -q --no-check-certificate -nc %res%/sources.txt
+:: %_region% was set in res\scripts\lang_%_lang%.bat
+call scripts\MirrorSwitch.bat sources %_region%
 :: https://stackoverflow.com/questions/4686464/how-to-show-wget-progress-bar-only
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i sources.txt
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\sources-%_region%.txt -P download
 :: if exist .wget-hsts del .wget-hsts
+cd download
 
 if exist "%pyBin%" goto check-youget-zip
 
@@ -112,8 +78,9 @@ call :Setup_YouGet
 
 :creat-bat
 echo You-Get %already-config%
-call :InitLog
 cd ..
+call :InitLog
+cd "%root%"
 call :Create_yg-cmd
 call :Create_dl-bat
 echo.
@@ -133,7 +100,9 @@ echo %PATH%|findstr /i "ffmpeg">NUL && goto ffmpeg-config-ok
 call :CheckForInit
 call :Common
 wget -q --no-check-certificate -nc %res%/sources_ffmpeg.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i sources_ffmpeg.txt
+call scripts\MirrorSwitch.bat sources_ffmpeg %_region%
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\sources_ffmpeg-%_region%.txt -P download
+cd download
 
 for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do (set FFmpegZip=%%i)
 echo %unzipping% %FFmpegZip% ...
@@ -151,10 +120,12 @@ rem ================= OPTION 3 =================
 :upgrade-youget
 call :CheckForInit
 call :Common
-del /Q you-get*.tar.gz >NUL 2>NUL
+del /Q download\you-get*.tar.gz >NUL 2>NUL
 del /Q sources_youget.txt >NUL 2>NUL
 wget -q --no-check-certificate -nc %res%/sources_youget.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i sources_youget.txt
+call scripts\MirrorSwitch.bat sources_youget %_region%
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\sources_youget-%_region%.txt -P download
+cd download
 rd /S /Q "%ygBin%" >NUL 2>NUL
 
 call :Setup_YouGet
@@ -197,7 +168,7 @@ pause>NUL
 exit
 
 :Common
-if NOT exist res md res
+:: Make sure the existence of res\wget.exe, res\7za.exe, res\download\7za.exe
 cd res
 if NOT exist wget.exe (
     echo %downloading% "wget.exe", %please-wait%...
@@ -205,6 +176,12 @@ if NOT exist wget.exe (
     powershell (New-Object Net.WebClient^).DownloadFile('%res%/wget.exe', 'wget.exe'^)
 )
 echo %downloading%...
+if NOT exist 7za.exe (
+    wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %res%/7za.exe
+)
+if NOT exist download\7za.exe (
+    xcopy 7za.exe download\ > NUL
+)
 goto :eof
 
 :Setup_YouGet
@@ -227,11 +204,14 @@ goto :eof
 
 :InitLog
 echo initialized: true> init.log
-echo time: %date:~0,10% %time:~0,8%>> init.log
+for /f %%a in ('WMIC OS GET LocalDateTime ^| find "."') do set LDT=%%a
+set formatedDate=%LDT:~0,4%-%LDT:~4,2%-%LDT:~6,2%
+echo time: %formatedDate% %time:~0,8%>> init.log
+::echo time: %date:~0,10% %time:~0,8%>> init.log
 echo pyZip: %pyZip%>> init.log
 echo ygZip: %ygZip%>> init.log
-echo pyBin: %pyBin%>> init.log
-echo ygBin: %ygBin%>> init.log
+echo pyBin: "%pyBin%">> init.log
+echo ygBin: "%ygBin%">> init.log
 goto :eof
 
 :CheckForInit

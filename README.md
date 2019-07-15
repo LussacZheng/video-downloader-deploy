@@ -10,13 +10,12 @@ A **onekey batch** for the configuration and quickstart of [You-Get](https://git
 
 ## Getting Started
 
-1. Save the You-Get onekey configure batch "[config_en.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/config_en.bat)" (Directly clicking the link cannot download it. Right-click and select "**save as**").
-2. Create a new folder. Move `config_en.bat` into that folder.
-3. Run `config_en.bat`.
+1. Download [You-Get onekey configure batch](https://github.com/LussacZheng/you-get_install_win/archive/master.zip).
+2. Unzip and run `config.bat`.
 
 ### Note
 
-- For the newly created folder in step 2,
+- For the folder where `config.bat` is located,
    - You can only move or rename the entire folder as a whole;
    - Except the video files downloaded under the "Download" directory, please do NOT change other files inside;
    - Once you move or rename the whole folder, re-run `config.bat` and select `Fix "yg.cmd"`.
@@ -38,13 +37,12 @@ This portable version does NOT configure FFmpeg by default. To configure FFmpeg,
 
 ## 使用方法
 
-1. 保存 You-Get 一键配置脚本 “[config_zh.bat](https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/config_zh.bat)” (直接点击不能下载，须右键点击并选择“**另存为**”)。
-2. 新建一个文件夹，将 `config_zh.bat` 放在此文件夹下。
-3. 运行 `config_zh.bat`。
+1. 下载 [You-Get 一键配置脚本](https://github.com/LussacZheng/you-get_install_win/archive/master.zip)。
+2. 解压并运行 `config.bat`。
 
 ### 注意
 
-- 对于步骤2中新建的文件夹，
+- 对于 `config.bat` 所在的文件夹，
    - 只能整体移动或重命名整个文件夹；
    - 除了 "Download" 目录下所下载的视频文件，请勿随意改变里面的其他文件；
    - 如果你移动或重命名了整个文件夹，请重新运行 `config.bat` 并选择 `修复 "yg.cmd"` 。
