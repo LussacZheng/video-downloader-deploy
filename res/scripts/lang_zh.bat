@@ -1,6 +1,7 @@
 @rem - Encoding:gb2312; Mode:Batch; Language:zh-CN; LineEndings:CRLF -
 :: START OF TRANSLATION
 set title=You-Get (绿色版) 配置脚本
+set titleExpanded======  %title%  =====
 :: Notification
 set please-choose=请输入选项的序号并按回车: 
 set please-newDir=请在一个新建的文件夹中运行此脚本。
@@ -9,10 +10,13 @@ set please-init=请先执行 You-Get 初始配置。
 set already-config=已配置。
 set config-ok=配置已完成。
 set exit=按任意键退出。
+set bat-updated=脚本已是最新。
+set bat-updating=脚本可更新。
+:: use ^^) instead of ), since %open-webpage% will be used in "esle( )"
+set open-webpage=按任意键获取更新 (打开浏览器访问 GitHub^^)
 :: Procedure
 set unzipping=正在解压
 set downloading=正在下载
-set open-webpage=正在打开网页
 :: Guides of download batch
 set dl-guide-embed1=对于此绿色版，应使用"yg"而不是"you-get"命令。
 set dl-guide-embed2=如果你移动或重命名了整个文件夹，请重新运行 `config_zh.bat` 并选择 `修复 "yg.cmd"` 。

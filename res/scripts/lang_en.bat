@@ -1,6 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: START OF TRANSLATION
 set title=You-Get(Portable) Configure Batch
+set titleExpanded==  %title%  =
 :: Notification
 set please-choose=Please input the index number of option and press ENTER:
 set please-newDir=Please run this batch in a newly created folder.
@@ -9,10 +10,13 @@ set please-init=Please perform the initial configuration of You-Get first.
 set already-config=already configured.
 set config-ok=Configuration completed.
 set exit=Press any key to exit.
+set bat-updated=This batch is the latest version.
+set bat-updating=This batch can be updated.
+:: use ^^) instead of ), since %open-webpage% will be used in "esle( )"
+set open-webpage=Press any key to get updated (Open browser to visit GitHub^^)
 :: Procedure
 set unzipping=Unzipping
 set downloading=Downloading
-set open-webpage=Opening the webpage
 :: Guides of download batch
 set dl-guide-embed1=For this portable version, use "yg" command instead of "you-get".
 set dl-guide-embed2=If you move or rename the whole folder, please re-run `config_en.bat` and select `Fix "yg.cmd"`.

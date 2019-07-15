@@ -1,12 +1,12 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: You-Get(Portable) Configure Batch
 :: Author: Lussac
-:: Version: embed-0.3.0
-:: Last updated: 2019-07-15
+:: Version: embed-0.3.1
+:: Last updated: 2019-07-16
 :: https://blog.lussac.net
 @echo off
-set version=embed-0.3.0
-set lastUpdated=2019-07-15
+set version=embed-0.3.1
+set lastUpdated=2019-07-16
 set res=https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res
 :: Get system language
 chcp|find "936" >NUL && set "_lang=zh" || set "_lang=en"
@@ -24,7 +24,7 @@ cd "%root%"
 cls
 echo =============================================
 echo =============================================
-echo ========  %title%  ========
+echo ===%titleExpanded%===
 echo =============================================
 echo ================  By Lussac  ================
 echo =============================================
@@ -155,8 +155,17 @@ goto MENU
 rem ================= OPTION 6 =================
 
 :update
-echo %open-webpage%...
-start https://github.com/LussacZheng/you-get_install_win
+cd res && call :Common_wget
+:: Get %_isLatestVersion% from "scripts\CheckUpdate.bat". 0: false; 1: true.
+call scripts\CheckUpdate.bat
+if %_isLatestVersion%==1 (
+    echo %bat-updated%
+) else (
+    echo %bat-updating%
+    echo %open-webpage%...
+    pause>NUL
+    start https://github.com/LussacZheng/you-get_install_win
+)
 pause>NUL
 goto MENU
 
@@ -170,17 +179,23 @@ exit
 :Common
 :: Make sure the existence of res\wget.exe, res\7za.exe, res\download\7za.exe
 cd res
-if NOT exist wget.exe (
-    echo %downloading% "wget.exe", %please-wait%...
-    :: use ^) instead of )
-    powershell (New-Object Net.WebClient^).DownloadFile('%res%/wget.exe', 'wget.exe'^)
-)
+call :Common_wget
 echo %downloading%...
 if NOT exist 7za.exe (
     wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %res%/7za.exe
 )
 if NOT exist download\7za.exe (
     xcopy 7za.exe download\ > NUL
+)
+:: Now %cd% is "res\".
+goto :eof
+
+:Common_wget
+:: Make sure the existence of res\wget.exe
+if NOT exist wget.exe (
+    echo %downloading% "wget.exe", %please-wait%...
+    :: use ^) instead of )
+    powershell (New-Object Net.WebClient^).DownloadFile('%res%/wget.exe', 'wget.exe'^)
 )
 goto :eof
 

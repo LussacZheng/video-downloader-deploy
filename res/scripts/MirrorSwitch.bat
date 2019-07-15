@@ -17,10 +17,10 @@ set mirror_tag=0
 :: Rewrite sources-%region%.txt
 type nul > download\%sourcesFile%-%region%.txt
 for /f "delims=:" %%i in ('findstr /n /i "<skip>" %sourcesFile%.txt') do ( set "mirror_skipLine=%%i" )
+:: Find which line has the "<skip>" tag, skip these lines above.
 for /f "eol=# skip=%mirror_skipLine% delims=" %%i in (%sourcesFile%.txt) do (
-    :: echo %%i | findstr "[" > nul && (echo ys[] %%i>>2.txt) || ( echo no[] %%i>>2.txt)
     if !mirror_tag!==0 (
-        ::  use '\' to avoid wrong match like: findstr "[0-9]"
+        ::  use '\' to avoid wrong match, caused by a special match rule, like: findstr "[0-9]" is ture for number "6".
         echo %%i | findstr "\[">nul && ( set "mirror_tag=2" ) 
         echo %%i | findstr "\[%region%\]">nul && ( set "mirror_tag=1" )
         echo %%i>>download\%sourcesFile%-%region%.txt   

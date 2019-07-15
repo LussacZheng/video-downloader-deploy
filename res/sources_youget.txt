@@ -12,11 +12,12 @@ Content to be downlaoded.
 $ Another (optional) source of the same content above. But the script will ignore this line. Exchange the URLs at your own risk.
 Mirrors{
     [origin]
-    URL of the content from original source. Called "switch on".
+    URL of the content from original source. NO '@', called "switch on".
     [%region1%]
-    @ URL of the content from mirror source in %region1%. But the file will not to be downlaoded by this "@ URL". Called "switch off".
+    @ URL of the content from mirror source in %region1%.
+    $ "@ URL", that content will not to be downlaoded by this URL, called "switch off".
     [%region2%]
-    @ For a same file, only one URL is switched on at one time.
+    @ For a same content in { }, only one URL is switched on at one time.
 }
 
 <skip>
