@@ -1,5 +1,7 @@
 **[中文说明](#you-get-绿色版-配置脚本-windows)**
 
+![demo.gif](https://blog.lussac.net/usr/uploads/2019/07/506175630.gif)
+
 ---
 
 # You-Get (Portable) Configure Batch (Windows)
@@ -21,7 +23,7 @@ A **onekey batch** for the configuration and quickstart of [You-Get](https://git
    - Once you move or rename the whole folder, re-run `config.bat` and select `Fix "yg.cmd"`.
 - If the batch has a run-time error, please refer to [FAQ](https://github.com/LussacZheng/you-get_install_win/wiki/FAQ).
 
-## FFmpeg
+### FFmpeg
 
 > `FFmpeg` is a required dependency, for downloading and joining videos streamed in multiple parts (e.g. on some sites like Youku), and for YouTube videos of 1080p or high resolution.
 
@@ -48,7 +50,7 @@ This portable version does NOT configure FFmpeg by default. To configure FFmpeg,
    - 如果你移动或重命名了整个文件夹，请重新运行 `config.bat` 并选择 `修复 "yg.cmd"` 。
 - 如果脚本运行时出现问题，请查阅 [FAQ](https://github.com/LussacZheng/you-get_install_win/wiki/FAQ)。
 
-## FFmpeg
+### FFmpeg
 
 > `FFmpeg`为必要依赖，以下载流式视频以及合并分块视频(例如，类似Youku), 以及YouTube的1080p或更高分辨率.
 
