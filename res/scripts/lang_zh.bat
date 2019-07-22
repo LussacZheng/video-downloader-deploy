@@ -19,7 +19,7 @@ set unzipping=正在解压
 set downloading=正在下载
 :: Guides of download batch
 set dl-guide-embed1=对于此绿色版，应使用"yg"而不是"you-get"命令。
-set dl-guide-embed2=如果你移动或重命名了整个文件夹，请重新运行 `config_zh.bat` 并选择 `修复 "yg.cmd"` 。
+set dl-guide-embed2=如果你移动或重命名了整个文件夹，请重新运行 `config.bat` 并选择 `修复 "yg.cmd"` 。
 set dl-guide1=下载视频的命令为：
 set dl-guide2=yg+空格+视频网址
 set dl-guide3=例如：

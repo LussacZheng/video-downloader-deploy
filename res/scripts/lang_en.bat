@@ -19,7 +19,7 @@ set unzipping=Unzipping
 set downloading=Downloading
 :: Guides of download batch
 set dl-guide-embed1=For this portable version, use "yg" command instead of "you-get".
-set dl-guide-embed2=If you move or rename the whole folder, please re-run `config_en.bat` and select `Fix "yg.cmd"`.
+set dl-guide-embed2=If you move or rename the whole folder, please re-run `config.bat` and select `Fix "yg.cmd"`.
 set dl-guide1=The command to download a video is:
 set dl-guide2=yg+'Space'+'video url'
 set dl-guide3=For example:

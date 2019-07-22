@@ -33,6 +33,6 @@ https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res/7za
 ## https://ffmpeg.org/download.html#releases   or   https://ffmpeg.zeranoe.com/builds/win64/static/
 ## Last released: 2019-07-18
 
-## ffmpeg-static.zip , v4.1.3 , win64
+## ffmpeg-static.zip , v4.1.4 , win64
 https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.1.4-win64-static.zip
 $ https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-4.1.4-win32-static.zip
