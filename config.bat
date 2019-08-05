@@ -1,16 +1,15 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: You-Get(Portable) Configure Batch
 :: Author: Lussac
-:: Version: embed-0.3.1
-:: Last updated: 2019-07-16
+:: Version: embed-0.3.2
+:: Last updated: 2019-08-05
 :: https://blog.lussac.net
 @echo off
-set version=embed-0.3.1
-set lastUpdated=2019-07-16
+set version=embed-0.3.2
+set lastUpdated=2019-08-05
 set res=https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res
-:: Get system language
-chcp|find "936" >NUL && set "_lang=zh" || set "_lang=en"
-::chcp 65001
+::  Get system language -> %_lang%
+call res\scripts\LanguageSelector.bat
 call res\scripts\lang_%_lang%.bat
 
 :: Start of Configuration
@@ -88,8 +87,7 @@ echo =============================================
 echo %config-ok%
 echo %dl-bat-created%
 echo =============================================
-pause>NUL
-goto MENU
+call :_ReturnToMenu_
 
 rem ================= OPTION 2 =================
 
@@ -112,14 +110,23 @@ if exist C:\ffmpeg\bin\ffmpeg.exe ( setx "Path" "%Path%;C:\ffmpeg\bin" )
 
 :ffmpeg-config-ok
 echo.&echo FFmpeg %already-config%
-pause>NUL
-goto MENU
+call :_ReturnToMenu_
 
 rem ================= OPTION 3 =================
 
 :upgrade-youget
 call :CheckForInit
-call :Common
+::if NOT exist "%ygBin%\src\you_get\version.py" 
+cd res && call :Common_wget
+echo %checkingUpdate%...
+:: Get %_isYgLatestVersion% from "scripts\CheckUpdate_youget.bat". 0: false; 1: true.
+call scripts\CheckUpdate_youget.bat
+if %_isYgLatestVersion%==1 (
+    echo %youget-upgraded%: v%ygCurrentVersion%
+    call :_ReturnToMenu_
+)
+echo %youget-upgrading%...
+cd "%root%" && call :Common
 del /Q download\you-get*.tar.gz >NUL 2>NUL
 del /Q sources_youget.txt >NUL 2>NUL
 wget -q --no-check-certificate -nc %res%/sources_youget.txt
@@ -129,9 +136,8 @@ cd download
 rd /S /Q "%ygBin%" >NUL 2>NUL
 
 call :Setup_YouGet
-echo.&echo You-Get %already-config%
-pause>NUL
-goto MENU
+echo.&echo You-Get %already-updated%
+call :_ReturnToMenu_
 
 rem ================= OPTION 4 =================
 
@@ -140,8 +146,7 @@ call :CheckForInit
 call :Create_yg-cmd
 :: echo @echo @"%%cd%%\python-embed\python.exe" "%%cd%%\you-get\you-get" -o Download %%%%*^>yg.cmd> fix.cmd
 echo.&echo %config-ok%
-pause>NUL
-goto MENU
+call :_ReturnToMenu_
 
 rem ================= OPTION 5 =================
 
@@ -149,13 +154,13 @@ rem ================= OPTION 5 =================
 call :CheckForInit
 call :Create_dl-bat
 echo.&echo %dl-bat-created%
-pause>NUL
-goto MENU
+call :_ReturnToMenu_
 
 rem ================= OPTION 6 =================
 
 :update
 cd res && call :Common_wget
+echo %checkingUpdate%...
 :: Get %_isLatestVersion% from "scripts\CheckUpdate.bat". 0: false; 1: true.
 call scripts\CheckUpdate.bat
 if %_isLatestVersion%==1 (
@@ -166,15 +171,14 @@ if %_isLatestVersion%==1 (
     pause>NUL
     start https://github.com/LussacZheng/you-get_install_win
 )
-pause>NUL
-goto MENU
+call :_ReturnToMenu_
 
 rem ================= FUNCTIONS =================
 
-:EXIT
-echo.&echo %exit%
+:_ReturnToMenu_
+::echo.&echo.&echo %return%
 pause>NUL
-exit
+goto MENU
 
 :Common
 :: Make sure the existence of res\wget.exe, res\7za.exe, res\download\7za.exe
@@ -213,7 +217,7 @@ echo @"%pyBin%\python.exe" "%ygBin%\you-get" -o Download %%*> yg.cmd
 goto :eof
 
 :Create_dl-bat
-set dl-bat-content=start cmd /k "title %dl-bat%&&echo %dl-guide-embed1%&&echo %dl-guide-embed2%&&echo.&&echo.&&echo %dl-guide1%&&echo %dl-guide2%&&echo.&&echo %dl-guide3%&&echo %dl-guide4%&&echo.&&echo %dl-guide5%&&echo.&&echo.&&echo %dl-guide6%&&echo %dl-guide7%"
+set dl-bat-content=@start cmd /k "title %dl-bat%&&echo %dl-guide-embed1%&&echo %dl-guide-embed2%&&echo.&&echo.&&echo %dl-guide1%&&echo %dl-guide2%&&echo.&&echo %dl-guide3%&&echo %dl-guide4%&&echo.&&echo %dl-guide5%&&echo.&&echo.&&echo %dl-guide6%&&echo %dl-guide7%"
 echo %dl-bat-content%> %dl-bat%.bat
 goto :eof
 

@@ -9,14 +9,18 @@ set please-wait=请耐心等待下载完成
 set please-init=请先执行 You-Get 初始配置。
 set already-config=已配置。
 set config-ok=配置已完成。
-set exit=按任意键退出。
 set bat-updated=脚本已是最新。
 set bat-updating=脚本可更新。
-:: use ^^) instead of ), since %open-webpage% will be used in "esle( )"
+set youget-upgraded=当前 You-Get 已是最新发行版
+set already-updated=已更新。
+:: :: use ^^) instead of ), since %open-webpage% will be used in "esle( )"
 set open-webpage=按任意键获取更新 (打开浏览器访问 GitHub^^)
+set return=按任意键以清空屏幕，并返回菜单。
 :: Procedure
 set unzipping=正在解压
 set downloading=正在下载
+set checkingUpdate=正在检查更新
+set youget-upgrading=正在更新 You-Get
 :: Guides of download batch
 set dl-guide-embed1=对于此绿色版，应使用"yg"而不是"you-get"命令。
 set dl-guide-embed2=如果你移动或重命名了整个文件夹，请重新运行 `config.bat` 并选择 `修复 "yg.cmd"` 。

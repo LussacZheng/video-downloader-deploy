@@ -9,14 +9,18 @@ set please-wait=Please be patient while waiting for the download
 set please-init=Please perform the initial configuration of You-Get first.
 set already-config=already configured.
 set config-ok=Configuration completed.
-set exit=Press any key to exit.
 set bat-updated=This batch is the latest version.
 set bat-updating=This batch can be updated.
-:: use ^^) instead of ), since %open-webpage% will be used in "esle( )"
+set youget-upgraded=The current You-Get is the latest Release
+set already-updated=already updated.
+:: :: use ^^) instead of ), since %open-webpage% will be used in "esle( )"
 set open-webpage=Press any key to get updated (Open browser to visit GitHub^^)
+set return=Press any key to clear the screen and return to Menu.
 :: Procedure
 set unzipping=Unzipping
 set downloading=Downloading
+set checkingUpdate=Checking for update
+set youget-upgrading=Upgrading You-Get
 :: Guides of download batch
 set dl-guide-embed1=For this portable version, use "yg" command instead of "you-get".
 set dl-guide-embed2=If you move or rename the whole folder, please re-run `config.bat` and select `Fix "yg.cmd"`.
