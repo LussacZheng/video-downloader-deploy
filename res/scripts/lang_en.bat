@@ -6,15 +6,16 @@ set titleExpanded==  %title%  =
 set please-choose=Please input the index number of option and press ENTER:
 set please-newDir=Please run this batch in a newly created folder.
 set please-wait=Please be patient while waiting for the download
-set please-init=Please perform the initial configuration of You-Get first.
+set please-init=Please perform the Initial configuration of You-Get first.
 set already-config=already configured.
 set config-ok=Configuration completed.
 set bat-updated=This batch is the latest version.
-set bat-updating=This batch can be updated.
+set bat-updating=This batch can be updated to
 set youget-upgraded=The current You-Get is the latest Release
 set already-updated=already updated.
-:: :: use ^^) instead of ), since %open-webpage% will be used in "esle( )"
-set open-webpage=Press any key to get updated (Open browser to visit GitHub^^)
+:: :: use ^^) instead of ), since %open-webpage% will be used in "if () esle( )"
+set open-webpage1=Press any key to visit the GitHub Repository (Open browser to visit GitHub^^)
+set open-webpage2=Press any key to get updated (Open browser to visit GitHub^^)
 set return=Press any key to clear the screen and return to Menu.
 :: Procedure
 set unzipping=Unzipping

@@ -1,15 +1,21 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: You-Get(Portable) Configure Batch
-:: Author: Lussac
-:: Version: embed-0.3.2
-:: Last updated: 2019-08-05
-:: https://blog.lussac.net
+:: Author: Lussac (https://blog.lussac.net)
+:: Version: embed-0.3.3
+:: Last updated: 2019-08-07
+:: >>> Get updated from: https://github.com/LussacZheng/you-get_install_win/ <<<
 @echo off
-set version=embed-0.3.2
-set lastUpdated=2019-08-05
+set version=embed-0.3.3
+set lastUpdated=2019-08-07
+
+
+rem ================= Preparation =================
+
+
 set res=https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res
 ::  Get system language -> %_lang%
 call res\scripts\LanguageSelector.bat
+:: Import translation text
 call res\scripts\lang_%_lang%.bat
 
 :: Start of Configuration
@@ -17,6 +23,10 @@ title %title%  -- By Lussac
 set "root=%cd%"
 set "pyBin=%root%\python-embed"
 set "ygBin=%root%\you-get"
+
+
+rem ================= Menu =================
+
 
 :MENU
 cd "%root%"
@@ -50,7 +60,9 @@ if "%a%"=="5" goto reset-dl-bat
 if "%a%"=="6" goto update
 goto MENU
 
+
 rem ================= OPTION 1 =================
+
 
 :init-config
 call :Common
@@ -63,6 +75,7 @@ cd download
 
 if exist "%pyBin%" goto check-youget-zip
 
+
 :check-python-zip
 :: Get the full name of "python-3.x.x-embed*.zip" -> %pyZip%
 for /f "delims=" %%i in ('dir /b /a:a python*embed*.zip') do (set pyZip=%%i)
@@ -70,10 +83,12 @@ echo %unzipping% %pyZip%...
 :: https://superuser.com/questions/331148/7-zip-command-line-extract-silently-quietly
 7za x %pyZip% -o"%pyBin%" > NUL
 
+
 :check-youget-zip
 echo Python-embed %already-config%
 if exist "%ygBin%" goto creat-bat
 call :Setup_YouGet
+
 
 :creat-bat
 echo You-Get %already-config%
@@ -89,7 +104,9 @@ echo %dl-bat-created%
 echo =============================================
 call :_ReturnToMenu_
 
+
 rem ================= OPTION 2 =================
+
 
 :config-ffmpeg
 :: Check whether FFmpeg already exists
@@ -108,11 +125,14 @@ echo %unzipping% %FFmpegZip% ...
 move C:\ffmpeg* C:\ffmpeg > NUL
 if exist C:\ffmpeg\bin\ffmpeg.exe ( setx "Path" "%Path%;C:\ffmpeg\bin" )
 
+
 :ffmpeg-config-ok
 echo.&echo FFmpeg %already-config%
 call :_ReturnToMenu_
 
+
 rem ================= OPTION 3 =================
+
 
 :upgrade-youget
 call :CheckForInit
@@ -139,7 +159,9 @@ call :Setup_YouGet
 echo.&echo You-Get %already-updated%
 call :_ReturnToMenu_
 
+
 rem ================= OPTION 4 =================
+
 
 :reset-yg-cmd
 call :CheckForInit
@@ -148,7 +170,9 @@ call :Create_yg-cmd
 echo.&echo %config-ok%
 call :_ReturnToMenu_
 
+
 rem ================= OPTION 5 =================
+
 
 :reset-dl-bat
 call :CheckForInit
@@ -156,7 +180,9 @@ call :Create_dl-bat
 echo.&echo %dl-bat-created%
 call :_ReturnToMenu_
 
+
 rem ================= OPTION 6 =================
+
 
 :update
 cd res && call :Common_wget
@@ -165,20 +191,24 @@ echo %checkingUpdate%...
 call scripts\CheckUpdate.bat
 if %_isLatestVersion%==1 (
     echo %bat-updated%
+    echo %open-webpage1%...
 ) else (
-    echo %bat-updating%
-    echo %open-webpage%...
-    pause>NUL
-    start https://github.com/LussacZheng/you-get_install_win
+    echo %bat-updating% %latestVersion%
+    echo %open-webpage2%...
 )
+pause>NUL
+start https://github.com/LussacZheng/you-get_install_win
 call :_ReturnToMenu_
 
+
 rem ================= FUNCTIONS =================
+
 
 :_ReturnToMenu_
 ::echo.&echo.&echo %return%
 pause>NUL
 goto MENU
+
 
 :Common
 :: Make sure the existence of res\wget.exe, res\7za.exe, res\download\7za.exe
@@ -194,6 +224,7 @@ if NOT exist download\7za.exe (
 :: Now %cd% is "res\".
 goto :eof
 
+
 :Common_wget
 :: Make sure the existence of res\wget.exe
 if NOT exist wget.exe (
@@ -202,6 +233,7 @@ if NOT exist wget.exe (
     powershell (New-Object Net.WebClient^).DownloadFile('%res%/wget.exe', 'wget.exe'^)
 )
 goto :eof
+
 
 :Setup_YouGet
 for /f "delims=" %%i in ('dir /b /a:a you-get*.tar.gz') do (set ygZip=%%i)
@@ -212,26 +244,30 @@ set ygDir=%ygZip:~0,-7%
 move %ygDir% "%root%\you-get" > NUL
 goto :eof
 
+
 :Create_yg-cmd
 echo @"%pyBin%\python.exe" "%ygBin%\you-get" -o Download %%*> yg.cmd
 goto :eof
+
 
 :Create_dl-bat
 set dl-bat-content=@start cmd /k "title %dl-bat%&&echo %dl-guide-embed1%&&echo %dl-guide-embed2%&&echo.&&echo.&&echo %dl-guide1%&&echo %dl-guide2%&&echo.&&echo %dl-guide3%&&echo %dl-guide4%&&echo.&&echo %dl-guide5%&&echo.&&echo.&&echo %dl-guide6%&&echo %dl-guide7%"
 echo %dl-bat-content%> %dl-bat%.bat
 goto :eof
 
+
 :InitLog
 echo initialized: true> init.log
 for /f %%a in ('WMIC OS GET LocalDateTime ^| find "."') do set LDT=%%a
-set formatedDate=%LDT:~0,4%-%LDT:~4,2%-%LDT:~6,2%
-echo time: %formatedDate% %time:~0,8%>> init.log
+set "formatedDateTime=%LDT:~0,4%-%LDT:~4,2%-%LDT:~6,2% %LDT:~8,2%:%LDT:~10,2%:%LDT:~12,2%"
+echo time: %formatedDateTime%>> init.log
 ::echo time: %date:~0,10% %time:~0,8%>> init.log
 echo pyZip: %pyZip%>> init.log
 echo ygZip: %ygZip%>> init.log
 echo pyBin: "%pyBin%">> init.log
 echo ygBin: "%ygBin%">> init.log
 goto :eof
+
 
 :CheckForInit
 if NOT exist res\init.log (
@@ -240,3 +276,5 @@ if NOT exist res\init.log (
     goto MENU
 )
 goto :eof
+
+rem ================= End of File =================

@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "You-Get(Portable) Configure Batch"
-:: Author: Lussac
+:: Author: Lussac (https://blog.lussac.net)
 :: Last updated: 2019-08-07
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
-:: https://blog.lussac.net
+:: >>> Get updated from: https://github.com/LussacZheng/you-get_install_win/tree/master/res/dev <<<
 @echo off
 REM setlocal enableDelayedExpansion
 
 
-rem ================= Requiremnet Check =================
+rem ================= Requirement Check =================
 
 
 if NOT exist wget.exe (
@@ -26,6 +26,7 @@ if NOT exist wget.exe (
 :DownloadWebPages
 echo Downloading web pages...
 echo Please be patient while waiting for the download...
+echo If the download process is interrupted, close this window and re-run.
 echo.
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://www.python.org/downloads/windows/ -O pyLatestRelease.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://pypi.org/project/you-get/#files -O ygLatestRelease.txt
@@ -42,8 +43,8 @@ REM @param  %pyLatestVersion%
 :: The output of 'findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt' should be like: 
 ::     503:            <li><a href="/downloads/release/python-374/">Latest Python 3 Release - Python 3.7.4</a></li>
 for /f "tokens=9 delims= " %%a in ('findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt') do ( set pyLatestVersion="%%a" )
-:: %%b is like: 3.7.4</a></li>
-:: Use ` set pyLatestVersion="%%b" ` instead of ` set "pyLatestVersion=%%b" `, since %%b contains '<' and '>'
+:: %%a is like: 3.7.4</a></li>
+:: Use ` set pyLatestVersion="%%a" ` instead of ` set "pyLatestVersion=%%a" `, since %%a contains '<' and '>'
 :: And now %pyLatestVersion% is "3.7.4</a></li>" , containing "" , so next command should not be:
 :: for /f "tokens=1 delims=<" %%b in ("%pyLatestVersion%"") do ( set "pyLatestVersion=%%b" )
 for /f "tokens=1 delims=<" %%b in (%pyLatestVersion%) do ( set "pyLatestVersion=%%b" )
@@ -64,18 +65,18 @@ echo ygLatestReleasedTime: %ygLatestReleasedTime%
 :: The output of 'findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt' should be like: 
 ::     4865:   <a href="https://files.pythonhosted.org/packages/20/35/4979bb3315952a9cb20f2585455bec7ba113db5647c5739dffbc542e8761/you_get-0.4.1328-py3-none-any.whl">
 ::     4886:   <a href="https://files.pythonhosted.org/packages/fd/a5/c896dccb53f44f54c5c8bcfbc7b8d953289064bcfbf17cccb68136fde3bf/you-get-0.4.1328.tar.gz">
-for /f "skip=1 tokens=3 delims= " %%i in ('findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt') do ( set ygUrl="%%i" )
-REM for /f "tokens=* delims= " %%i in ('findstr /n /i "you-get-" ygLatestRelease.txt') do ( set ygUrl="%%i" )
+for /f "skip=1 tokens=3 delims= " %%d in ('findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt') do ( set ygUrl="%%d" )
+REM for /f "tokens=* delims= " %%d in ('findstr /n /i "you-get-" ygLatestRelease.txt') do ( set ygUrl="%%d" )
 :: Replace the " with ' since delims cannot be "
 set ygUrl="%ygUrl:"='%"
 :: Now %ygUrl% is like: "'href='https://files.pythonhosted.org/packages/fd/a5/c896dccb53f44f54c5c8bcfbc7b8d953289064bcfbf17cccb68136fde3bf/you-get-0.4.1328.tar.gz'>' "
 :: Similarly, %ygUrl% contains "" , so next command should not be:
-:: for /f "tokens=2 delims='" %%c in ("%ygUrl%") do ( set "ygUrl=%%c" )
-for /f "tokens=2 delims='" %%d in (%ygUrl%) do ( set "ygUrl=%%d" )
+:: for /f "tokens=2 delims='" %%e in ("%ygUrl%") do ( set "ygUrl=%%e" )
+for /f "tokens=2 delims='" %%e in (%ygUrl%) do ( set "ygUrl=%%e" )
 :: Now %ygUrl% is like: https://files.pythonhosted.org/packages/fd/a5/c896dccb53f44f54c5c8bcfbc7b8d953289064bcfbf17cccb68136fde3bf/you-get-0.4.1328.tar.gz
 
 :: Get the version number form %ygUrl%
-for /f "tokens=7 delims=/" %%e in ("%ygUrl%") do ( set "ygLatestVersion=%%e")
+for /f "tokens=7 delims=/" %%f in ("%ygUrl%") do ( set "ygLatestVersion=%%f")
 set ygLatestVersion=%ygLatestVersion:you-get-=%
 set ygLatestVersion=%ygLatestVersion:.tar.gz=%
 echo ygLatestVersion: %ygLatestVersion%
@@ -89,7 +90,7 @@ REM REM @param  %ffLatestVersion%, %ffLatestReleasedTime%
 
 for /f "delims=:" %%i in ('findstr /n /i "latest" ffLatestRelease.txt') do ( set "lineNum=%%i" )
 set /a lineNum-=2
-for /f "skip=%lineNum% delims=" %%f in (ffLatestRelease.txt) do ( set ffInfo="%%f" && goto next )
+for /f "skip=%lineNum% delims=" %%g in (ffLatestRelease.txt) do ( set ffInfo="%%g" && goto next )
 :: Now %ffInfo% is like: "<tr><td><a href="ffmpeg-4.1.4-win64-static.zip" title="ffmpeg-4.1.4-win64-static.zip">ffmpeg-4.1.4-win64-static.zip</a></td><td>61.9 MiB</td><td>2019-Jul-18 15:17</td></tr>"
 :next
 :: Similarly, %ffInfo% contains "" , no additional ""
@@ -109,6 +110,7 @@ del /Q ygLatestRelease.txt >NUL 2>NUL
 del /Q ffLatestRelease.txt >NUL 2>NUL
 if exist .wget-hsts del .wget-hsts
 
+
 rem ================= Generate Sources Lists =================
 
 
@@ -122,6 +124,7 @@ call :WritePython %filePath_main%
 call :WriteYouget %filePath_main%
 echo "%filePath_main%" has been generated.
 
+
 :AutoGenerateSourcesLists_youget
 set "filePath_youget=sources_youget.txt"
 echo ## Sources List of "you-get_install_win"> %filePath_youget%
@@ -134,6 +137,7 @@ echo ## Last released: %ygLatestReleasedTime%>> %filePath_youget%
 echo.>> %filePath_youget%
 call :WriteYouget %filePath_youget%
 echo "%filePath_youget%" has been generated.
+
 
 :AutoGenerateSourcesLists_ffmpeg
 set "filePath_ffmpeg=sources_ffmpeg.txt"
@@ -165,6 +169,7 @@ rem ================= FUNCTIONS =================
 for /f %%a in ('WMIC OS GET LocalDateTime ^| find "."') do ( set "LDT=%%a" )
 set "formatedDateTime=%LDT:~0,4%-%LDT:~4,2%-%LDT:~6,2% %LDT:~8,2%:%LDT:~10,2%:%LDT:~12,2%"
 goto :eof
+
 
 :WriteCommon
 set "thisFilePath=%1"
@@ -232,13 +237,10 @@ goto :eof
 
 
 :WriteFfmpeg
-echo ## ffmpeg-static.zip , v%ffLatestVersion% , win64>> %filePath_ffmpeg%
-echo https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-%ffLatestVersion%-win64-static.zip>> %filePath_ffmpeg%
-echo $ https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-%ffLatestVersion%-win32-static.zip>> %filePath_ffmpeg%
+echo ## ffmpeg-static.zip , v%ffLatestVersion% , win64>> %thisFilePath%
+echo https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-%ffLatestVersion%-win64-static.zip>> %thisFilePath%
+echo $ https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-%ffLatestVersion%-win32-static.zip>> %thisFilePath%
 goto :eof
 
 
-rem ================= References =================
-
-REM ## References
-REM 1. [Another method to get Python latest version number](https://github.com/corpnewt/gibMacOS/blob/master/gibMacOS.bat#L87)
+rem ================= End of File =================

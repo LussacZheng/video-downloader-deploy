@@ -10,11 +10,12 @@ set please-init=请先执行 You-Get 初始配置。
 set already-config=已配置。
 set config-ok=配置已完成。
 set bat-updated=脚本已是最新。
-set bat-updating=脚本可更新。
+set bat-updating=脚本可更新至
 set youget-upgraded=当前 You-Get 已是最新发行版
 set already-updated=已更新。
-:: :: use ^^) instead of ), since %open-webpage% will be used in "esle( )"
-set open-webpage=按任意键获取更新 (打开浏览器访问 GitHub^^)
+:: :: use ^^) instead of ), since %open-webpage% will be used in "if () esle( )"
+set open-webpage1=按任意键以查看 GitHub 主页 (打开浏览器访问 GitHub^^)
+set open-webpage2=按任意键以获取更新 (打开浏览器访问 GitHub^^)
 set return=按任意键以清空屏幕，并返回菜单。
 :: Procedure
 set unzipping=正在解压
