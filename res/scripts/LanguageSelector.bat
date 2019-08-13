@@ -1,6 +1,6 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
-:: Get system language
-chcp|find "936" >NUL && set "_lang=zh" || set "_lang=en"
+:: Get system language -> %_lang_%
+chcp|find "936" >NUL && set "_lang_=zh" || set "_lang_=en"
 ::chcp 65001
 
 

@@ -1,47 +1,54 @@
 @rem - Encoding:gb2312; Mode:Batch; Language:zh-CN; LineEndings:CRLF -
 :: START OF TRANSLATION
-set title=You-Get (绿色版) 配置脚本
-set titleExpanded======  %title%  =====
-:: Notification
-set please-choose=请输入选项的序号并按回车: 
-set please-newDir=请在一个新建的文件夹中运行此脚本。
-set please-wait=请耐心等待下载完成
-set please-init=请先执行 You-Get 初始配置。
-set already-config=已配置。
-set config-ok=配置已完成。
-set bat-updated=脚本已是最新。
-set bat-updating=脚本可更新至
-set youget-upgraded=当前 You-Get 已是最新发行版
-set already-updated=已更新。
-:: :: use ^^) instead of ), since %open-webpage% will be used in "if () esle( )"
-set open-webpage1=按任意键以查看 GitHub 主页 (打开浏览器访问 GitHub^^)
-set open-webpage2=按任意键以获取更新 (打开浏览器访问 GitHub^^)
-set return=按任意键以清空屏幕，并返回菜单。
-:: Procedure
-set unzipping=正在解压
-set downloading=正在下载
-set checkingUpdate=正在检查更新
-set youget-upgrading=正在更新 You-Get
-:: Guides of download batch
-set dl-guide-embed1=对于此绿色版，应使用"yg"而不是"you-get"命令。
-set dl-guide-embed2=如果你移动或重命名了整个文件夹，请重新运行 `config.bat` 并选择 `修复 "yg.cmd"` 。
-set dl-guide1=下载视频的命令为：
-set dl-guide2=yg+空格+视频网址
-set dl-guide3=例如：
-set dl-guide4=yg https://v.youku.com/v_show/id_aBCdefGh.html
-set dl-guide5=默认下载最高清晰度。下载文件默认保存在 Download 目录。
-set dl-guide6=如果你想选择清晰度、更改默认路径，或想了解You-Get其他的用法，请参考官方wiki：
-set dl-guide7=https://github.com/soimort/you-get/wiki/中文说明
-:: Contents of download batch
-set dl-bat=You-Get下载视频
-set dl-bat-created=已创建 You-Get 启动脚本"%dl-bat%"。
+set "str_title=Video Downloader 一键配置"
+set "str_titleExpanded======  %str_title%  ====="
 :: Menu Options
-set opt1=[1] 初始配置 You-Get (无 FFmpeg)
-set opt2=[2] 配置 FFmpeg
-set opt3=[3] 更新 You-Get
-set opt4=[4] 修复 "yg.cmd"
-set opt5=[5] 重新创建启动脚本
-set opt6=[6] 更新此脚本 (访问GitHub)
+set "str_portable=绿色配置"
+set "str_quickstart=快速配置"
+set "str_withpip=完整配置"
+set "str_opt1=[1?] 初始配置 (无 FFmpeg)"
+set "str_opt11=绿色便携版，可以任意移动整体文件夹"
+set "str_opt12=快速体验，适合临时使用"
+set "str_opt13=通过 pip 始终保持更新，适合长期使用"
+set "str_opt2=[2] 配置 FFmpeg"
+set "str_opt3=[3] 更新所有 Video Downloader"
+set "str_opt4=[4] 重新创建启动脚本"
+set "str_opt5=[5] 更新此脚本 (访问 GitHub)"
+set "str_please-choose=请输入选项的序号并按回车: "
+set "str_please-choose-from=请从 11 , 12 , 13 中选择 "
+set "str_please-set-DeployMode=未找到 "init.log" ，无法判断配置模式，请手动选择[11, 12, 13]: "
+:: Notification
+set "str_bat-is-latest=此脚本已是最新。"
+set "str_bat-can-update-to=此脚本可更新至"
+set "str_deploy-ok=配置已完成。"
+set "str_upgrade-ok=更新已完成。"
+set "str_is-latestVersion=已是最新发行版"
+set "str_please-wait=请耐心等待下载完成"
+set "str_please-init=请先执行初始配置。"
+set "str_please-re-init=请删除 "usr" 文件夹后再执行此选项。"
+set "str_fileLost=文件丢失，请重新下载或解压此脚本的所有文件。"
+:: :: use ^) instead of ), since %str_open-webpage% will be used in "if ( ) esle( )"
+set "str_open-webpage1=按任意键以查看 GitHub 主页 (打开浏览器访问 GitHub^)"
+set "str_open-webpage2=按任意键以获取更新 (打开浏览器访问 GitHub^)"
+set "return=按任意键以清空屏幕，并返回菜单。"
+:: Procedure
+set "str_downloading=正在下载"
+set "str_unzipping=正在解压"
+set "str_upgrading=正在更新"
+set "str_updating=正在更新"
+set "str_checking-update=正在检查更新"
+set "str_already-deploy=已配置。"
+set "str_already-upgraded=已更新。"
+:: Guides of download batch
+set "str_dl-guide1=下载视频的命令为："
+set "str_dl-guide2=you-get/youtube-dl/annie + 视频网址"
+set "str_dl-guide3=例如："
+set "str_dl-guide4=默认下载最高清晰度。下载文件默认保存在 Download 目录。"
+set "str_dl-guide5=如果你想选择清晰度、更改默认路径，或想了解三种工具的其他用法，请百度或参考官方说明："
+set "str_dl-guide_wiki=中文说明"
+:: Contents of download batch
+set "str_dl-bat=下载视频"
+set "str_dl-bat-created=已创建启动脚本 "%str_dl-bat%.bat" 。"
 :: END OF TRANSLATION
-:: Select mirror of source*.txt
+:: Select mirror for sources*.txt
 set "_region=cn"

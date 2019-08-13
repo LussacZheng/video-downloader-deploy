@@ -1,6 +1,8 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
+:: Please make sure that: only call this batch when %cd% is "res\".
+
 @echo off
-setlocal enabledelayedexpansion
+setlocal EnableDelayedExpansion
 
 set sourcesFile=%~1
 set region=%~2
@@ -23,6 +25,8 @@ for /f "eol=# skip=%mirror_skipLine% delims=" %%i in (%sourcesFile%.txt) do (
         ::  use '\' to avoid wrong match, caused by a special match rule, like: findstr "[0-9]" is ture for number "6".
         echo %%i | findstr "\[">nul && ( set "mirror_tag=2" ) 
         echo %%i | findstr "\[%region%\]">nul && ( set "mirror_tag=1" )
+        :: treat [64], [32] as a mirror pair.
+        echo %%i | findstr "\[%_SystemType_%\]">nul && ( set "mirror_tag=1" )
         echo %%i>>download\%sourcesFile%-%region%.txt   
     ) else (
         set mirror_temp=%%i

@@ -1,4 +1,5 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
+:: Used for "Deploy.bat" in :Update
 :: Please make sure that: only call this batch when %cd% is "res\".
 
 set /p localVersion=<scripts\CurrentVersion
