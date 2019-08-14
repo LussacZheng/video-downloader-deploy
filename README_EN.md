@@ -1,14 +1,14 @@
 | English | [简体中文](README.md) |
 
-# Video Downloaders One-click Deployment Batch (Windows)
+# Video Downloaders One-Click Deployment Batch (Windows)
 
-A **one-click batch** for the deployment and quickstart of [You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , and [FFmpeg](https://ffmpeg.org) .
+A One-Click batch for the deployment and quickstart of **[You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , and [FFmpeg](https://ffmpeg.org)** .
    - No need to install Python, one-click to deploy a portable version of you-get , youtube-dl .
    - This portable deployment is based on the embeddable version of Python.
 
 ## Getting Started
 
-Download [One-click Deployment Batch](https://github.com/LussacZheng/video-downloader-deploy/archive/master.zip) . Unzip and run `Deploy.bat` .
+Download [One-Click Deployment Batch](https://github.com/LussacZheng/video-downloader-deploy/archive/master.zip) . Unzip and run `Deploy.bat` .
 
 Demo.gif:  
 ![demo.gif](https://blog.lussac.net/usr/uploads/2019/07/506175630.gif)
@@ -19,7 +19,7 @@ Demo.gif:
    - You can only move or rename the entire folder as a whole. The name of this folder or the file path should NOT contains special punctuation like: `!@$;%^&` ;
    - After the deployment, you can delete all the files downloaded in directory `res\downlaod\` , to save storage;
    - Except the video files downloaded under the "Download" directory, please do NOT change other files inside.
-- If the batch has a run-time error, please refer to [FAQ](https://github.com/LussacZheng/you-get_install_win/wiki/FAQ) or [Commit an Issue](https://github.com/LussacZheng/video-downloader-deploy/issues) .
+- If the batch has a run-time error, please refer to [FAQ](https://github.com/LussacZheng/video-downloader-deploy/wiki/FAQ) or [Submit new issue](https://github.com/LussacZheng/video-downloader-deploy/issues) .
 
 ### FFmpeg
 

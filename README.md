@@ -2,7 +2,7 @@
 
 # 视频下载器 一键配置脚本 (Windows)
 
-快速配置和使用 [You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , 和 [FFmpeg](https://ffmpeg.org) 的**一键配置脚本**。
+快速配置和使用 **[You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , 和 [FFmpeg](https://ffmpeg.org)** 的一键配置脚本。
 - 无需安装 Python ，一键配置绿色便携版的 you-get , youtube-dl 。
 - 此绿色版基于 Python 的 embeddable 版。
 

@@ -1,5 +1,15 @@
+## Line Endings
+
 # Set the default behavior, in case people don't have core.autocrlf set.
 * text=auto
 
+# This tells Git that never replace CRLF with LF for `.bat` files when they are written to the Git object database.
+# So taht, when you download or "save as" batchfiles from GitHub, the files will be saved with the line endings CRLF, 
+# which are suitable for Windows batchfiles.
 *.bat -crlf
+
 *.py text eol=lf
+
+## Linguist config
+## https://github.com/github/linguist/#vendored-code
+res/scripts/get-pip.py linguist-vendored

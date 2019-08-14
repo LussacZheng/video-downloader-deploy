@@ -1,5 +1,5 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
-:: Video Downloaders (You-Get, Youtube-dl, Annie) One-click Deployment Batch (Windows)
+:: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
 :: Version: 1.0.0
 :: Last updated: 2019-08-13
