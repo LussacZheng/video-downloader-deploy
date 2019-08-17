@@ -10,8 +10,8 @@ A One-Click batch for the deployment and quickstart of **[You-Get](https://githu
 
 Download [One-Click Deployment Batch](https://github.com/LussacZheng/video-downloader-deploy/archive/master.zip) . Unzip and run `Deploy.bat` .
 
-Demo.gif:  
-![demo.gif](https://blog.lussac.net/usr/uploads/2019/07/506175630.gif)
+Demo.gif ( 2 min 52 s ) :  
+![demo.gif](https://s2.ax1x.com/2019/08/17/muTbIs.gif)
 
 ### Note
 
