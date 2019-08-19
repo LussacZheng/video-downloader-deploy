@@ -1,9 +1,10 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
-:: Auto-Generate Sources Lists for "You-Get(Portable) Configure Batch"
+:: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2019-08-07
+:: Last updated: 2019-08-19
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
-:: >>> Get updated from: https://github.com/LussacZheng/you-get_install_win/tree/master/res/dev <<<
+:: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
+:: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 REM setlocal enableDelayedExpansion
 
@@ -16,7 +17,7 @@ if NOT exist wget.exe (
         xcopy ..\wget.exe .\ > NUL
     ) else ( 
         echo "wget.exe" not founded. Please download it from
-        echo https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res/wget.exe
+        echo https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res/wget.exe
         pause>NUL
         exit
     ) 
@@ -24,12 +25,16 @@ if NOT exist wget.exe (
 
 
 :DownloadWebPages
+echo If the download process is interrupted, close this window and re-run.
 echo Downloading web pages...
 echo Please be patient while waiting for the download...
-echo If the download process is interrupted, close this window and re-run.
 echo.
+echo py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg
+echo. & echo.
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://www.python.org/downloads/windows/ -O pyLatestRelease.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://pypi.org/project/you-get/#files -O ygLatestRelease.txt
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://github.com/ytdl-org/youtube-dl/releases/latest -O ydLatestRelease.txt
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://github.com/iawia002/annie/releases/latest -O anLatestRelease.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://ffmpeg.zeranoe.com/builds/win64/static/ -O ffLatestRelease.txt
 echo.
 
@@ -59,7 +64,7 @@ REM Get %ygLatestDownloadUrl% (%ygUrl% for short) from https://pypi.org/project/
 ::     190:      <p class="package-header__date">Last released: <time class="-js-relative-time" datetime="2019-08-02T11:31:02+0000" data-controller="localized-time" data-localized-time-relative="true">
 for /f "tokens=4 delims==" %%c in ('findstr /n /i /c:"Last released" ygLatestRelease.txt') do ( set "ygLatestReleasedTime=%%c" )
 :: Now %ygLatestReleasedTime% is like: "2019-08-02T11:31:02+0000" data-controller
-for /f "tokens=1-3 delims=-" %%m in ("%ygLatestReleasedTime%") do ( set "ygLatestReleasedTime_1=%%m" && set "ygLatestReleasedTime_2=%%n" && set "ygLatestReleasedTime_3=%%o" )
+for /f "tokens=1-3 delims=-" %%u in ("%ygLatestReleasedTime%") do ( set "ygLatestReleasedTime_1=%%u" && set "ygLatestReleasedTime_2=%%v" && set "ygLatestReleasedTime_3=%%w" )
 set "ygLatestReleasedTime=%ygLatestReleasedTime_1:"=%-%ygLatestReleasedTime_2%-%ygLatestReleasedTime_3:~0,2%"
 echo ygLatestReleasedTime: %ygLatestReleasedTime%
 :: The output of 'findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt' should be like: 
@@ -85,50 +90,99 @@ for /f "tokens=4-6 delims=/" %%x in ("%ygUrl%") do ( set "ygUrl_BLAKE2_1=%%x" &&
 echo ygBLAKE2-256: %ygUrl_BLAKE2_1%/%ygUrl_BLAKE2_2%/%ygUrl_BLAKE2_3%
 
 
+:GetYoutubedlLatestVersion
+REM @param  %ydLatestVersion%
+
+:: The output of 'findstr /n /i "<title>" ydLatestRelease.txt' should be like: 
+::     31:  <title>Release youtube-dl 2019.08.02 · ytdl-org/youtube-dl · GitHub</title>
+for /f "tokens=4 delims= " %%g in ('findstr /n /i "<title>" ydLatestRelease.txt') do ( set "ydLatestVersion=%%g" )
+echo ydLatestVersion: %ydLatestVersion%
+
+
+:GetAnnieLatestVersion
+REM @param  %anLatestVersion%
+
+:: The output of 'findstr /n /i "<title>" anLatestRelease.txt' should be like: 
+::     31:  <title>Release 0.9.4 · iawia002/annie · GitHub</title>
+for /f "tokens=3 delims= " %%h in ('findstr /n /i "<title>" anLatestRelease.txt') do ( set "anLatestVersion=%%h" )
+echo anLatestVersion: %anLatestVersion%
+
+
 :GetFfmpegLatestVersion
 REM REM @param  %ffLatestVersion%, %ffLatestReleasedTime%
 
 for /f "delims=:" %%i in ('findstr /n /i "latest" ffLatestRelease.txt') do ( set "lineNum=%%i" )
 set /a lineNum-=2
-for /f "skip=%lineNum% delims=" %%g in (ffLatestRelease.txt) do ( set ffInfo="%%g" && goto next )
+for /f "skip=%lineNum% delims=" %%j in (ffLatestRelease.txt) do ( set ffInfo="%%j" && goto next )
 :: Now %ffInfo% is like: "<tr><td><a href="ffmpeg-4.1.4-win64-static.zip" title="ffmpeg-4.1.4-win64-static.zip">ffmpeg-4.1.4-win64-static.zip</a></td><td>61.9 MiB</td><td>2019-Jul-18 15:17</td></tr>"
 :next
 :: Similarly, %ffInfo% contains "" , no additional ""
-for /f "tokens=2 delims=-" %%h in (%ffInfo%) do ( set "ffLatestVersion=%%h" )
+for /f "tokens=2 delims=-" %%k in (%ffInfo%) do ( set "ffLatestVersion=%%k" )
 echo ffLatestVersion: %ffLatestVersion%
-for /f "tokens=4 delims= " %%i in (%ffInfo%) do ( set ffLatestReleasedTime="%%i" )
+for /f "tokens=4 delims= " %%l in (%ffInfo%) do ( set ffLatestReleasedTime="%%l" )
 :: Now %ffLatestReleasedTime% is like: "MiB</td><td>2019-Jul-18"
 :: Similarly, no additional ""
-for /f "tokens=3 delims=>" %%j in (%ffLatestReleasedTime%) do ( set ffLatestReleasedTime=%%j )
+for /f "tokens=3 delims=>" %%m in (%ffLatestReleasedTime%) do ( set ffLatestReleasedTime=%%m )
 echo ffLatestReleasedTime: %ffLatestReleasedTime%
-echo.
 
 
 :DeleteWebPages
 del /Q pyLatestRelease.txt >NUL 2>NUL
 del /Q ygLatestRelease.txt >NUL 2>NUL
+del /Q ydLatestRelease.txt >NUL 2>NUL
+del /Q anLatestRelease.txt >NUL 2>NUL
 del /Q ffLatestRelease.txt >NUL 2>NUL
 if exist .wget-hsts del .wget-hsts
+echo. & echo.
 
 
 rem ================= Generate Sources Lists =================
 
 
-:AutoGenerateSourcesLists_main
-set "filePath_main=sources.txt"
-echo ## Sources List of "you-get_install_win"> %filePath_main%
-echo ## https://github.com/LussacZheng/you-get_install_win/blob/master/res/sources.txt>> %filePath_main%
-echo ## For Initial Configuration.>> %filePath_main%
-call :WriteCommon %filePath_main%
-call :WritePython %filePath_main%
-call :WriteYouget %filePath_main%
-echo "%filePath_main%" has been generated.
+:AutoGenerateSourcesLists-portable
+set "filePath-portable=sources-portable.txt"
+echo ## Sources List of "video-downloader-deploy"> %filePath-portable%
+echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/sources-portable.txt>> %filePath-portable%
+echo ## For Initial Deployment.>> %filePath-portable%
+call :WriteCommon %filePath-portable%
+call :WritePython %filePath-portable%
+call :WriteYouget %filePath-portable%
+echo.>> %filePath-portable%
+call :WriteYoutubedl %filePath-portable%
+echo.>> %filePath-portable%
+call :WriteAnnie %filePath-portable%
+echo "%filePath-portable%" has been generated.
+
+
+:AutoGenerateSourcesLists-quickstart
+set "filePath-quickstart=sources-quickstart.txt"
+echo ## Sources List of "video-downloader-deploy"> %filePath-quickstart%
+echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/sources-quickstart.txt>> %filePath-quickstart%
+echo ## For Initial Deployment.>> %filePath-quickstart%
+call :WriteCommon %filePath-quickstart%
+call :WritePython %filePath-quickstart%
+call :WriteYouget %filePath-quickstart%
+echo "%filePath-quickstart%" has been generated.
+
+
+:AutoGenerateSourcesLists-withpip
+set "filePath-withpip=sources-withpip.txt"
+echo ## Sources List of "video-downloader-deploy"> %filePath-withpip%
+echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/sources-withpip.txt>> %filePath-withpip%
+echo ## For Initial Deployment.>> %filePath-withpip%
+call :WriteCommon %filePath-withpip%
+call :WritePython %filePath-withpip%
+echo ## get-pip.py>> %filePath-withpip%
+echo https://bootstrap.pypa.io/get-pip.py>> %filePath-withpip%
+echo.>> %filePath-withpip%
+call :WriteAnnie %filePath-withpip%
+echo "%filePath-withpip%" has been generated.
 
 
 :AutoGenerateSourcesLists_youget
 set "filePath_youget=sources_youget.txt"
-echo ## Sources List of "you-get_install_win"> %filePath_youget%
-echo ## https://github.com/LussacZheng/you-get_install_win/blob/master/res/sources_youget.txt>> %filePath_youget%
+echo ## Sources List of "video-downloader-deploy"> %filePath_youget%
+echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/sources_youget.txt>> %filePath_youget%
 echo ## For Upgrade of You-Get.>> %filePath_youget%
 call :WriteCommon %filePath_youget%
 echo ## Release log>> %filePath_youget%
@@ -141,9 +195,9 @@ echo "%filePath_youget%" has been generated.
 
 :AutoGenerateSourcesLists_ffmpeg
 set "filePath_ffmpeg=sources_ffmpeg.txt"
-echo ## Sources List of "you-get_install_win"> %filePath_ffmpeg%
-echo ## https://github.com/LussacZheng/you-get_install_win/blob/master/res/sources_ffmpeg.txt>> %filePath_ffmpeg%
-echo ## For Configuration of FFmpeg.>> %filePath_ffmpeg%
+echo ## Sources List of "video-downloader-deploy"> %filePath_ffmpeg%
+echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/sources_ffmpeg.txt>> %filePath_ffmpeg%
+echo ## For Deployment of FFmpeg.>> %filePath_ffmpeg%
 call :WriteCommon %filePath_ffmpeg%
 echo ## Release log>> %filePath_ffmpeg%
 echo ## https://ffmpeg.org/download.html#releases   or   https://ffmpeg.zeranoe.com/builds/win64/static/>> %filePath_ffmpeg%
@@ -157,7 +211,8 @@ rem ================= Done =================
 
 
 :Finish
-echo.&echo Finished.
+echo. & echo.
+echo Finished.
 pause
 exit
 
@@ -198,10 +253,10 @@ echo ^<skip^>>> %thisFilePath%
 echo.>> %thisFilePath%
 echo ## wget.exe , v1.20.3 , win32>> %thisFilePath%
 echo # https://eternallybored.org/misc/wget/1.20.3/32/wget.exe>> %thisFilePath%
-echo #$ https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res/wget.exe>> %thisFilePath%
+echo #$ https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res/wget.exe>> %thisFilePath%
 echo.>> %thisFilePath%
 echo ## 7za.exe , v19.00 , win32>> %thisFilePath%
-echo https://raw.githubusercontent.com/LussacZheng/you-get_install_win/master/res/7za.exe>> %thisFilePath%
+echo https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res/7za.exe>> %thisFilePath%
 echo.>> %thisFilePath%
 goto :eof
 
@@ -236,10 +291,31 @@ echo }>> %thisFilePath%
 goto :eof
 
 
+:WriteYoutubedl
+echo ## youtube-dl.tar.gz , %ydLatestVersion%>> %thisFilePath%
+echo https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/youtube-dl-%ydLatestVersion%.tar.gz>> %thisFilePath%
+goto :eof
+
+
+:WriteAnnie
+echo ## annie_Windows.zip , v%anLatestVersion%>> %thisFilePath%
+echo SystemType{>> %thisFilePath%
+echo     [64]>> %thisFilePath%
+echo     https://github.com/iawia002/annie/releases/download/%anLatestVersion%/annie_%anLatestVersion%_Windows_64-bit.zip>> %thisFilePath%
+echo     [32]>> %thisFilePath%
+echo     @ https://github.com/iawia002/annie/releases/download/%anLatestVersion%/annie_%anLatestVersion%_Windows_32-bit.zip>> %thisFilePath%
+echo }>> %thisFilePath%
+goto :eof
+
+
 :WriteFfmpeg
 echo ## ffmpeg-static.zip , v%ffLatestVersion% , win64>> %thisFilePath%
-echo https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-%ffLatestVersion%-win64-static.zip>> %thisFilePath%
-echo $ https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-%ffLatestVersion%-win32-static.zip>> %thisFilePath%
+echo SystemType{>> %thisFilePath%
+echo     [64]>> %thisFilePath%
+echo     https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-%ffLatestVersion%-win64-static.zip>> %thisFilePath%
+echo     [32]>> %thisFilePath%
+echo     @ https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-%ffLatestVersion%-win32-static.zip>> %thisFilePath%
+echo }>> %thisFilePath%
 goto :eof
 
 
