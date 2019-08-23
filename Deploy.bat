@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.0.0
-:: Last updated: 2019-08-13
+:: Version: 1.0.1
+:: Last updated: 2019-08-23
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set version=1.0.0
-set lastUpdated=2019-08-13
+set version=1.0.1
+set lastUpdated=2019-08-23
 set res=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res
 
 
@@ -108,7 +108,7 @@ call :InitLog_Common_yd
 call :InitLog_Common_an
 call :InitLog_Common2
 
-call :Create_Download-bat 1
+cd .. && call :Create_Download-bat 1
 call :_ReturnToMenu_
 
 
@@ -129,7 +129,7 @@ call :InitLog_Common
 call :InitLog_Common_yg
 call :InitLog_Common2
 
-call :Create_Download-bat 1
+cd .. && call :Create_Download-bat 1
 call :_ReturnToMenu_
 
 
@@ -189,7 +189,7 @@ youtube-dl --version >> init.log
 call :InitLog_Common_an
 call :InitLog_Common2
 
-call :Create_Download-bat 1
+cd .. && call :Create_Download-bat 1
 call :_ReturnToMenu_
 
 
@@ -319,7 +319,7 @@ if "%opt4_choice%"=="13" ( set "DeployMode=withpip" && goto create_dl-bat )
 goto reset_dl-bat_Manually
 
 :create_dl-bat
-call :Create_Download-bat 0
+cd .. && call :Create_Download-bat 0
 call :_ReturnToMenu_
 
 
@@ -457,16 +457,12 @@ goto :eof
 
 :Create_Download-bat
 set isInInitDeploy=%~1
-if exist scripts\Download-%DeployMode%.bat (
-    copy /Y scripts\Download-%DeployMode%.bat ..\%str_dl-bat%.bat > NUL
-) else (
-    echo %str_fileLost%
-)
+call res\scripts\GenerateDownloadBatch.bat %DeployMode%
 echo.
-echo =============================================
+echo ====================================================
 if "%isInInitDeploy%"=="1" echo %str_deploy-ok%
 echo %str_dl-bat-created%
-echo =============================================
+echo ====================================================
 goto :eof
 
 

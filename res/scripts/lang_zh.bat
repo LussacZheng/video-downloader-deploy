@@ -49,6 +49,7 @@ set "str_dl-guide_wiki=中文说明"
 :: Contents of download batch
 set "str_dl-bat=下载视频"
 set "str_dl-bat-created=已创建启动脚本 "%str_dl-bat%.bat" 。"
+set "str_dl-bat-moved=未找到 "usr" 文件夹！请将此脚本移动到与 "Deploy.bat" 同一目录，或通过其重新创建启动脚本。"
 :: END OF TRANSLATION
 :: Select mirror for sources*.txt
 set "_region=cn"
