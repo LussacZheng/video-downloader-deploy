@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.0.1
-:: Last updated: 2019-08-23
+:: Version: 1.1.0
+:: Last updated: 2019-08-25
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set version=1.0.1
-set lastUpdated=2019-08-23
+set version=1.1.0
+set lastUpdated=2019-08-25
 set res=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res
 
 
@@ -165,7 +165,7 @@ del /Q %py_pth%.bak >NUL 2>NUL
 :get-pip
 xcopy /Y "%root%\res\download\get-pip.py" "%pyBin%" > NUL
 set "PATH=%pyBin%;%pyBin%\Scripts;%PATH%"
-if "%_region%"=="cn" (
+if "%_Region_%"=="cn" (
     python get-pip.py --index-url=https://pypi.tuna.tsinghua.edu.cn/simple
     pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade you-get
     pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade youtube-dl
@@ -205,9 +205,8 @@ call :AskForInit
 cd res && call :Common_wget
 echo %str_downloading%...
 call :Common_7za
-wget -q --no-check-certificate -nc %res%/sources_ffmpeg.txt
-call scripts\MirrorSwitch.bat sources_ffmpeg %_region%
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\sources_ffmpeg-%_region%.txt -P download
+call scripts\SourcesSelector.bat sources.txt ffmpeg %_Region_% %_SystemType_% download\to-be-downloaded.txt
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\to-be-downloaded.txt -P download
 cd download
 for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do ( set "ffZip=%%i" )
 echo %str_unzipping% %ffZip% ...
@@ -283,7 +282,7 @@ set "PATH=%root%\res\command;%pyBin%;%pyBin%\Scripts;%PATH%"
 cd command
 echo @"%pyBin%\python.exe" "%pyBin%\Scripts\pip3.exe" %%*> pip3.cmd
 REM echo @python.exe ..\..\usr\python-embed\Scripts\pip3.exe %%*> pip3.cmd
-if "%_region%"=="cn" (
+if "%_Region_%"=="cn" (
     echo pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade you-get> upgrade_you-get.bat
     echo pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade youtube-dl> upgrade_youtube-dl.bat
 ) else (
@@ -358,10 +357,10 @@ call :Common_wget
 :: Make sure the existence of res\wget.exe, res\7za.exe, res\download\7za.exe
 echo %str_downloading%...
 call :Common_7za
-:: %_region% was set in res\scripts\lang_%_lang_%.bat
-call scripts\MirrorSwitch.bat sources-%DeployMode% %_region%
+:: %_Region_% was set in res\scripts\lang_%_lang_%.bat
+call scripts\SourcesSelector.bat sources.txt %DeployMode% %_Region_% %_SystemType_% download\to-be-downloaded.txt
 :: https://stackoverflow.com/questions/4686464/how-to-show-wget-progress-bar-only
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\sources-%DeployMode%-%_region%.txt -P download
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\to-be-downloaded.txt -P download
 :: if exist .wget-hsts del .wget-hsts
 goto :eof
 
@@ -496,10 +495,10 @@ goto :eof
 :Upgrade_YouGet
 echo %str_upgrading% you-get...
 del /Q download\you-get*.tar.gz >NUL 2>NUL
-del /Q sources_youget.txt >NUL 2>NUL
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %res%/sources_youget.txt
-call scripts\MirrorSwitch.bat sources_youget %_region%
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\sources_youget-%_region%.txt -P download
+del /Q sources.txt >NUL 2>NUL
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -c %res%/sources.txt
+call scripts\SourcesSelector.bat sources.txt youget %_Region_% %_SystemType_% download\to-be-downloaded.txt
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\to-be-downloaded.txt -P download
 rd /S /Q "%ygBin%" >NUL 2>NUL
 cd download && call :Setup_YouGet
 cd ..

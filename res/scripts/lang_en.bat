@@ -52,4 +52,4 @@ set "str_dl-bat-created=The start batch "%str_dl-bat%.bat" has been created."
 set "str_dl-bat-moved=The "usr" folder was not found. Please move this batch to the same directory as "Deploy.bat" or re-create the start batch through it."
 :: END OF TRANSLATION
 :: Select mirror for sources*.txt
-set "_region=origin"
+set "_Region_=origin"
