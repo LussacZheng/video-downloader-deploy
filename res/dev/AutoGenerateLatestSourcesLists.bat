@@ -1,12 +1,12 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2019-08-19
+:: Last updated: 2019-08-25
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
-REM setlocal enableDelayedExpansion
+REM setlocal EnableDelayedExpansion
 
 
 rem ================= Requirement Check =================
@@ -109,11 +109,11 @@ echo anLatestVersion: %anLatestVersion%
 
 
 :GetFfmpegLatestVersion
-REM REM @param  %ffLatestVersion%, %ffLatestReleasedTime%
+REM @param  %ffLatestVersion%, %ffLatestReleasedTime%
 
 for /f "delims=:" %%i in ('findstr /n /i "latest" ffLatestRelease.txt') do ( set "lineNum=%%i" )
 set /a lineNum-=2
-for /f "skip=%lineNum% delims=" %%j in (ffLatestRelease.txt) do ( set ffInfo="%%j" && goto next )
+for /f "skip=%lineNum% delims=" %%j in (ffLatestRelease.txt) do ( set ffInfo="%%j" && goto :next )
 :: Now %ffInfo% is like: "<tr><td><a href="ffmpeg-4.1.4-win64-static.zip" title="ffmpeg-4.1.4-win64-static.zip">ffmpeg-4.1.4-win64-static.zip</a></td><td>61.9 MiB</td><td>2019-Jul-18 15:17</td></tr>"
 :next
 :: Similarly, %ffInfo% contains "" , no additional ""
@@ -139,81 +139,18 @@ echo. & echo.
 rem ================= Generate Sources Lists =================
 
 
-:AutoGenerateSourcesLists-portable
-set "filePath-portable=sources-portable.txt"
-echo ## Sources List of "video-downloader-deploy"> %filePath-portable%
-echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/sources-portable.txt>> %filePath-portable%
-echo ## For Initial Deployment.>> %filePath-portable%
-call :WriteCommon %filePath-portable%
-call :WritePython %filePath-portable%
-call :WriteYouget %filePath-portable%
-echo.>> %filePath-portable%
-call :WriteYoutubedl %filePath-portable%
-echo.>> %filePath-portable%
-call :WriteAnnie %filePath-portable%
-echo "%filePath-portable%" has been generated.
-
-
-:AutoGenerateSourcesLists-quickstart
-set "filePath-quickstart=sources-quickstart.txt"
-echo ## Sources List of "video-downloader-deploy"> %filePath-quickstart%
-echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/sources-quickstart.txt>> %filePath-quickstart%
-echo ## For Initial Deployment.>> %filePath-quickstart%
-call :WriteCommon %filePath-quickstart%
-call :WritePython %filePath-quickstart%
-call :WriteYouget %filePath-quickstart%
-echo "%filePath-quickstart%" has been generated.
-
-
-:AutoGenerateSourcesLists-withpip
-set "filePath-withpip=sources-withpip.txt"
-echo ## Sources List of "video-downloader-deploy"> %filePath-withpip%
-echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/sources-withpip.txt>> %filePath-withpip%
-echo ## For Initial Deployment.>> %filePath-withpip%
-call :WriteCommon %filePath-withpip%
-call :WritePython %filePath-withpip%
-echo ## get-pip.py>> %filePath-withpip%
-echo https://bootstrap.pypa.io/get-pip.py>> %filePath-withpip%
-echo.>> %filePath-withpip%
-call :WriteAnnie %filePath-withpip%
-echo "%filePath-withpip%" has been generated.
-
-
-:AutoGenerateSourcesLists_youget
-set "filePath_youget=sources_youget.txt"
-echo ## Sources List of "video-downloader-deploy"> %filePath_youget%
-echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/sources_youget.txt>> %filePath_youget%
-echo ## For Upgrade of You-Get.>> %filePath_youget%
-call :WriteCommon %filePath_youget%
-echo ## Release log>> %filePath_youget%
-echo ## https://pypi.org/project/you-get/#history>> %filePath_youget%
-echo ## Last released: %ygLatestReleasedTime%>> %filePath_youget%
-echo.>> %filePath_youget%
-call :WriteYouget %filePath_youget%
-echo "%filePath_youget%" has been generated.
-
-
-:AutoGenerateSourcesLists_ffmpeg
-set "filePath_ffmpeg=sources_ffmpeg.txt"
-echo ## Sources List of "video-downloader-deploy"> %filePath_ffmpeg%
-echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/sources_ffmpeg.txt>> %filePath_ffmpeg%
-echo ## For Deployment of FFmpeg.>> %filePath_ffmpeg%
-call :WriteCommon %filePath_ffmpeg%
-echo ## Release log>> %filePath_ffmpeg%
-echo ## https://ffmpeg.org/download.html#releases   or   https://ffmpeg.zeranoe.com/builds/win64/static/>> %filePath_ffmpeg%
-echo ## Last released: %ffLatestReleasedTime%>> %filePath_ffmpeg%
-echo.>> %filePath_ffmpeg%
-call :WriteFfmpeg %filePath_ffmpeg%
-echo "%filePath_ffmpeg%" has been generated.
-
-
-rem ================= Done =================
-
-
-:Finish
-echo. & echo.
+:AutoGenerateSourcesLists
+set "filePath=sources.txt"
+call :WriteCommon %filePath%
+call :WritePython
+call :WriteYouget
+call :WriteYoutubedl
+call :WriteAnnie
+call :WritePip
+call :WriteFfmpeg
+echo "%filePath%" has been generated.
 echo Finished.
-pause
+pause>NUL
 exit
 
 
@@ -229,16 +166,19 @@ goto :eof
 :WriteCommon
 set "thisFilePath=%1"
 call :GetDateTime
+echo ## Sources List of "video-downloader-deploy"> %thisFilePath%
+echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/sources.txt>> %thisFilePath%
+echo ## For Initial Deployment; Deployment of FFmpeg; Upgrade of You-Get.>> %thisFilePath%
 echo ## ( Auto-Generated by "%~nx0" at %formatedDateTime% )>> %thisFilePath%
 echo.>> %thisFilePath%
-:: use ^^! if enableDelayedExpansion
+:: use ^^! if EnableDelayedExpansion
 echo ^<!-- DO NOT EDIT THIS FILE unless you understand the EXAMPLE. --^>>> %thisFilePath%
 echo.>> %thisFilePath%
 echo EXAMPLE>> %thisFilePath%
 echo ## Title or Info>> %thisFilePath%
-echo # Content that already downloaded or existing.>> %thisFilePath%
-echo Content to be downlaoded.>> %thisFilePath%
-echo $ Another (optional) source of the same content above. But the script will ignore this line. Exchange the URLs at your own risk.>> %thisFilePath%
+echo     # Content that already downloaded or existing.>> %thisFilePath%
+echo     Content to be downlaoded.>> %thisFilePath%
+echo     $ Another (optional) source of the same content above. But the script will ignore this line. Exchange the URLs at your own risk.>> %thisFilePath%
 echo Mirrors{>> %thisFilePath%
 echo     [origin]>> %thisFilePath%
 echo     URL of the content from original source. NO '@', called "switch on".>> %thisFilePath%
@@ -251,18 +191,23 @@ echo }>> %thisFilePath%
 echo.>> %thisFilePath%
 echo ^<skip^>>> %thisFilePath%
 echo.>> %thisFilePath%
+echo.>> %thisFilePath%
+echo [common]>> %thisFilePath%
 echo ## wget.exe , v1.20.3 , win32>> %thisFilePath%
-echo # https://eternallybored.org/misc/wget/1.20.3/32/wget.exe>> %thisFilePath%
-echo #$ https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res/wget.exe>> %thisFilePath%
+echo     # https://eternallybored.org/misc/wget/1.20.3/32/wget.exe>> %thisFilePath%
+echo     $ https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res/wget.exe>> %thisFilePath%
 echo.>> %thisFilePath%
 echo ## 7za.exe , v19.00 , win32>> %thisFilePath%
-echo https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res/7za.exe>> %thisFilePath%
+echo     # https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res/7za.exe>> %thisFilePath%
+echo [/common]>> %thisFilePath%
+echo.>> %thisFilePath%
 echo.>> %thisFilePath%
 goto :eof
 
 
 :WritePython
 :: %thisFilePath% was setted at :WriteCommon
+echo [portable][quickstart][withpip]>> %thisFilePath%
 echo ## python-embed.zip , v%pyLatestVersion% , win32>> %thisFilePath%
 echo Mirrors{>> %thisFilePath%
 echo     [origin]>> %thisFilePath%
@@ -272,11 +217,18 @@ echo     @ https://npm.taobao.org/mirrors/python/%pyLatestVersion%/python-%pyLat
 echo     [test]>> %thisFilePath%
 echo     @ https://www.python.org/ftp/python/%pyLatestVersion%/python-%pyLatestVersion%-embed-win32.zip>> %thisFilePath%
 echo }>> %thisFilePath%
+echo [/portable][/quickstart][/withpip]>> %thisFilePath%
+echo.>> %thisFilePath%
 echo.>> %thisFilePath%
 goto :eof
 
 
 :WriteYouget
+echo [youget][portable][quickstart]>> %thisFilePath%
+echo ## Release log>> %thisFilePath%
+echo ## https://pypi.org/project/you-get/#history>> %thisFilePath%
+echo ## Last released: %ygLatestReleasedTime%>> %thisFilePath%
+echo.>> %thisFilePath%
 echo ## you-get.tar.gz , v%ygLatestVersion%>> %thisFilePath%
 echo Mirrors{>> %thisFilePath%
 echo     [origin]>> %thisFilePath%
@@ -288,16 +240,24 @@ echo     $ https://mirrors.aliyun.com/pypi/packages/%ygUrl_BLAKE2_1%/%ygUrl_BLAK
 echo     [test]>> %thisFilePath%
 echo     @ http://mirrors.163.com/pypi/packages/%ygUrl_BLAKE2_1%/%ygUrl_BLAKE2_2%/%ygUrl_BLAKE2_3%/you-get-%ygLatestVersion%.tar.gz>> %thisFilePath%
 echo }>> %thisFilePath%
+echo [/youget][/portable][/quickstart]>> %thisFilePath%
+echo.>> %thisFilePath%
+echo.>> %thisFilePath%
 goto :eof
 
 
 :WriteYoutubedl
+echo [portable]>> %thisFilePath%
 echo ## youtube-dl.tar.gz , %ydLatestVersion%>> %thisFilePath%
-echo https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/youtube-dl-%ydLatestVersion%.tar.gz>> %thisFilePath%
+echo     https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/youtube-dl-%ydLatestVersion%.tar.gz>> %thisFilePath%
+echo [/portable]>> %thisFilePath%
+echo.>> %thisFilePath%
+echo.>> %thisFilePath%
 goto :eof
 
 
 :WriteAnnie
+echo [portable][withpip]>> %thisFilePath%
 echo ## annie_Windows.zip , v%anLatestVersion%>> %thisFilePath%
 echo SystemType{>> %thisFilePath%
 echo     [64]>> %thisFilePath%
@@ -305,10 +265,28 @@ echo     https://github.com/iawia002/annie/releases/download/%anLatestVersion%/a
 echo     [32]>> %thisFilePath%
 echo     @ https://github.com/iawia002/annie/releases/download/%anLatestVersion%/annie_%anLatestVersion%_Windows_32-bit.zip>> %thisFilePath%
 echo }>> %thisFilePath%
+echo [/portable][/withpip]>> %thisFilePath%
+echo.>> %thisFilePath%
+echo.>> %thisFilePath%
+goto :eof
+
+
+:WritePip
+echo [withpip]>> %thisFilePath%
+echo ## get-pip.py>> %thisFilePath%
+echo     https://bootstrap.pypa.io/get-pip.py>> %thisFilePath%
+echo [/withpip]>> %thisFilePath%
+echo.>> %thisFilePath%
+echo.>> %thisFilePath%
 goto :eof
 
 
 :WriteFfmpeg
+echo [ffmpeg]>> %thisFilePath%
+echo ## Release log>> %thisFilePath%
+echo ## https://ffmpeg.org/download.html#releases   or   https://ffmpeg.zeranoe.com/builds/win64/static/>> %thisFilePath%
+echo ## Last released: %ffLatestReleasedTime%>> %thisFilePath%
+echo.>> %thisFilePath%
 echo ## ffmpeg-static.zip , v%ffLatestVersion% , win64>> %thisFilePath%
 echo SystemType{>> %thisFilePath%
 echo     [64]>> %thisFilePath%
@@ -316,6 +294,7 @@ echo     https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-%ffLatestVersion%
 echo     [32]>> %thisFilePath%
 echo     @ https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-%ffLatestVersion%-win32-static.zip>> %thisFilePath%
 echo }>> %thisFilePath%
+echo [/ffmpeg]>> %thisFilePath%
 goto :eof
 
 
