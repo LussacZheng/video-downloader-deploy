@@ -3,7 +3,7 @@
 # Video Downloaders One-Click Deployment Batch (Windows)
 
 ![language](https://img.shields.io/badge/language-batchfile-c1f12e)
-![plantform](https://img.shields.io/badge/plantform-windows-brightgreen)
+![platform](https://img.shields.io/badge/platform-windows-brightgreen)
 ![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy)
 ![version](https://img.shields.io/github/package-json/v/LussacZheng/video-downloader-deploy_info?color=important)
 
@@ -24,7 +24,7 @@ Demo.gif ( 2 min 52 s ) :
    - You can only move or rename the entire folder as a whole. The name of this folder or the file path should NOT contains special punctuation like: `!@$;%^&` ;
    - After the deployment, you can delete all the files downloaded in directory `res\downlaod\` , to save storage;
    - Except the video files downloaded under the "Download" directory, please do NOT change other files inside.
-- If the batch has a run-time error, please refer to [FAQ](https://github.com/LussacZheng/video-downloader-deploy/wiki/FAQ) or [Submit new issue](https://github.com/LussacZheng/video-downloader-deploy/issues) .
+- If the batch has a run-time error (such as download speed is too slow), please refer to [FAQ](https://github.com/LussacZheng/video-downloader-deploy/wiki/FAQ) or [Submit new issue](https://github.com/LussacZheng/video-downloader-deploy/issues) .
 
 ### FFmpeg
 
