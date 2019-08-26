@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.1.0
-:: Last updated: 2019-08-25
+:: Version: 1.1.1
+:: Last updated: 2019-08-26
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set version=1.1.0
-set lastUpdated=2019-08-25
+set version=1.1.1
+set lastUpdated=2019-08-26
 set res=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res
 
 
@@ -245,12 +245,11 @@ goto upgrade_Manually
 
 
 :Upgrade-portable
-:: Get %_isYgLatestVersion% from "scripts\CheckUpdate_youget.bat". 0: false; 1: true.
-:: Get %_isYdLatestVersion% from "scripts\CheckUpdate_youtubedl.bat". 0: false; 1: true.
-:: Get %_isAnLatestVersion% from "scripts\CheckUpdate_annie.bat". 0: false; 1: true.
-call scripts\CheckUpdate_youget.bat
-call scripts\CheckUpdate_youtubedl.bat
-call scripts\CheckUpdate_annie.bat
+:: Get %_isYgLatestVersion% , %_isYdLatestVersion% , %_isAnLatestVersion%
+:: from "scripts\CheckUpdate.bat". 0: false; 1: true.
+call scripts\CheckUpdate.bat youget
+call scripts\CheckUpdate.bat youtubedl
+call scripts\CheckUpdate.bat annie
 if "%_isYgLatestVersion%"=="1" if "%_isYdLatestVersion%"=="1" if "%_isAnLatestVersion%"=="1" (
     echo you-get %str_is-latestVersion%: v%ygCurrentVersion%
     echo youtube-dl %str_is-latestVersion%: %ydCurrentVersion%
@@ -264,7 +263,7 @@ goto upgrade_done
 
 
 :Upgrade-quickstart
-call scripts\CheckUpdate_youget.bat
+call scripts\CheckUpdate.bat youget
 if "%_isYgLatestVersion%"=="1" (
     echo you-get %str_is-latestVersion%: v%ygCurrentVersion%
 ) else call :Upgrade_YouGet
@@ -272,7 +271,7 @@ goto upgrade_done
 
 
 :Upgrade-withpip
-call scripts\CheckUpdate_annie.bat
+call scripts\CheckUpdate.bat annie
 if "%_isAnLatestVersion%"=="1" (
     echo annie %str_is-latestVersion%: v%anCurrentVersion%
 ) else call :Upgrade_Annie
@@ -329,7 +328,7 @@ rem ================= OPTION 5 =================
 cd res && call :Common_wget
 echo %str_checking-update%...
 :: Get %_isLatestVersion% from "scripts\CheckUpdate.bat". 0: false; 1: true.
-call scripts\CheckUpdate.bat
+call scripts\CheckUpdate.bat self
 if %_isLatestVersion%==1 (
     echo %str_bat-is-latest%
     echo %str_open-webpage1%...
@@ -509,7 +508,7 @@ goto :eof
 :Upgrade_YoutubeDL
 echo %str_upgrading% youtube-dl...
 del /Q download\youtube-dl*.tar.gz >NUL 2>NUL
-:: %ydLatestVersion% was set in res\scripts\CheckUpdate_youtubedl.bat
+:: %ydLatestVersion% was set in res\scripts\CheckUpdate.bat :CheckUpdate_youtubedl
 set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/youtube-dl-%ydLatestVersion%.tar.gz"
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %ydLatestVersion_Url% -P download
 rd /S /Q "%ydBin%" >NUL 2>NUL
@@ -522,7 +521,7 @@ goto :eof
 :Upgrade_Annie
 echo %str_upgrading% annie...
 del /Q download\annie*.zip >NUL 2>NUL
-:: %anLatestVersion% was set in res\scripts\CheckUpdate_annie.bat
+:: %anLatestVersion% was set in res\scripts\CheckUpdate.bat :CheckUpdate_annie
 set "anLatestVersion_Url=https://github.com/iawia002/annie/releases/download/%anLatestVersion%/annie_%anLatestVersion%_Windows_%_SystemType_%-bit.zip"
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %anLatestVersion_Url% -P download
 del /Q "%anBin%\annie.exe" >NUL 2>NUL
