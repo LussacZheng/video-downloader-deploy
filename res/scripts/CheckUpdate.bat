@@ -2,8 +2,8 @@
 :: Used for "Deploy.bat" in :Update & :Upgrade-portable & :Upgrade-quickstart & :Upgrade-withpip
 :: Please make sure that: only call this batch when %cd% is "res\".
 :: e.g. 
-:: call res\scripts\CheckUpdate.bat self
-:: call res\scripts\CheckUpdate.bat youget
+:: call scripts\CheckUpdate.bat self
+:: call scripts\CheckUpdate.bat youget
 
 @echo off
 call :CheckUpdate_%~1
@@ -15,7 +15,7 @@ rem ================= FUNCTIONS =================
 
 :CheckUpdate_self
 set /p localVersion=<scripts\CurrentVersion
-wget -q --no-check-certificate %res%/scripts/CurrentVersion -O scripts\RemoteVersion
+wget -q --no-check-certificate %_RemoteRes_%/scripts/CurrentVersion -O scripts\RemoteVersion
 set /p latestVersion=<scripts\RemoteVersion
 if "%localVersion%"=="%latestVersion%" ( set "_isLatestVersion=1" ) else ( set "_isLatestVersion=0" )
 goto :eof

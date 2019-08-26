@@ -9,7 +9,7 @@
 setlocal EnableDelayedExpansion
 set version=1.1.1
 set lastUpdated=2019-08-26
-set res=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res
+set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
 
 rem ================= Preparation =================
@@ -19,7 +19,7 @@ REM mode con cols=100 lines=40
 
 call res\scripts\LanguageSelector.bat
 :: Import translation text
-call res\scripts\lang_%_lang_%.bat
+call res\scripts\lang_%_Language_%.bat
 call res\scripts\SystemTypeSelector.bat
 
 :: Start of Deployment
@@ -356,7 +356,7 @@ call :Common_wget
 :: Make sure the existence of res\wget.exe, res\7za.exe, res\download\7za.exe
 echo %str_downloading%...
 call :Common_7za
-:: %_Region_% was set in res\scripts\lang_%_lang_%.bat
+:: %_Region_% was set in res\scripts\lang_%_Language_%.bat
 call scripts\SourcesSelector.bat sources.txt %DeployMode% %_Region_% %_SystemType_% download\to-be-downloaded.txt
 :: https://stackoverflow.com/questions/4686464/how-to-show-wget-progress-bar-only
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\to-be-downloaded.txt -P download
@@ -369,14 +369,14 @@ goto :eof
 if NOT exist wget.exe (
     echo %str_downloading% "wget.exe", %str_please-wait%...
     :: use ^) instead of )
-    powershell (New-Object Net.WebClient^).DownloadFile('%res%/wget.exe', 'wget.exe'^)
+    powershell (New-Object Net.WebClient^).DownloadFile('%_RemoteRes_%/wget.exe', 'wget.exe'^)
 )
 goto :eof
 
 
 :Common_7za
 if NOT exist 7za.exe (
-    wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %res%/7za.exe
+    wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %_RemoteRes_%/7za.exe
 )
 if NOT exist download\7za.exe (
     xcopy 7za.exe download\ > NUL
@@ -495,7 +495,7 @@ goto :eof
 echo %str_upgrading% you-get...
 del /Q download\you-get*.tar.gz >NUL 2>NUL
 del /Q sources.txt >NUL 2>NUL
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -c %res%/sources.txt
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -c %_RemoteRes_%/sources.txt
 call scripts\SourcesSelector.bat sources.txt youget %_Region_% %_SystemType_% download\to-be-downloaded.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\to-be-downloaded.txt -P download
 rd /S /Q "%ygBin%" >NUL 2>NUL

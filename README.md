@@ -1,6 +1,11 @@
-| [English](README_EN.md) | 简体中文 |
+**| [English](README_en.md) | 简体中文 |**
 
 # 视频下载器 一键配置脚本 (Windows)
+
+![language](https://img.shields.io/badge/language-batchfile-c1f12e)
+![plantform](https://img.shields.io/badge/plantform-windows-brightgreen)
+![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy)
+![version](https://img.shields.io/github/package-json/v/LussacZheng/video-downloader-deploy_info?color=important)
 
 快速配置和使用 **[You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , 和 [FFmpeg](https://ffmpeg.org)** 的一键配置脚本。
 - 无需安装 Python ，一键配置绿色便携版的 you-get , youtube-dl 。

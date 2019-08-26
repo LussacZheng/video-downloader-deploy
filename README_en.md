@@ -1,6 +1,11 @@
-| English | [简体中文](README.md) |
+**| English | [简体中文](README.md) |**
 
 # Video Downloaders One-Click Deployment Batch (Windows)
+
+![language](https://img.shields.io/badge/language-batchfile-c1f12e)
+![plantform](https://img.shields.io/badge/plantform-windows-brightgreen)
+![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy)
+![version](https://img.shields.io/github/package-json/v/LussacZheng/video-downloader-deploy_info?color=important)
 
 A One-Click batch for the deployment and quickstart of **[You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , and [FFmpeg](https://ffmpeg.org)** .
    - No need to install Python, one-click to deploy a portable version of you-get , youtube-dl .

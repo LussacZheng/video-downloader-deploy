@@ -18,8 +18,8 @@ set "ss_Final=%~5"
 
 
 :: enum ss_Tag_required {
-:: 0: Nothing to do.
-:: 1: Skip the following lines until ss_Tag_required changes.
+:: 0: Not required. Skip the following lines until ss_Tag_required changes.
+:: 1: Required. Then goto switch on/off.
 :: }
 
 :: enum ss_Tag_switch {
