@@ -1,7 +1,7 @@
 @rem - Encoding:gb2312; Mode:Batch; Language:zh-CN; LineEndings:CRLF -
 :: START OF TRANSLATION
-set "str_title=Video Downloader 一键配置"
-set "str_titleExpanded======  %str_title%  ====="
+set "str_title=视频下载器 一键配置"
+set "str_titleExpanded=========  %str_title%  ========"
 :: Menu Options
 set "str_portable=绿色配置"
 set "str_quickstart=快速配置"
@@ -11,7 +11,7 @@ set "str_opt11=绿色便携版，可以任意移动整体文件夹。默认"
 set "str_opt12=快速体验，适合临时使用"
 set "str_opt13=通过 pip 始终保持更新，适合长期使用"
 set "str_opt2=[2] 配置 FFmpeg"
-set "str_opt3=[3] 更新所有 Video Downloader"
+set "str_opt3=[3] 更新所有视频下载器"
 set "str_opt4=[4] 重新创建启动脚本"
 set "str_opt5=[5] 更新此脚本 (访问 GitHub)"
 set "str_please-choose=请输入选项的序号并按回车: "

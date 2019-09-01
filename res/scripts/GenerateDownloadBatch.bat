@@ -17,8 +17,8 @@ rem ================= FUNCTIONS =================
 
 
 :GenerateDownloadBatch_Common
-echo @echo off>%dl-bat-filename%
-echo :: ^>^>^> EDIT AT YOUR OWN RISK. ^<^<^<>>%dl-bat-filename%
+echo :: ^>^>^> EDIT AT YOUR OWN RISK. ^<^<^<>%dl-bat-filename%
+echo @echo off>>%dl-bat-filename%
 echo.>>%dl-bat-filename%
 echo if NOT exist usr\ (>>%dl-bat-filename%
 echo     echo. ^& echo %str_dl-bat-moved%>>%dl-bat-filename%

@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.1.1
-:: Last updated: 2019-08-26
+:: Version: 1.1.2
+:: Last updated: 2019-09-02
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set version=1.1.1
-set lastUpdated=2019-08-26
+set version=1.1.2
+set lastUpdated=2019-09-02
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
 
@@ -31,6 +31,14 @@ set "ygBin=%root%\usr\you-get"
 set "ydBin=%root%\usr\youtube-dl"
 set "anBin=%root%\usr"
 set "ffBin=%root%\usr\ffmpeg\bin"
+
+:: If already deployed, show more info in Option3.
+set "opt3_info="
+if NOT exist res\init.log goto MENU
+cd res && call :Get_DeployMode
+if "%DeployMode%"=="portable" set "opt3_info=(you-get,youtube-dl,annie)"
+if "%DeployMode%"=="quickstart" set "opt3_info=(you-get)"
+if "%DeployMode%"=="withpip" set "opt3_info=(you-get,youtube-dl,annie)"
 
 
 rem ================= Menu =================
@@ -58,9 +66,9 @@ echo.&echo  %str_opt1%
       echo    ^|        ( %str_opt12% )
       echo    ^|
       echo    ^|-- [13] %str_withpip%: you-get + youtube-dl + annie
-      echo              ( %str_opt13% )
+      echo             ( %str_opt13% )
 echo.&echo  %str_opt2%
-echo.&echo  %str_opt3%
+echo.&echo  %str_opt3% %opt3_info%
 echo.&echo  %str_opt4%
 echo.&echo  %str_opt5%
 echo.&echo.
@@ -165,15 +173,10 @@ del /Q %py_pth%.bak >NUL 2>NUL
 :get-pip
 xcopy /Y "%root%\res\download\get-pip.py" "%pyBin%" > NUL
 set "PATH=%pyBin%;%pyBin%\Scripts;%PATH%"
-if "%_Region_%"=="cn" (
-    python get-pip.py --index-url=https://pypi.tuna.tsinghua.edu.cn/simple
-    pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade you-get
-    pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade youtube-dl
-) else (
-    python get-pip.py
-    pip3 install --upgrade you-get
-    pip3 install --upgrade youtube-dl
-)
+if "%_Region_%"=="cn" set "pip_option=--index-url=https://pypi.tuna.tsinghua.edu.cn/simple"
+python get-pip.py %pip_option%
+pip3 install --upgrade you-get %pip_option%
+pip3 install --upgrade youtube-dl %pip_option%
 echo You-Get %str_already-deploy%
 echo Youtube-dl %str_already-deploy%
 
@@ -217,10 +220,6 @@ move %ffDir% "%root%\usr\ffmpeg" > NUL
 :ffmpeg-deploy-ok
 echo.&echo FFmpeg %str_already-deploy%
 call :_ReturnToMenu_
-
-REM 7za x %FFmpegZip% -oC:\ -aoa > NUL
-REM move C:\ffmpeg* C:\ffmpeg > NUL
-REM if exist C:\ffmpeg\bin\ffmpeg.exe ( setx "Path" "%Path%;C:\ffmpeg\bin" )
 
 
 rem ================= OPTION 3 =================
@@ -281,13 +280,9 @@ set "PATH=%root%\res\command;%pyBin%;%pyBin%\Scripts;%PATH%"
 cd command
 echo @"%pyBin%\python.exe" "%pyBin%\Scripts\pip3.exe" %%*> pip3.cmd
 REM echo @python.exe ..\..\usr\python-embed\Scripts\pip3.exe %%*> pip3.cmd
-if "%_Region_%"=="cn" (
-    echo pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade you-get> upgrade_you-get.bat
-    echo pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade youtube-dl> upgrade_youtube-dl.bat
-) else (
-    echo pip3 install --upgrade you-get> upgrade_you-get.bat
-    echo pip3 install --upgrade youtube-dl> upgrade_youtube-dl.bat
-)
+if "%_Region_%"=="cn" set "pip_option=--index-url=https://pypi.tuna.tsinghua.edu.cn/simple"
+echo pip3 install --upgrade you-get %pip_option%> upgrade_you-get.bat
+echo pip3 install --upgrade youtube-dl %pip_option%> upgrade_youtube-dl.bat
 :: Directly use "pip3 install --upgrade you-get" here will crash for some unknown reason.
 :: So write the command into a bat and then call it.
 call upgrade_you-get.bat && call upgrade_youtube-dl.bat
@@ -350,10 +345,9 @@ pause>NUL
 goto MENU
 
 
+:: Please make sure that: only call :Common* when %cd% is "res\".
 :Common
-:: Please make sure that: only call this function when %cd% is "res\".
 call :Common_wget
-:: Make sure the existence of res\wget.exe, res\7za.exe, res\download\7za.exe
 echo %str_downloading%...
 call :Common_7za
 :: %_Region_% was set in res\scripts\lang_%_Language_%.bat
@@ -375,6 +369,7 @@ goto :eof
 
 
 :Common_7za
+:: Make sure the existence of res\7za.exe, res\download\7za.exe
 if NOT exist 7za.exe (
     wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %_RemoteRes_%/7za.exe
 )

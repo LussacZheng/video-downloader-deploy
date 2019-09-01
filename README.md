@@ -22,8 +22,8 @@
 
 - 对于 `Deploy.bat` 所在的文件夹，
    - 只能整体移动或重命名整个文件夹，且文件夹名称和路径不应包含 `!@$;%^&` 等特殊符号；
-   - 配置完成后，你可以自行删除 `res\downlaod\` 目录下所有下载的文件，以节省储存空间；
-   - 除了 "Download" 目录下所下载的视频文件，请勿随意改变里面的其他文件。
+   - 配置完成后，你可以自行删除 `res\download\` 目录下所有下载的文件，以节省储存空间；
+   - 除了 `Download\` 目录下所下载的视频文件，请勿随意改变里面的其他文件。
 - 如果脚本运行时出现问题（如下载速度过慢），请查阅 [FAQ](https://github.com/LussacZheng/video-downloader-deploy/wiki/FAQ) 或 [提交 Issue](https://github.com/LussacZheng/video-downloader-deploy/issues) 。
 
 ### FFmpeg

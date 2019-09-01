@@ -22,8 +22,8 @@ Demo.gif ( 2 min 52 s ) :
 
 - For the folder where `Deploy.bat` is located,
    - You can only move or rename the entire folder as a whole. The name of this folder or the file path should NOT contains special punctuation like: `!@$;%^&` ;
-   - After the deployment, you can delete all the files downloaded in directory `res\downlaod\` , to save storage;
-   - Except the video files downloaded under the "Download" directory, please do NOT change other files inside.
+   - After the deployment, you can delete all the files downloaded in directory `res\download\` , to save storage;
+   - Except the video files downloaded under the `Download\` directory, please do NOT change other files inside.
 - If the batch has a run-time error (such as download speed is too slow), please refer to [FAQ](https://github.com/LussacZheng/video-downloader-deploy/wiki/FAQ) or [Submit new issue](https://github.com/LussacZheng/video-downloader-deploy/issues) .
 
 ### FFmpeg
