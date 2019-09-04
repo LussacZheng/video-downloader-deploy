@@ -33,7 +33,7 @@
    del /Q ygLatestRelease_Github.txt >NUL 2>NUL
    echo ygLatestVersion: %ygLatestVersion%
    ```
-   此方法已用于 `res\scripts\CheckUpdate_youget.bat` 中。
+   此方法已用于 `res\scripts\CheckUpdate.bat` 的 `:CheckUpdate_youget` 方法中。
 
 ---
 
