@@ -9,10 +9,10 @@
 setlocal EnableDelayedExpansion
 
 
-set ss_Input=%~1
-set ss_Required=%~2
-set ss_Region=%~3
-set ss_SystemType=%~4
+set "ss_Input=%~1"
+set "ss_Required=%~2"
+set "ss_Region=%~3"
+set "ss_SystemType=%~4"
 set "ss_Output=download\%ss_Input:.txt=%-%ss_Required%-%ss_Region%.txt"
 set "ss_Final=%~5"
 
@@ -26,8 +26,8 @@ set "ss_Final=%~5"
 :: 0: Nothing to do with next line;
 :: 1: Switch on (delete '@' from) the next line.
 :: 2: Switch off (add '@' to) the next line.
-:: 3: Logical negation. Switch on/off (delete/add '@' from/to) the next line.
-::      echo !ss_Temp! | findstr "@">nul && ( set "ss_Temp=!ss_Temp:@ =!") || (set "ss_Temp=!ss_Temp:http=@ http!") 
+:: 3(Unused now): Logical negation. Switch on/off (delete/add '@' from/to) the next line.
+::      echo !ss_Temp! | findstr "@">nul && ( set "ss_Temp=!ss_Temp:@ =!" ) || ( set "ss_Temp=!ss_Temp:http=@ http!" ) 
 :: }
 
 set ss_Tag_required=0
@@ -51,9 +51,9 @@ for /f "eol=# skip=%ss_SkipLine% delims=" %%i in (%ss_Input%) do (
         ) else (
             set "ss_Temp=%%i"
             if !ss_Tag_switch!==1 (
-                echo !ss_Temp! | findstr "@">nul && ( set "ss_Temp=!ss_Temp:@ =!")
+                echo !ss_Temp! | findstr "@">nul && ( set "ss_Temp=!ss_Temp:@ =!" )
             ) else (
-                echo !ss_Temp! | findstr "@">nul || (set "ss_Temp=!ss_Temp:http=@ http!" )
+                echo !ss_Temp! | findstr "@">nul || ( set "ss_Temp=!ss_Temp:http=@ http!" )
             )
             echo !ss_Temp!>> %ss_Output%
             set ss_Tag_switch=0
@@ -67,7 +67,7 @@ for /f "eol=# skip=%ss_SkipLine% delims=" %%i in (%ss_Input%) do (
 :: Because "wget.exe" can identify whether a line is pure URL(switched on).
 :: This step is just for the convenience of the user.
 type nul > %ss_Final%
-for /f "delims=" %%i in (' findstr /i /c:"    http" %ss_Output%') do (
+for /f "delims=" %%i in ('findstr /i /c:"    http" %ss_Output%') do (
     set "ss_Temp=%%i"
     echo !ss_Temp:    =!>> %ss_Final%
 )

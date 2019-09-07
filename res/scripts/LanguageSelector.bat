@@ -5,7 +5,7 @@
 :: call res\scripts\LanguageSelector.bat
 :: Get system language -> %_Language_%
 
-chcp|find "936" >NUL && set "_Language_=zh" || set "_Language_=en"
+chcp | find "936" >NUL && set "_Language_=zh" || set "_Language_=en"
 goto :eof
 ::chcp 65001
 

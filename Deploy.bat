@@ -1,14 +1,15 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.1.2
-:: Last updated: 2019-09-02
+:: Version: 1.1.3
+:: Last updated: 2019-09-07
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set version=1.1.2
-set lastUpdated=2019-09-02
+set version=1.1.3
+set lastUpdated=2019-09-07
+:: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
 
@@ -74,7 +75,7 @@ echo.&echo  %str_opt5%
 echo.&echo.
 echo ====================================================
 set choice=0
-set /p choice=%str_please-choose%
+set /p choice= %str_please-choose%
 echo.
 if "%choice%"=="1" goto InitDeploy
 if "%choice%"=="11" goto InitDeploy-portable
@@ -160,7 +161,7 @@ if NOT exist "%anBin%\annie.exe" call :Setup_Annie
 :edit-python_pth
 cd "%pyBin%"
 :: Get the full name of "python3*._pth" -> %py_pth%
-for /f "delims=" %%i in ('dir /b python*._pth') do (set py_pth=%%i)
+for /f "delims=" %%i in ('dir /b python*._pth') do ( set "py_pth=%%i" )
 copy %py_pth% %py_pth%.bak > NUL
 type nul > %py_pth%
 for /f "delims=" %%i in (%py_pth%.bak) do (
@@ -214,7 +215,7 @@ cd download
 for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do ( set "ffZip=%%i" )
 echo %str_unzipping% %ffZip% ...
 7za x %ffZip% > NUL
-set ffDir=%ffZip:~0,-4%
+set "ffDir=%ffZip:~0,-4%"
 move %ffDir% "%root%\usr\ffmpeg" > NUL
 
 :ffmpeg-deploy-ok
@@ -277,6 +278,7 @@ if "%_isAnLatestVersion%"=="1" (
 
 :: Re-create a pip3.cmd in case of the whole folder had been moved.
 set "PATH=%root%\res\command;%pyBin%;%pyBin%\Scripts;%PATH%"
+if NOT exist command md command
 cd command
 echo @"%pyBin%\python.exe" "%pyBin%\Scripts\pip3.exe" %%*> pip3.cmd
 REM echo @python.exe ..\..\usr\python-embed\Scripts\pip3.exe %%*> pip3.cmd
@@ -421,7 +423,7 @@ goto :eof
 :InitLog_Common
 echo initialized: true> init.log
 echo deployMode: %DeployMode%>> init.log
-for /f %%a in ('WMIC OS GET LocalDateTime ^| find "."') do set LDT=%%a
+for /f %%a in ('WMIC OS GET LocalDateTime ^| find "."') do ( set "LDT=%%a" )
 set "formatedDateTime=%LDT:~0,4%-%LDT:~4,2%-%LDT:~6,2% %LDT:~8,2%:%LDT:~10,2%:%LDT:~12,2%"
 echo time: %formatedDateTime%>> init.log
 ::echo time: %date:~0,10% %time:~0,8%>> init.log
@@ -505,6 +507,7 @@ echo %str_upgrading% youtube-dl...
 del /Q download\youtube-dl*.tar.gz >NUL 2>NUL
 :: %ydLatestVersion% was set in res\scripts\CheckUpdate.bat :CheckUpdate_youtubedl
 set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/youtube-dl-%ydLatestVersion%.tar.gz"
+echo %ydLatestVersion_Url%>> download\to-be-downloaded.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %ydLatestVersion_Url% -P download
 rd /S /Q "%ydBin%" >NUL 2>NUL
 cd download && call :Setup_YoutubeDL
@@ -518,6 +521,7 @@ echo %str_upgrading% annie...
 del /Q download\annie*.zip >NUL 2>NUL
 :: %anLatestVersion% was set in res\scripts\CheckUpdate.bat :CheckUpdate_annie
 set "anLatestVersion_Url=https://github.com/iawia002/annie/releases/download/%anLatestVersion%/annie_%anLatestVersion%_Windows_%_SystemType_%-bit.zip"
+echo %anLatestVersion_Url%>> download\to-be-downloaded.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %anLatestVersion_Url% -P download
 del /Q "%anBin%\annie.exe" >NUL 2>NUL
 cd download && call :Setup_Annie
