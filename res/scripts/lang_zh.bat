@@ -16,6 +16,7 @@ set "str_opt4=[4] 重新创建启动脚本"
 set "str_opt5=[5] 更新此脚本 (访问 GitHub)"
 set "str_please-choose=请输入选项的序号并按回车: "
 set "str_please-choose-from=请从 11 , 12 , 13 中选择 "
+set "str_please-input-valid-num=请输入有效的数字。"
 set "str_please-set-DeployMode=未找到 "init.log" ，无法判断配置模式，请手动选择[11, 12, 13]: "
 :: Notification
 set "str_bat-is-latest=此脚本已是最新。"

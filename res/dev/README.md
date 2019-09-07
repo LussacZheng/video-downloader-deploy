@@ -23,7 +23,7 @@
 
 ### 参考资料
 1. Another method to get Python latest version number.   
-   [GitHub - corpnewt/gibMacOS : gibMacOS.bat#L87](https://github.com/corpnewt/gibMacOS/blob/master/gibMacOS.bat#L87)
+   [GitHub - corpnewt/gibMacOS : gibMacOS.bat#L87](https://github.com/corpnewt/gibMacOS/blob/1d357c00cb265b40a61a50acca7405c513c19f61/gibMacOS.bat#L87)
 2. Another method to get YouGet latest version number.
    ```batch
    wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://github.com/soimort/you-get/releases/latest -O ygLatestRelease_Github.txt

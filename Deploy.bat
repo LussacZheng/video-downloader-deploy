@@ -7,8 +7,8 @@
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set version=1.1.3
-set lastUpdated=2019-09-07
+set "version=1.1.3"
+set "lastUpdated=2019-09-07"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -54,25 +54,25 @@ echo ======%str_titleExpanded%=======
 echo ====================================================
 echo ===================  By Lussac  ====================
 echo ====================================================
-echo ==========  Version: %version% (%lastUpdated%)  ===========
+echo ==========  version: %version% (%lastUpdated%)  ===========
 echo ====================================================
 echo ====================================================
 echo.
-echo.&echo  %str_opt1%
-      echo    ^|
-      echo    ^|-- [11] %str_portable%: you-get + youtube-dl + annie
-      echo    ^|        ( %str_opt11% ) 
-      echo    ^|
-      echo    ^|-- [12] %str_quickstart%: you-get
-      echo    ^|        ( %str_opt12% )
-      echo    ^|
-      echo    ^|-- [13] %str_withpip%: you-get + youtube-dl + annie
-      echo             ( %str_opt13% )
-echo.&echo  %str_opt2%
-echo.&echo  %str_opt3% %opt3_info%
-echo.&echo  %str_opt4%
-echo.&echo  %str_opt5%
-echo.&echo.
+echo. & echo  %str_opt1%
+        echo    ^|
+        echo    ^|-- [11] %str_portable%: you-get + youtube-dl + annie
+        echo    ^|        ( %str_opt11% ) 
+        echo    ^|
+        echo    ^|-- [12] %str_quickstart%: you-get
+        echo    ^|        ( %str_opt12% )
+        echo    ^|
+        echo    ^|-- [13] %str_withpip%: you-get + youtube-dl + annie
+        echo             ( %str_opt13% )
+echo. & echo  %str_opt2%
+echo. & echo  %str_opt3% %opt3_info%
+echo. & echo  %str_opt4%
+echo. & echo  %str_opt5%
+echo. & echo.
 echo ====================================================
 set choice=0
 set /p choice= %str_please-choose%
@@ -85,6 +85,8 @@ if "%choice%"=="2" goto Setup_FFmpeg
 if "%choice%"=="3" goto Upgrade
 if "%choice%"=="4" goto Reset_dl-bat
 if "%choice%"=="5" goto Update
+echo. & echo %str_please-input-valid-num%
+pause > NUL
 goto MENU
 
 
@@ -92,7 +94,7 @@ rem ================= OPTION 1 =================
 
 
 :InitDeploy
-echo.&echo %str_please-choose-from%
+echo. & echo %str_please-choose-from%
 call :_ReturnToMenu_
 
 
@@ -163,7 +165,7 @@ cd "%pyBin%"
 :: Get the full name of "python3*._pth" -> %py_pth%
 for /f "delims=" %%i in ('dir /b python*._pth') do ( set "py_pth=%%i" )
 copy %py_pth% %py_pth%.bak > NUL
-type nul > %py_pth%
+type NUL > %py_pth%
 for /f "delims=" %%i in (%py_pth%.bak) do (
     set "py_pth_str=%%i"
     set py_pth_str=!py_pth_str:#import=import!
@@ -202,7 +204,7 @@ rem ================= OPTION 2 =================
 
 :Setup_FFmpeg
 :: Check whether FFmpeg already exists
-echo %PATH%|findstr /i "ffmpeg">NUL && goto ffmpeg-deploy-ok
+echo %PATH% | findstr /i "ffmpeg" > NUL && goto ffmpeg-deploy-ok
 if exist "%ffBin%\ffmpeg.exe" goto ffmpeg-deploy-ok
 
 call :AskForInit
@@ -219,7 +221,7 @@ set "ffDir=%ffZip:~0,-4%"
 move %ffDir% "%root%\usr\ffmpeg" > NUL
 
 :ffmpeg-deploy-ok
-echo.&echo FFmpeg %str_already-deploy%
+echo. & echo FFmpeg %str_already-deploy%
 call :_ReturnToMenu_
 
 
@@ -293,7 +295,7 @@ goto upgrade_done
 
 
 :upgrade_done
-echo.&echo.&echo %str_upgrade-ok%
+echo. & echo. & echo %str_upgrade-ok%
 call :_ReturnToMenu_
 
 
@@ -326,14 +328,14 @@ cd res && call :Common_wget
 echo %str_checking-update%...
 :: Get %_isLatestVersion% from "scripts\CheckUpdate.bat". 0: false; 1: true.
 call scripts\CheckUpdate.bat self
-if %_isLatestVersion%==1 (
+if "%_isLatestVersion%"=="1" (
     echo %str_bat-is-latest%
     echo %str_open-webpage1%...
 ) else (
     echo %str_bat-can-update-to% %latestVersion%
     echo %str_open-webpage2%...
 )
-pause>NUL
+pause > NUL
 start https://github.com/LussacZheng/video-downloader-deploy
 call :_ReturnToMenu_
 
@@ -342,8 +344,7 @@ rem ================= FUNCTIONS =================
 
 
 :_ReturnToMenu_
-::echo.&echo.&echo %return%
-pause>NUL
+pause > NUL
 goto MENU
 
 
@@ -364,8 +365,9 @@ goto :eof
 :: Make sure the existence of res\wget.exe
 if NOT exist wget.exe (
     echo %str_downloading% "wget.exe", %str_please-wait%...
-    :: use ^) instead of )
-    powershell (New-Object Net.WebClient^).DownloadFile('%_RemoteRes_%/wget.exe', 'wget.exe'^)
+    REM :: use ^) instead of )
+    REM powershell (New-Object Net.WebClient^).DownloadFile('%_RemoteRes_%/wget.exe', 'wget.exe'^)
+    powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (new-object System.Net.WebClient).DownloadFile('%_RemoteRes_%/wget.exe','wget.exe')"
 )
 goto :eof
 
@@ -464,8 +466,8 @@ goto :eof
 :ExitIfInit
 :: Check whether already InitDeploy,
 if exist usr (
-    echo.&echo %str_please-re-init%
-    pause>NUL
+    echo. & echo %str_please-re-init%
+    pause > NUL
     exit
 )
 goto :eof
@@ -473,8 +475,8 @@ goto :eof
 
 :AskForInit
 if NOT exist usr (
-    echo.&echo %str_please-init%
-    pause>NUL
+    echo. & echo %str_please-init%
+    pause > NUL
     goto MENU
 )
 goto :eof

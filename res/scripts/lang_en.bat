@@ -16,6 +16,7 @@ set "str_opt4=[4] Re-create the start batch"
 set "str_opt5=[5] Update this batch (Visit GitHub)"
 set "str_please-choose=Please input the index number of option and press ENTER:"
 set "str_please-choose-from=Please choose from 11 , 12 , 13 "
+set "str_please-input-valid-num=Please input a valid number."
 set "str_please-set-DeployMode=NOT founded "init.log" . Unable to judge the Deploy Mode. Please choose manually[11, 12, 13]: "
 :: Notification
 set "str_bat-is-latest=This batch is the latest version."
