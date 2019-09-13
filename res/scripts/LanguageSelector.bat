@@ -7,6 +7,7 @@
 
 chcp | find "936" >NUL && set "_Language_=zh" || set "_Language_=en"
 goto :eof
+
 ::chcp 65001
 
 
@@ -15,7 +16,7 @@ goto :eof
 :: :: By default, set language as "en".
 :: set "_Language_=en"
 :: :: Then enumerate all existing translations.
-:: chcp|find "437" >NUL && set "_Language_=en"
-:: chcp|find "936" >NUL && set "_Language_=zh"
-:: chcp|find "932" >NUL && set "_Language_=ja"
+:: chcp | find "437" >NUL && set "_Language_=en"
+:: chcp | find "936" >NUL && set "_Language_=zh"
+:: chcp | find "932" >NUL && set "_Language_=ja"
 :: :: ... etc.

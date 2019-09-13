@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2019-09-04
+:: Last updated: 2019-09-13
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
@@ -47,21 +47,14 @@ REM @param  %pyLatestVersion%,  %pyLatestReleasedTime%
 
 :: The output of 'findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt' should be like: 
 ::     503:            <li><a href="/downloads/release/python-374/">Latest Python 3 Release - Python 3.7.4</a></li>
-for /f "tokens=9 delims= " %%a in ('findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt') do ( set pyLatestVersion="%%a" )
-:: %%a is like: 3.7.4</a></li>
-:: Use ` set pyLatestVersion="%%a" ` instead of ` set "pyLatestVersion=%%a" `, since %%a contains '<' and '>'
-:: And now %pyLatestVersion% is "3.7.4</a></li>" , containing "" , so next command should not be:
-:: for /f "tokens=1 delims=<" %%b in ("%pyLatestVersion%"") do ( set "pyLatestVersion=%%b" )
-for /f "tokens=1 delims=<" %%b in (%pyLatestVersion%) do ( set "pyLatestVersion=%%b" )
+for /f "tokens=11 delims=<> " %%a in ('findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt') do ( set "pyLatestVersion=%%a" )
 echo pyLatestVersion: %pyLatestVersion%
 
 :: The output of 'findstr /n /i /c:"Python 3.7.4 -" pyLatestRelease.txt' should be like: 
 ::     514:                        <a href="/downloads/release/python-374/">Python 3.7.4 - July 8, 2019</a>
-for /f "tokens=2 delims=>" %%c in ('findstr /n /i /c:"Python %pyLatestVersion% -" pyLatestRelease.txt') do ( set pyLatestReleasedTime="%%c" )
-set "pyLatestReleasedTime=%pyLatestReleasedTime:<= %"
-:: Now %pyLatestReleasedTime% is like: "Python 3.7.4 - July 8, 2019 /a"
-:: Similarly, %pyLatestReleasedTime% contains "" , no additional ""
-for /f "tokens=4-6 delims= " %%d in (%pyLatestReleasedTime%) do ( set "pyLatestReleasedTime_month=%%d" && set "pyLatestReleasedTime_day=%%e" && set "pyLatestReleasedTime_year=%%f" )
+for /f "tokens=6-8 delims=< " %%x in ('findstr /n /i /c:"Python %pyLatestVersion% -" pyLatestRelease.txt') do (
+    set "pyLatestReleasedTime_month=%%x" && set "pyLatestReleasedTime_day=%%y" && set "pyLatestReleasedTime_year=%%z"
+)
 set "pyLatestReleasedTime=%pyLatestReleasedTime_year:"=%-%pyLatestReleasedTime_month%-%pyLatestReleasedTime_day:,=%"
 echo pyLatestReleasedTime: %pyLatestReleasedTime%
 echo.
@@ -74,31 +67,27 @@ REM Get %ygUrl% from https://pypi.org/project/you-get/#files
 :: The output of 'findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt' should be like: 
 ::     4865:   <a href="https://files.pythonhosted.org/packages/20/35/4979bb3315952a9cb20f2585455bec7ba113db5647c5739dffbc542e8761/you_get-0.4.1328-py3-none-any.whl">
 ::     4886:   <a href="https://files.pythonhosted.org/packages/fd/a5/c896dccb53f44f54c5c8bcfbc7b8d953289064bcfbf17cccb68136fde3bf/you-get-0.4.1328.tar.gz">
-for /f "skip=1 tokens=3 delims= " %%a in ('findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt') do ( set ygUrl="%%a" )
-REM for /f "tokens=* delims= " %%a in ('findstr /n /i "you-get-" ygLatestRelease.txt') do ( set ygUrl="%%a" )
-:: Replace the " with ' since delims cannot be "
-set ygUrl="%ygUrl:"='%"
-:: Now %ygUrl% is like: "'href='https://files.pythonhosted.org/packages/fd/a5/c896dccb53f44f54c5c8bcfbc7b8d953289064bcfbf17cccb68136fde3bf/you-get-0.4.1328.tar.gz'>' "
-:: Similarly, %ygUrl% contains "" , no additional ""
-for /f "tokens=2 delims='" %%b in (%ygUrl%) do ( set "ygUrl=%%b" )
+for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt') do ( set "ygUrl=%%a" )
+REM for /f "tokens=2 delims=>=" %%a in ('findstr /n /i "you-get-" ygLatestRelease.txt') do ( set "ygUrl=%%a" && goto theNext )
+set "ygUrl=%ygUrl:"=%"
 :: Now %ygUrl% is like: https://files.pythonhosted.org/packages/fd/a5/c896dccb53f44f54c5c8bcfbc7b8d953289064bcfbf17cccb68136fde3bf/you-get-0.4.1328.tar.gz
 
 :: Get the version number form %ygUrl%
-for /f "tokens=7 delims=/" %%c in ("%ygUrl%") do ( set "ygLatestVersion=%%c")
-set ygLatestVersion=%ygLatestVersion:you-get-=%
+for /f "tokens=3 delims=-" %%b in ("%ygUrl%") do ( set "ygLatestVersion=%%b")
 set ygLatestVersion=%ygLatestVersion:.tar.gz=%
 echo ygLatestVersion: %ygLatestVersion%
 
 :: The output of 'findstr /n /i /c:"Last released" ygLatestRelease.txt' should be like: 
 ::     190:      <p class="package-header__date">Last released: <time class="-js-relative-time" datetime="2019-08-02T11:31:02+0000" data-controller="localized-time" data-localized-time-relative="true">
-for /f "tokens=4 delims==" %%d in ('findstr /n /i /c:"Last released" ygLatestRelease.txt') do ( set "ygLatestReleasedTime=%%d" )
-:: Now %ygLatestReleasedTime% is like: "2019-08-02T11:31:02+0000" data-controller
-for /f "tokens=1-3 delims=-" %%u in ("%ygLatestReleasedTime%") do ( set "ygLatestReleasedTime_1=%%u" && set "ygLatestReleasedTime_2=%%v" && set "ygLatestReleasedTime_3=%%w" )
-set "ygLatestReleasedTime=%ygLatestReleasedTime_1:"=%-%ygLatestReleasedTime_2%-%ygLatestReleasedTime_3:~0,2%"
+for /f "tokens=6 delims==:" %%c in ('findstr /n /i /c:"Last released" ygLatestRelease.txt') do ( set "ygLatestReleasedTime=%%c" )
+:: Now %ygLatestReleasedTime% is like: "2019-09-09T21
+set "ygLatestReleasedTime=%ygLatestReleasedTime:~1,10%"
 echo ygLatestReleasedTime: %ygLatestReleasedTime%
 
 :: Get the "Hash digest" in BLAKE2-256(Algorithm) for "you-get-v.er.sion.tar.gz" from %ygUrl%
-for /f "tokens=4-6 delims=/" %%x in ("%ygUrl%") do ( set "ygUrl_BLAKE2_1=%%x" && set "ygUrl_BLAKE2_2=%%y" && set "ygUrl_BLAKE2_3=%%z" )
+for /f "tokens=4-6 delims=/" %%x in ("%ygUrl%") do (
+    set "ygUrl_BLAKE2_1=%%x" && set "ygUrl_BLAKE2_2=%%y" && set "ygUrl_BLAKE2_3=%%z"
+)
 set "ygBLAKE2=%ygUrl_BLAKE2_1%/%ygUrl_BLAKE2_2%/%ygUrl_BLAKE2_3%"
 echo ygBLAKE2-256: %ygBLAKE2%
 echo.
@@ -124,11 +113,9 @@ echo anLatestVersion: %anLatestVersion%
 
 :: The output of 'findstr /n /i "relative-time" anLatestRelease.txt' should be like: 
 ::     700:    <relative-time datetime="2019-08-13T14:18:48Z">Aug 13, 2019</relative-time>
-for /f "tokens=2 delims==" %%b in ('findstr /n /i "relative-time" anLatestRelease.txt') do ( set anLatestReleasedTime="%%b" )
-:: Now %anLatestReleasedTime% is like: ""2019-08-13T14:18:48Z">Aug 13, 2019</relative-time>"
-:: Similarly, %anLatestReleasedTime% contains "" , no additional ""
-for /f "tokens=1-3 delims=-" %%x in (%anLatestReleasedTime%) do ( set "anLatestReleasedTime_1=%%x" && set "anLatestReleasedTime_2=%%y" && set "anLatestReleasedTime_3=%%z" )
-set "anLatestReleasedTime=%anLatestReleasedTime_1:"=%-%anLatestReleasedTime_2%-%anLatestReleasedTime_3:~0,2%"
+for /f "tokens=3 delims==:" %%b in ('findstr /n /i "relative-time" anLatestRelease.txt') do ( set "anLatestReleasedTime=%%b" )
+:: Now %anLatestReleasedTime% is like: "2019-08-13T14
+set "anLatestReleasedTime=%anLatestReleasedTime:~1,10%"
 echo anLatestReleasedTime: %anLatestReleasedTime%
 echo.
 
@@ -138,16 +125,15 @@ REM @param  %ffLatestVersion%,  %ffLatestReleasedTime%
 
 for /f "delims=:" %%a in ('findstr /n /i "latest" ffLatestRelease.txt') do ( set "lineNum=%%a" )
 set /a lineNum-=2
-for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set ffInfo="%%b" && goto :next )
-:: Now %ffInfo% is like: "<tr><td><a href="ffmpeg-4.1.4-win64-static.zip" title="ffmpeg-4.1.4-win64-static.zip">ffmpeg-4.1.4-win64-static.zip</a></td><td>61.9 MiB</td><td>2019-Jul-18 15:17</td></tr>"
+for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :next )
 :next
-:: Similarly, %ffInfo% contains "" , no additional ""
+:: Use ` set "ffInfo="%%b"" ` instead of ` set "ffInfo=%%b" `, since %%b contains '<' and '>'
+:: Now %ffInfo% is like: "<tr><td><a href="ffmpeg-4.1.4-win64-static.zip" title="ffmpeg-4.1.4-win64-static.zip">ffmpeg-4.1.4-win64-static.zip</a></td><td>61.9 MiB</td><td>2019-Jul-18 15:17</td></tr>"
+:: %ffInfo% contains "" , so next command should not have additional "" as following: 
+:: for /f "tokens=2 delims=-" %%c in ("%ffInfo%") do ( set "ffLatestVersion=%%c" )
 for /f "tokens=2 delims=-" %%c in (%ffInfo%) do ( set "ffLatestVersion=%%c" )
 echo ffLatestVersion: %ffLatestVersion%
-for /f "tokens=4 delims= " %%d in (%ffInfo%) do ( set ffLatestReleasedTime="%%d" )
-:: Now %ffLatestReleasedTime% is like: "MiB</td><td>2019-Jul-18"
-:: Similarly, no additional ""
-for /f "tokens=3 delims=>" %%e in (%ffLatestReleasedTime%) do ( set ffLatestReleasedTime=%%e )
+for /f "tokens=12 delims=> " %%d in (%ffInfo%) do ( set "ffLatestReleasedTime=%%d" )
 echo ffLatestReleasedTime: %ffLatestReleasedTime%
 
 

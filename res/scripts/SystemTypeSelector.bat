@@ -10,3 +10,6 @@ if /i "%PROCESSOR_IDENTIFIER:~0,3%"=="x86" (
 ) else (
 	set "_SystemType_=64"
 )
+
+:: Another way
+:: WMIC OS GET OSArchitecture | find "64" >NUL && set "_SystemType_=64" || set "_SystemType_=32"
