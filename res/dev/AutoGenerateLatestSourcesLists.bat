@@ -47,7 +47,7 @@ REM @param  %pyLatestVersion%,  %pyLatestReleasedTime%
 
 :: The output of 'findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt' should be like: 
 ::     503:            <li><a href="/downloads/release/python-374/">Latest Python 3 Release - Python 3.7.4</a></li>
-for /f "tokens=11 delims=<> " %%a in ('findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt') do ( set "pyLatestVersion=%%a" )
+for /f "tokens=10 delims=< " %%a in ('findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt') do ( set "pyLatestVersion=%%a" )
 echo pyLatestVersion: %pyLatestVersion%
 
 :: The output of 'findstr /n /i /c:"Python 3.7.4 -" pyLatestRelease.txt' should be like: 
