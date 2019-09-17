@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2019-09-13
+:: Last updated: 2019-09-17
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
@@ -29,13 +29,14 @@ echo If the download process is interrupted, close this window and re-run.
 echo Downloading web pages...
 echo Please be patient while waiting for the download...
 echo. & echo.
-echo py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg
+echo py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
 echo.
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://www.python.org/downloads/windows/ -O pyLatestRelease.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://pypi.org/project/you-get/#files -O ygLatestRelease.txt
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://pypi.org/project/you-get/ -O ygLatestRelease.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://github.com/ytdl-org/youtube-dl/releases/latest -O ydLatestRelease.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://github.com/iawia002/annie/releases/latest -O anLatestRelease.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://ffmpeg.zeranoe.com/builds/win64/static/ -O ffLatestRelease.txt
+wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://pypi.org/project/pip/ -O pipLatestRelease.txt
 echo. & echo.
 
 
@@ -62,7 +63,7 @@ echo.
 
 :GetYougetLatestVersion
 REM @param  %ygUrl%,  %ygLatestVersion%,  %ygLatestReleasedTime%,  %ygBLAKE2%
-REM Get %ygUrl% from https://pypi.org/project/you-get/#files
+REM Get %ygUrl% from https://pypi.org/project/you-get/
 
 :: The output of 'findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt' should be like: 
 ::     4865:   <a href="https://files.pythonhosted.org/packages/20/35/4979bb3315952a9cb20f2585455bec7ba113db5647c5739dffbc542e8761/you_get-0.4.1328-py3-none-any.whl">
@@ -135,6 +136,31 @@ for /f "tokens=2 delims=-" %%c in (%ffInfo%) do ( set "ffLatestVersion=%%c" )
 echo ffLatestVersion: %ffLatestVersion%
 for /f "tokens=12 delims=> " %%d in (%ffInfo%) do ( set "ffLatestReleasedTime=%%d" )
 echo ffLatestReleasedTime: %ffLatestReleasedTime%
+echo.
+
+
+:GetPipLatestVersion
+REM @param  %pipUrl%,  %pipLatestVersion%,  %pipLatestReleasedTime%
+REM Get %pipUrl% from https://pypi.org/project/pip/
+
+:: The output of 'findstr /n /i "files.pythonhosted.org" pipLatestRelease.txt' should be like: 
+::     3048:   <a href="https://files.pythonhosted.org/packages/30/db/9e38760b32e3e7f40cce46dd5fb107b8c73840df38f0046d8e6514e675a1/pip-19.2.3-py2.py3-none-any.whl">
+::     3080:   <a href="https://files.pythonhosted.org/packages/00/9e/4c83a0950d8bdec0b4ca72afd2f9cea92d08eb7c1a768363f2ea458d08b4/pip-19.2.3.tar.gz">
+for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" pipLatestRelease.txt') do ( set "pipUrl=%%a" )
+set "pipUrl=%pipUrl:"=%"
+:: Now %pipUrl% is like: https://files.pythonhosted.org/packages/00/9e/4c83a0950d8bdec0b4ca72afd2f9cea92d08eb7c1a768363f2ea458d08b4/pip-19.2.3.tar.gz
+
+:: Get the version number form %pipUrl%
+for /f "tokens=2 delims=-" %%b in ("%pipUrl%") do ( set "pipLatestVersion=%%b")
+set pipLatestVersion=%pipLatestVersion:.tar.gz=%
+echo pipLatestVersion: %pipLatestVersion%
+
+:: The output of 'findstr /n /i /c:"Last released" pipLatestRelease.txt' should be like: 
+::     210:      <p class="package-header__date">Last released: <time class="-js-relative-time" datetime="2019-08-25T04:37:17+0000" data-controller="localized-time" data-localized-time-relative="true">
+for /f "tokens=6 delims==:" %%c in ('findstr /n /i /c:"Last released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
+:: Now %pipLatestReleasedTime% is like: "2019-08-25T04
+set "pipLatestReleasedTime=%pipLatestReleasedTime:~1,10%"
+echo pipLatestReleasedTime: %pipLatestReleasedTime%
 
 
 :DeleteWebPages
@@ -143,6 +169,7 @@ del /Q ygLatestRelease.txt >NUL 2>NUL
 del /Q ydLatestRelease.txt >NUL 2>NUL
 del /Q anLatestRelease.txt >NUL 2>NUL
 del /Q ffLatestRelease.txt >NUL 2>NUL
+del /Q pipLatestRelease.txt >NUL 2>NUL
 if exist .wget-hsts del .wget-hsts
 echo. & echo.
 

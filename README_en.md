@@ -18,6 +18,9 @@ Download [One-Click Deployment Batch](https://github.com/LussacZheng/video-downl
 Demo.gif ( 2 min 52 s ) :  
 ![demo.gif](https://s2.ax1x.com/2019/08/17/muTbIs.gif)
 
+*This demo was recorded in Simplified Chinese. If your system language is not Chinese, this batch will automatically display in English.*  
+*Please [created an issue](https://github.com/LussacZheng/video-downloader-deploy/issues) if you want to help improve the translation quality or add more supported languages.*
+
 ### Note
 
 - For the folder where `Deploy.bat` is located,
