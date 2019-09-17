@@ -1,4 +1,4 @@
-# 功能实验室 (Lab features)
+# 功能实验室 / Lab Features
 > [`video-downloader-deploy/res/dev/`](https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev)  
 > *English translation is NOT provided for this instruction. Please translate it by yourself.*
 
@@ -13,7 +13,7 @@
 自动生成含有 `python-embed.zip` , `you-get.tar.gz` , `youtube-dl.tar.gz` , `annie_Windows.zip` , `ffmpeg-static.zip` 的最新版本下载链接的 `sources.txt` 。可供 主程序 使用。
 
 ### 原理
-自动解析 [Python](https://www.python.org/downloads/windows/), [You-Get](https://pypi.org/project/you-get/#files), [Youtube-dl](https://github.com/ytdl-org/youtube-dl/releases/latest) , [Annie](https://github.com/iawia002/annie/releases/latest) , [FFmpeg](https://ffmpeg.zeranoe.com/builds/win64/static/) 项目发布页等相关网页，获得其最新版本的下载链接。
+自动解析 [Python](https://www.python.org/downloads/windows/), [You-Get](https://pypi.org/project/you-get/), [Youtube-dl](https://github.com/ytdl-org/youtube-dl/releases/latest) , [Annie](https://github.com/iawia002/annie/releases/latest) , [FFmpeg](https://ffmpeg.zeranoe.com/builds/win64/static/) , [Pip](https://pypi.org/project/pip/) 项目发布页等相关网页，获得其最新版本的下载链接。
 
 ### 使用
 确保 `AutoGenerateLatestSourcesLists.bat` 当前所在目录或上级目录存在 `wget.exe` ，直接运行脚本即可。若正常运行，则会在当前目录生成 `sources.txt` ，移动并覆盖 `res\` 目录下的同名文件即可。
@@ -23,7 +23,7 @@
 
 ### 参考资料
 1. Another method to get Python latest version number.   
-   [GitHub - corpnewt/gibMacOS : gibMacOS.bat#L87](https://github.com/corpnewt/gibMacOS/blob/1d357c00cb265b40a61a50acca7405c513c19f61/gibMacOS.bat#L87)
+   [GitHub - corpnewt/gibMacOS : gibMacOS.bat#L87-L124](https://github.com/corpnewt/gibMacOS/blob/ce6f62c388f2bd48ec57aeca057e29ff90406dbb/gibMacOS.bat#L87-L124)
 2. Another method to get YouGet latest version number.
    ```batch
    wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://github.com/soimort/you-get/releases/latest -O ygLatestRelease_Github.txt
@@ -40,4 +40,4 @@
 ## To be developed
 
 如果你有任何好的想法或建议，欢迎 [提交 Issue](https://github.com/LussacZheng/video-downloader-deploy/issues) 。  
-If you have any ideas or suggestions, welcome to [Submit new issue](https://github.com/LussacZheng/video-downloader-deploy/issues) .
+If you have any excellent ideas or suggestions, welcome to [Submit new issue](https://github.com/LussacZheng/video-downloader-deploy/issues) .
