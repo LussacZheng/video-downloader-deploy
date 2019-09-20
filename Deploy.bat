@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.1.3
-:: Last updated: 2019-09-07
+:: Version: 1.2.0
+:: Last updated: 2019-09-20
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "version=1.1.3"
-set "lastUpdated=2019-09-07"
+set "version=1.2.0"
+set "lastUpdated=2019-09-20"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -25,7 +25,7 @@ call res\scripts\SystemTypeSelector.bat
 
 :: Start of Deployment
 title %str_title%  -- By Lussac
-:: py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg 
+:: py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
 set "root=%cd%"
 set "pyBin=%root%\usr\python-embed"
 set "ygBin=%root%\usr\you-get"
@@ -35,7 +35,7 @@ set "ffBin=%root%\usr\ffmpeg\bin"
 
 :: If already deployed, show more info in Option3.
 set "opt3_info="
-if NOT exist res\init.log goto MENU
+if NOT exist res\deploy.log goto MENU
 cd res && call :Get_DeployMode
 if "%DeployMode%"=="portable" set "opt3_info=(you-get,youtube-dl,annie)"
 if "%DeployMode%"=="quickstart" set "opt3_info=(you-get)"
@@ -110,17 +110,7 @@ if NOT exist "%pyBin%" call :Setup_Python
 if NOT exist "%ygBin%" call :Setup_YouGet
 if NOT exist "%ydBin%" call :Setup_YoutubeDL
 if NOT exist "%anBin%\annie.exe" call :Setup_Annie
-
-:initlog-portable
-cd ..
-call :InitLog_Common
-call :InitLog_Common_yg
-call :InitLog_Common_yd
-call :InitLog_Common_an
-call :InitLog_Common2
-
-cd .. && call :Create_Download-bat 1
-call :_ReturnToMenu_
+cd .. && goto InitLog
 
 
 rem ================= OPTION 12 =================
@@ -133,15 +123,7 @@ cd res && call :Common
 cd download
 if NOT exist "%pyBin%" call :Setup_Python
 if NOT exist "%ygBin%" call :Setup_YouGet
-
-:initlog-quickstart
-cd ..
-call :InitLog_Common
-call :InitLog_Common_yg
-call :InitLog_Common2
-
-cd .. && call :Create_Download-bat 1
-call :_ReturnToMenu_
+cd .. && goto InitLog
 
 
 rem ================= OPTION 13 =================
@@ -182,19 +164,15 @@ pip3 install --upgrade you-get %pip_option%
 pip3 install --upgrade youtube-dl %pip_option%
 echo You-Get %str_already-deploy%
 echo Youtube-dl %str_already-deploy%
+del /Q get-pip.py >NUL 2>NUL
+cd "%root%\res" && goto InitLog
 
-:initlog-withpip
-cd "%root%\res"
-call :InitLog_Common
-echo pip -V:>> init.log
-pip -V >> init.log
-for /f "delims=" %%i in ('dir /b "%pyBin%\Lib\site-packages\you_get*.dist-info"') do ( set "log_ygV=%%i" )
-echo you-get: %log_ygV:.dist-info=%>> init.log
-echo youtube-dl --version:>> init.log
-youtube-dl --version >> init.log
-call :InitLog_Common_an
-call :InitLog_Common2
 
+rem ================= OPTION 11-13 InitLog =================
+
+
+:InitLog
+call scripts\Log.bat Init %DeployMode%
 cd .. && call :Create_Download-bat 1
 call :_ReturnToMenu_
 
@@ -219,6 +197,8 @@ echo %str_unzipping% %ffZip% ...
 7za x %ffZip% > NUL
 set "ffDir=%ffZip:~0,-4%"
 move %ffDir% "%root%\usr\ffmpeg" > NUL
+:initlog-ffmpeg
+cd .. && call scripts\Log.bat Init ffmpeg
 
 :ffmpeg-deploy-ok
 echo. & echo FFmpeg %str_already-deploy%
@@ -232,6 +212,7 @@ rem ================= OPTION 3 =================
 call :AskForInit
 cd res && call :Common_wget && call :Common_7za
 call :Get_DeployMode
+set "whetherToLog=false"
 echo %str_checking-update%...
 if "%DeployMode%"=="portable" goto Upgrade-portable
 if "%DeployMode%"=="quickstart" goto Upgrade-quickstart
@@ -256,8 +237,9 @@ if "%_isYgLatestVersion%"=="1" if "%_isYdLatestVersion%"=="1" if "%_isAnLatestVe
     echo you-get %str_is-latestVersion%: v%ygCurrentVersion%
     echo youtube-dl %str_is-latestVersion%: %ydCurrentVersion%
     echo annie %str_is-latestVersion%: v%anCurrentVersion%
-   goto upgrade_done
+    goto upgrade_done
 )
+set "whetherToLog=true"
 if "%_isYgLatestVersion%"=="0" call :Upgrade_YouGet
 if "%_isYdLatestVersion%"=="0" call :Upgrade_YoutubeDL
 if "%_isAnLatestVersion%"=="0" call :Upgrade_Annie
@@ -268,7 +250,10 @@ goto upgrade_done
 call scripts\CheckUpdate.bat youget
 if "%_isYgLatestVersion%"=="1" (
     echo you-get %str_is-latestVersion%: v%ygCurrentVersion%
-) else call :Upgrade_YouGet
+) else (
+    set "whetherToLog=true"
+    call :Upgrade_YouGet
+)
 goto upgrade_done
 
 
@@ -276,7 +261,10 @@ goto upgrade_done
 call scripts\CheckUpdate.bat annie
 if "%_isAnLatestVersion%"=="1" (
     echo annie %str_is-latestVersion%: v%anCurrentVersion%
-) else call :Upgrade_Annie
+) else (
+    set "whetherToLog=true"
+    call :Upgrade_Annie
+)
 
 :: Re-create a pip3.cmd in case of the whole folder had been moved.
 set "PATH=%root%\res\command;%pyBin%;%pyBin%\Scripts;%PATH%"
@@ -291,10 +279,11 @@ echo pip3 install --upgrade youtube-dl %pip_option%> upgrade_youtube-dl.bat
 :: So write the command into a bat and then call it.
 call upgrade_you-get.bat && call upgrade_youtube-dl.bat
 echo You-Get %str_already-upgraded% && echo Youtube-dl %str_already-upgraded%
-goto upgrade_done
+cd .. && goto upgrade_done
 
 
 :upgrade_done
+if "%whetherToLog%"=="true" call scripts\Log.bat Upgrade %DeployMode%
 echo. & echo. & echo %str_upgrade-ok%
 call :_ReturnToMenu_
 
@@ -422,36 +411,6 @@ echo Annie %str_already-deploy%
 goto :eof
 
 
-:InitLog_Common
-echo initialized: true> init.log
-echo deployMode: %DeployMode%>> init.log
-for /f %%a in ('WMIC OS GET LocalDateTime ^| find "."') do ( set "LDT=%%a" )
-set "formatedDateTime=%LDT:~0,4%-%LDT:~4,2%-%LDT:~6,2% %LDT:~8,2%:%LDT:~10,2%:%LDT:~12,2%"
-echo time: %formatedDateTime%>> init.log
-::echo time: %date:~0,10% %time:~0,8%>> init.log
-echo pyZip: %pyZip%>> init.log
-echo pyBin: "%pyBin%">> init.log
-goto :eof
-
-
-:InitLog_Common_yg
-echo ygZip: %ygZip%>> init.log
-echo ygBin: "%ygBin%">> init.log
-goto :eof
-:InitLog_Common_yd
-echo ydZip: %ydZip%>> init.log
-echo ydBin: "%ydBin%">> init.log
-goto :eof
-:InitLog_Common_an
-echo anZip: %anZip%>> init.log
-echo anBin: "%anBin%">> init.log
-goto :eof
-:InitLog_Common2
-echo.>> init.log
-echo errorlevel: !errorlevel!>> init.log
-goto :eof
-
-
 :Create_Download-bat
 set isInInitDeploy=%~1
 call res\scripts\GenerateDownloadBatch.bat %DeployMode%
@@ -483,16 +442,17 @@ goto :eof
 
 
 :Get_DeployMode
-:: Get %DeployMode% from res\init.log
-if exist init.log (
-    for /f "tokens=2 delims= " %%i in ('findstr /i "deployMode" init.log') do ( set "DeployMode=%%i" )
+:: Get %DeployMode% from res\deploy.log
+if exist deploy.log (
+    for /f "tokens=2 delims= " %%i in ('findstr /i "DeployMode" deploy.log') do ( set "DeployMode=%%i" )
 ) else ( set "DeployMode=unknown" )
 goto :eof
 
 
 :Upgrade_YouGet
 echo %str_upgrading% you-get...
-del /Q download\you-get*.tar.gz >NUL 2>NUL
+:: %ygCurrentVersion% was set in res\scripts\CheckUpdate.bat :CheckUpdate_youget
+del /Q download\you-get-%ygCurrentVersion%.tar.gz >NUL 2>NUL
 del /Q sources.txt >NUL 2>NUL
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -c %_RemoteRes_%/sources.txt
 call scripts\SourcesSelector.bat sources.txt youget %_Region_% %_SystemType_% download\to-be-downloaded.txt
@@ -506,8 +466,8 @@ goto :eof
 
 :Upgrade_YoutubeDL
 echo %str_upgrading% youtube-dl...
-del /Q download\youtube-dl*.tar.gz >NUL 2>NUL
-:: %ydLatestVersion% was set in res\scripts\CheckUpdate.bat :CheckUpdate_youtubedl
+:: %ydCurrentVersion% and %ydLatestVersion% were set in res\scripts\CheckUpdate.bat :CheckUpdate_youtubedl
+del /Q download\youtube-dl-%ydCurrentVersion%.tar.gz >NUL 2>NUL
 set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/youtube-dl-%ydLatestVersion%.tar.gz"
 echo %ydLatestVersion_Url%>> download\to-be-downloaded.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %ydLatestVersion_Url% -P download
@@ -520,8 +480,8 @@ goto :eof
 
 :Upgrade_Annie
 echo %str_upgrading% annie...
-del /Q download\annie*.zip >NUL 2>NUL
-:: %anLatestVersion% was set in res\scripts\CheckUpdate.bat :CheckUpdate_annie
+:: %anCurrentVersion% and %anLatestVersion% were set in res\scripts\CheckUpdate.bat :CheckUpdate_annie
+del /Q download\annie_%anCurrentVersion%_Windows*.zip >NUL 2>NUL
 set "anLatestVersion_Url=https://github.com/iawia002/annie/releases/download/%anLatestVersion%/annie_%anLatestVersion%_Windows_%_SystemType_%-bit.zip"
 echo %anLatestVersion_Url%>> download\to-be-downloaded.txt
 wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %anLatestVersion_Url% -P download
