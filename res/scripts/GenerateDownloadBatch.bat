@@ -70,10 +70,10 @@ echo echo. ^& echo.>>%dl-bat-filename%
 echo if "%%state_ffmpeg%%"=="disable" ( echo %str_ffmpeg-disabled% ^& echo. ^& echo. )>>%dl-bat-filename%
 echo if "%%state_proxy%%"=="enable" (>>%dl-bat-filename%
 echo     echo %str_proxy-setting%>>%dl-bat-filename%
-echo     echo you-get -x 127.0.0.1:8087 'https://www.youtube.com/watch?v=Ie5qE1EHm_w'>>%dl-bat-filename%
-echo     echo youtube-dl --proxy socks5://127.0.0.1:1080/ 'https://www.youtube.com/watch?v=Ie5qE1EHm_w'>>%dl-bat-filename%
-echo     echo annie -x http://127.0.0.1:7777 'https://www.youtube.com/watch?v=Ie5qE1EHm_w'>>%dl-bat-filename%
-echo     echo annie -s 127.0.0.1:1080 'https://www.youtube.com/watch?v=Ie5qE1EHm_w'>>%dl-bat-filename%
+echo     echo you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
+echo     echo youtube-dl --proxy socks5://127.0.0.1:1080/ https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
+echo     echo annie -x http://127.0.0.1:7777 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
+echo     echo annie -s 127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
 echo     echo. ^& echo.>>%dl-bat-filename%
 echo )>>%dl-bat-filename%
 ::PROMPT [$D $T$h$h$h$h$h$h]$_$P$_$G$G$G
