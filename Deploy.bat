@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.2.0
-:: Last updated: 2019-09-20
+:: Version: 1.2.1
+:: Last updated: 2019-09-21
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "version=1.2.0"
-set "lastUpdated=2019-09-20"
+set "version=1.2.1"
+set "lastUpdated=2019-09-21"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -58,7 +58,7 @@ echo ==========  version: %version% (%lastUpdated%)  ===========
 echo ====================================================
 echo ====================================================
 echo.
-echo. & echo  %str_opt1%
+echo. & echo  [1?] %str_opt1%
         echo    ^|
         echo    ^|-- [11] %str_portable%: you-get + youtube-dl + annie
         echo    ^|        ( %str_opt11% ) 
@@ -68,10 +68,11 @@ echo. & echo  %str_opt1%
         echo    ^|
         echo    ^|-- [13] %str_withpip%: you-get + youtube-dl + annie
         echo             ( %str_opt13% )
-echo. & echo  %str_opt2%
-echo. & echo  %str_opt3% %opt3_info%
-echo. & echo  %str_opt4%
-echo. & echo  %str_opt5%
+echo. & echo  [2] %str_opt2%
+echo. & echo  [3] %str_opt3% %opt3_info%
+echo. & echo  [4] %str_opt4%
+echo. & echo  [5] %str_opt5%
+echo. & echo  [6] %str_opt6%
 echo. & echo.
 echo ====================================================
 set choice=0
@@ -85,6 +86,7 @@ if "%choice%"=="2" goto Setup_FFmpeg
 if "%choice%"=="3" goto Upgrade
 if "%choice%"=="4" goto Reset_dl-bat
 if "%choice%"=="5" goto Update
+if "%choice%"=="6" goto Setting
 echo. & echo %str_please-input-valid-num%
 pause > NUL
 goto MENU
@@ -329,12 +331,50 @@ start https://github.com/LussacZheng/video-downloader-deploy
 call :_ReturnToMenu_
 
 
+rem ================= OPTION 6 =================
+
+
+:Setting
+call :AskForInit
+cls
+echo ====================================================
+echo ===============%str_opt6-Expanded%===============
+echo ====================================================
+echo.
+echo. & echo  [1] %str_opt6_opt1%
+echo. & echo  [2] %str_opt6_opt2%
+echo. & echo  [3] %str_opt6_opt3%
+echo. & echo.
+echo ====================================================
+set opt6_choice=0
+set /p opt6_choice= %str_please-choose%
+echo.
+if "%opt6_choice%"=="1" goto MENU
+if "%opt6_choice%"=="2" goto setting_Proxy
+if "%opt6_choice%"=="3" goto setting_FFmpeg
+echo. & echo %str_please-input-valid-num%
+call :_ReturnToSetting_
+
+:setting_Proxy
+call res\scripts\Config.bat Proxy
+call :_ReturnToSetting_
+
+:setting_FFmpeg
+call res\scripts\Config.bat FFmpeg
+call :_ReturnToSetting_
+
+
 rem ================= FUNCTIONS =================
 
 
 :_ReturnToMenu_
 pause > NUL
 goto MENU
+
+
+:_ReturnToSetting_
+pause > NUL
+goto Setting
 
 
 :: Please make sure that: only call :Common* when %cd% is "res\".
