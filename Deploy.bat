@@ -1,15 +1,15 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.2.1
-:: Last updated: 2019-09-21
+:: Version: 1.2.2
+:: Last updated: 2019-09-22
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "version=1.2.1"
-set "lastUpdated=2019-09-21"
-:: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe'
+set "version=1.2.2"
+set "lastUpdated=2019-09-22"
+:: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
 
@@ -213,6 +213,7 @@ rem ================= OPTION 3 =================
 :Upgrade
 call :AskForInit
 cd res && call :Common_wget && call :Common_7za
+call :StopIfDisconnected
 call :Get_DeployMode
 set "whetherToLog=false"
 echo %str_checking-update%...
@@ -475,6 +476,18 @@ goto :eof
 :AskForInit
 if NOT exist usr (
     echo. & echo %str_please-init%
+    pause > NUL
+    goto MENU
+)
+goto :eof
+
+
+:StopIfDisconnected
+echo %str_checking-connection%...
+wget -q %_RemoteRes_%/scripts/CurrentVersion -O NetTest && set "_isNetConnected=true" || set "_isNetConnected=false"
+if exist NetTest del NetTest
+if "%_isNetConnected%"=="false" (
+    echo %str_please-check-connection%
     pause > NUL
     goto MENU
 )

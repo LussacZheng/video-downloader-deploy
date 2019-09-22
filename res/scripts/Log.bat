@@ -101,6 +101,8 @@ goto :eof
 echo Initialized: true> %log_File%
 echo DeployMode: %log_DeployMode%>> %log_File%
 echo.>> %log_File%
+echo # py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip>> %log_File%
+echo.>> %log_File%
 call :Log_time
 goto :eof
 
@@ -141,7 +143,7 @@ goto :eof
 
 :Log_ff
 echo ffZip: %ffZip%>> %log_File%
-echo anBin: "%ffBin%">> %log_File%
+echo ffBin: "%ffBin%">> %log_File%
 goto :eof
 
 
