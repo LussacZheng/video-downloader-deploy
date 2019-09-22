@@ -1,13 +1,13 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.2.2
+:: Version: 1.2.3
 :: Last updated: 2019-09-22
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "version=1.2.2"
+set "version=1.2.3"
 set "lastUpdated=2019-09-22"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
@@ -192,7 +192,7 @@ cd res && call :Common_wget
 echo %str_downloading%...
 call :Common_7za
 call scripts\SourcesSelector.bat sources.txt ffmpeg %_Region_% %_SystemType_% download\to-be-downloaded.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\to-be-downloaded.txt -P download
+wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
 cd download
 for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do ( set "ffZip=%%i" )
 echo %str_unzipping% %ffZip% ...
@@ -336,7 +336,6 @@ rem ================= OPTION 6 =================
 
 
 :Setting
-call :AskForInit
 cls
 echo ====================================================
 echo ===============%str_opt6-Expanded%===============
@@ -345,6 +344,7 @@ echo.
 echo. & echo  [1] %str_opt6_opt1%
 echo. & echo  [2] %str_opt6_opt2%
 echo. & echo  [3] %str_opt6_opt3%
+echo. & echo  [4] %str_opt6_opt4%
 echo. & echo.
 echo ====================================================
 set opt6_choice=0
@@ -353,15 +353,36 @@ echo.
 if "%opt6_choice%"=="1" goto MENU
 if "%opt6_choice%"=="2" goto setting_Proxy
 if "%opt6_choice%"=="3" goto setting_FFmpeg
+if "%opt6_choice%"=="4" goto setting_Wget
+if "%opt6_choice%"=="40" goto setting_Wget2
 echo. & echo %str_please-input-valid-num%
 call :_ReturnToSetting_
 
 :setting_Proxy
+call :AskForInit
 call res\scripts\Config.bat Proxy
 call :_ReturnToSetting_
 
 :setting_FFmpeg
+call :AskForInit
 call res\scripts\Config.bat FFmpeg
+call :_ReturnToSetting_
+
+:setting_Wget
+echo. & echo %str_wget-option-is%
+set "_WgetOptions_="
+cd res && call :Get_WgetOptions
+echo. & echo "%_WgetOptions_%"
+if NOT exist wget.opt ( call scripts\GenerateWgetOptions.bat )
+cd ..
+echo. & echo %str_please-edit-wget-opt1%
+echo %str_please-edit-wget-opt2%
+echo %str_please-edit-wget-opt3%
+call :_ReturnToSetting_
+
+:setting_Wget2
+cd res && call scripts\GenerateWgetOptions.bat
+cd .. && echo %str_reset-wget-opt-ok%
 call :_ReturnToSetting_
 
 
@@ -386,7 +407,7 @@ call :Common_7za
 :: %_Region_% was set in res\scripts\lang_%_Language_%.bat
 call scripts\SourcesSelector.bat sources.txt %DeployMode% %_Region_% %_SystemType_% download\to-be-downloaded.txt
 :: https://stackoverflow.com/questions/4686464/how-to-show-wget-progress-bar-only
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\to-be-downloaded.txt -P download
+wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
 :: if exist .wget-hsts del .wget-hsts
 goto :eof
 
@@ -399,13 +420,14 @@ if NOT exist wget.exe (
     REM powershell (New-Object Net.WebClient^).DownloadFile('%_RemoteRes_%/wget.exe', 'wget.exe'^)
     powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (new-object System.Net.WebClient).DownloadFile('%_RemoteRes_%/wget.exe','wget.exe')"
 )
+call :Get_WgetOptions
 goto :eof
 
 
 :Common_7za
 :: Make sure the existence of res\7za.exe, res\download\7za.exe
 if NOT exist 7za.exe (
-    wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %_RemoteRes_%/7za.exe
+    wget %_WgetOptions_% %_RemoteRes_%/7za.exe
 )
 if NOT exist download\7za.exe (
     xcopy 7za.exe download\ > NUL
@@ -484,7 +506,7 @@ goto :eof
 
 :StopIfDisconnected
 echo %str_checking-connection%...
-wget -q %_RemoteRes_%/scripts/CurrentVersion -O NetTest && set "_isNetConnected=true" || set "_isNetConnected=false"
+wget -q --no-check-certificate %_RemoteRes_%/scripts/CurrentVersion -O NetTest && set "_isNetConnected=true" || set "_isNetConnected=false"
 if exist NetTest del NetTest
 if "%_isNetConnected%"=="false" (
     echo %str_please-check-connection%
@@ -502,14 +524,22 @@ if exist deploy.log (
 goto :eof
 
 
+:Get_WgetOptions
+:: Get default options for 'wget.exe' from res\wget.opt
+if exist wget.opt (
+    for /f "eol=# delims=" %%i in (wget.opt) do ( set "_WgetOptions_=%%i" && goto :eof )    
+) else ( set "_WgetOptions_=-q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc" )
+goto :eof
+
+
 :Upgrade_YouGet
 echo %str_upgrading% you-get...
 :: %ygCurrentVersion% was set in res\scripts\CheckUpdate.bat :CheckUpdate_youget
 del /Q download\you-get-%ygCurrentVersion%.tar.gz >NUL 2>NUL
 del /Q sources.txt >NUL 2>NUL
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -c %_RemoteRes_%/sources.txt
+wget %_WgetOptions_% %_RemoteRes_%/sources.txt
 call scripts\SourcesSelector.bat sources.txt youget %_Region_% %_SystemType_% download\to-be-downloaded.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc -i download\to-be-downloaded.txt -P download
+wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
 rd /S /Q "%ygBin%" >NUL 2>NUL
 cd download && call :Setup_YouGet
 cd ..
@@ -523,7 +553,7 @@ echo %str_upgrading% youtube-dl...
 del /Q download\youtube-dl-%ydCurrentVersion%.tar.gz >NUL 2>NUL
 set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/youtube-dl-%ydLatestVersion%.tar.gz"
 echo %ydLatestVersion_Url%>> download\to-be-downloaded.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %ydLatestVersion_Url% -P download
+wget %_WgetOptions_% %ydLatestVersion_Url% -P download
 rd /S /Q "%ydBin%" >NUL 2>NUL
 cd download && call :Setup_YoutubeDL
 cd ..
@@ -537,7 +567,7 @@ echo %str_upgrading% annie...
 del /Q download\annie_%anCurrentVersion%_Windows*.zip >NUL 2>NUL
 set "anLatestVersion_Url=https://github.com/iawia002/annie/releases/download/%anLatestVersion%/annie_%anLatestVersion%_Windows_%_SystemType_%-bit.zip"
 echo %anLatestVersion_Url%>> download\to-be-downloaded.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc %anLatestVersion_Url% -P download
+wget %_WgetOptions_% %anLatestVersion_Url% -P download
 del /Q "%anBin%\annie.exe" >NUL 2>NUL
 cd download && call :Setup_Annie
 cd ..
