@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2019-09-17
+:: Last updated: 2019-09-23
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
@@ -31,12 +31,13 @@ echo Please be patient while waiting for the download...
 echo. & echo.
 echo py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
 echo.
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://www.python.org/downloads/windows/ -O pyLatestRelease.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://pypi.org/project/you-get/ -O ygLatestRelease.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://github.com/ytdl-org/youtube-dl/releases/latest -O ydLatestRelease.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://github.com/iawia002/annie/releases/latest -O anLatestRelease.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://ffmpeg.zeranoe.com/builds/win64/static/ -O ffLatestRelease.txt
-wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://pypi.org/project/pip/ -O pipLatestRelease.txt
+set "_WgetOptions_=-q --show-progress --progress=bar:force:noscroll --no-check-certificate -np"
+wget %_WgetOptions_% https://www.python.org/downloads/windows/ -O pyLatestRelease.txt
+wget %_WgetOptions_% https://pypi.org/project/you-get/ -O ygLatestRelease.txt
+wget %_WgetOptions_% https://github.com/ytdl-org/youtube-dl/releases/latest -O ydLatestRelease.txt
+wget %_WgetOptions_% https://github.com/iawia002/annie/releases/latest -O anLatestRelease.txt
+wget %_WgetOptions_% https://ffmpeg.zeranoe.com/builds/win64/static/ -O ffLatestRelease.txt
+wget %_WgetOptions_% https://pypi.org/project/pip/ -O pipLatestRelease.txt
 echo. & echo.
 
 
@@ -79,8 +80,8 @@ set ygLatestVersion=%ygLatestVersion:.tar.gz=%
 echo ygLatestVersion: %ygLatestVersion%
 
 :: The output of 'findstr /n /i /c:"Last released" ygLatestRelease.txt' should be like: 
-::     190:      <p class="package-header__date">Last released: <time class="-js-relative-time" datetime="2019-08-02T11:31:02+0000" data-controller="localized-time" data-localized-time-relative="true">
-for /f "tokens=6 delims==:" %%c in ('findstr /n /i /c:"Last released" ygLatestRelease.txt') do ( set "ygLatestReleasedTime=%%c" )
+::     209:        Last released: <time datetime="2019-09-09T21:20:14+0000" data-controller="localized-time" data-localized-time-relative="true" data-localized-time-show-time="false">
+for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Last released" ygLatestRelease.txt') do ( set "ygLatestReleasedTime=%%c" )
 :: Now %ygLatestReleasedTime% is like: "2019-09-09T21
 set "ygLatestReleasedTime=%ygLatestReleasedTime:~1,10%"
 echo ygLatestReleasedTime: %ygLatestReleasedTime%
@@ -156,8 +157,8 @@ set pipLatestVersion=%pipLatestVersion:.tar.gz=%
 echo pipLatestVersion: %pipLatestVersion%
 
 :: The output of 'findstr /n /i /c:"Last released" pipLatestRelease.txt' should be like: 
-::     210:      <p class="package-header__date">Last released: <time class="-js-relative-time" datetime="2019-08-25T04:37:17+0000" data-controller="localized-time" data-localized-time-relative="true">
-for /f "tokens=6 delims==:" %%c in ('findstr /n /i /c:"Last released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
+::     209:        Last released: <time datetime="2019-08-25T04:37:17+0000" data-controller="localized-time" data-localized-time-relative="true" data-localized-time-show-time="false">
+for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Last released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
 :: Now %pipLatestReleasedTime% is like: "2019-08-25T04
 set "pipLatestReleasedTime=%pipLatestReleasedTime:~1,10%"
 echo pipLatestReleasedTime: %pipLatestReleasedTime%
