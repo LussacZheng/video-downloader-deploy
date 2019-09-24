@@ -37,6 +37,21 @@
 
 ---
 
+## SourcesListsDiff
+
+当通过 `AutoGenerateLatestSourcesLists.bat` 生成了新的 `sources.txt` 后，比较并输出其与 `..\sources.txt` 之间的差异，以直观体现是否有更新可用。
+
+### 使用
+确保 `SourcesListsDiff.bat` 当前所在目录和上级目录都存在 `sources.txt` ，直接运行脚本即可。
+
+### 注意
+请勿将此脚本当作真正的 Diff 工具使用，它只适用于 `sources.txt` 的比较。Windows 系统下可以使用 `fc` 命令比较差异，CMD 下输入 `help fc` 以查看细节。
+```batch
+fc /N sources.txt ..\sources.txt
+```
+
+---
+
 ## To be developed
 
 如果你有任何好的想法或建议，欢迎 [提交 Issue](https://github.com/LussacZheng/video-downloader-deploy/issues) 。  
