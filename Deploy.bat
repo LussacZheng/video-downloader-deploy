@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.2.3
-:: Last updated: 2019-09-22
+:: Version: 1.2.4
+:: Last updated: 2019-09-28
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "version=1.2.3"
-set "lastUpdated=2019-09-22"
+set "version=1.2.4"
+set "lastUpdated=2019-09-28"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -82,7 +82,7 @@ if "%choice%"=="1" goto InitDeploy
 if "%choice%"=="11" goto InitDeploy-portable
 if "%choice%"=="12" goto InitDeploy-quickstart
 if "%choice%"=="13" goto InitDeploy-withpip
-if "%choice%"=="2" goto Setup_FFmpeg
+if "%choice%"=="2" goto InitDeploy-ffmpeg
 if "%choice%"=="3" goto Upgrade
 if "%choice%"=="4" goto Reset_dl-bat
 if "%choice%"=="5" goto Update
@@ -107,12 +107,11 @@ rem ================= OPTION 11 =================
 set "DeployMode=portable"
 call :ExitIfInit
 cd res && call :Common
-cd download
-if NOT exist "%pyBin%" call :Setup_Python
-if NOT exist "%ygBin%" call :Setup_YouGet
-if NOT exist "%ydBin%" call :Setup_YoutubeDL
-if NOT exist "%anBin%\annie.exe" call :Setup_Annie
-cd .. && goto InitLog
+if NOT exist "%pyBin%" call scripts\DoDeploy.bat Setup python
+if NOT exist "%ygBin%" call scripts\DoDeploy.bat Setup youget
+if NOT exist "%ydBin%" call scripts\DoDeploy.bat Setup youtubedl
+if NOT exist "%anBin%\annie.exe" call scripts\DoDeploy.bat Setup annie
+goto InitLog
 
 
 rem ================= OPTION 12 =================
@@ -122,10 +121,9 @@ rem ================= OPTION 12 =================
 set "DeployMode=quickstart"
 call :ExitIfInit
 cd res && call :Common
-cd download
-if NOT exist "%pyBin%" call :Setup_Python
-if NOT exist "%ygBin%" call :Setup_YouGet
-cd .. && goto InitLog
+if NOT exist "%pyBin%" call scripts\DoDeploy.bat Setup python
+if NOT exist "%ygBin%" call scripts\DoDeploy.bat Setup youget
+goto InitLog
 
 
 rem ================= OPTION 13 =================
@@ -140,12 +138,11 @@ if exist scripts\get-pip.py (
     xcopy /Y scripts\get-pip.py download\ > NUL
 )
 call :Common
-cd download
-if NOT exist "%pyBin%" call :Setup_Python
-if NOT exist "%anBin%\annie.exe" call :Setup_Annie
+if NOT exist "%pyBin%" call scripts\DoDeploy.bat Setup python
+if NOT exist "%anBin%\annie.exe" call scripts\DoDeploy.bat Setup annie
 
 :edit-python_pth
-cd "%pyBin%"
+pushd "%pyBin%"
 :: Get the full name of "python3*._pth" -> %py_pth%
 for /f "delims=" %%i in ('dir /b python*._pth') do ( set "py_pth=%%i" )
 copy %py_pth% %py_pth%.bak > NUL
@@ -164,10 +161,9 @@ if "%_Region_%"=="cn" set "pip_option=--index-url=https://pypi.tuna.tsinghua.edu
 python get-pip.py %pip_option%
 pip3 install --upgrade you-get %pip_option%
 pip3 install --upgrade youtube-dl %pip_option%
-echo You-Get %str_already-deploy%
-echo Youtube-dl %str_already-deploy%
+echo You-Get %str_already-deploy% & echo Youtube-dl %str_already-deploy%
 del /Q get-pip.py >NUL 2>NUL
-cd "%root%\res" && goto InitLog
+popd && goto InitLog
 
 
 rem ================= OPTION 11-13 InitLog =================
@@ -182,7 +178,7 @@ call :_ReturnToMenu_
 rem ================= OPTION 2 =================
 
 
-:Setup_FFmpeg
+:InitDeploy-ffmpeg
 :: Check whether FFmpeg already exists
 echo %PATH% | findstr /i "ffmpeg" > NUL && goto ffmpeg-deploy-ok
 if exist "%ffBin%\ffmpeg.exe" goto ffmpeg-deploy-ok
@@ -193,14 +189,8 @@ echo %str_downloading%...
 call :Common_7za
 call scripts\SourcesSelector.bat sources.txt ffmpeg %_Region_% %_SystemType_% download\to-be-downloaded.txt
 wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
-cd download
-for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do ( set "ffZip=%%i" )
-echo %str_unzipping% %ffZip% ...
-7za x %ffZip% > NUL
-set "ffDir=%ffZip:~0,-4%"
-move %ffDir% "%root%\usr\ffmpeg" > NUL
-:initlog-ffmpeg
-cd .. && call scripts\Log.bat Init ffmpeg
+call scripts\DoDeploy.bat Setup ffmpeg
+call scripts\Log.bat Init ffmpeg
 
 :ffmpeg-deploy-ok
 echo. & echo FFmpeg %str_already-deploy%
@@ -243,9 +233,9 @@ if "%_isYgLatestVersion%"=="1" if "%_isYdLatestVersion%"=="1" if "%_isAnLatestVe
     goto upgrade_done
 )
 set "whetherToLog=true"
-if "%_isYgLatestVersion%"=="0" call :Upgrade_YouGet
-if "%_isYdLatestVersion%"=="0" call :Upgrade_YoutubeDL
-if "%_isAnLatestVersion%"=="0" call :Upgrade_Annie
+if "%_isYgLatestVersion%"=="0" call scripts\DoDeploy.bat Upgrade youget
+if "%_isYdLatestVersion%"=="0" call scripts\DoDeploy.bat Upgrade youtubedl
+if "%_isAnLatestVersion%"=="0" call scripts\DoDeploy.bat Upgrade annie
 goto upgrade_done
 
 
@@ -255,7 +245,7 @@ if "%_isYgLatestVersion%"=="1" (
     echo you-get %str_is-latestVersion%: v%ygCurrentVersion%
 ) else (
     set "whetherToLog=true"
-    call :Upgrade_YouGet
+    call scripts\DoDeploy.bat Upgrade youget
 )
 goto upgrade_done
 
@@ -266,7 +256,7 @@ if "%_isAnLatestVersion%"=="1" (
     echo annie %str_is-latestVersion%: v%anCurrentVersion%
 ) else (
     set "whetherToLog=true"
-    call :Upgrade_Annie
+    call scripts\DoDeploy.bat Upgrade annie
 )
 
 :: Re-create a pip3.cmd in case of the whole folder had been moved.
@@ -281,7 +271,7 @@ echo pip3 install --upgrade youtube-dl %pip_option%> upgrade_youtube-dl.bat
 :: Directly use "pip3 install --upgrade you-get" here will crash for some unknown reason.
 :: So write the command into a bat and then call it.
 call upgrade_you-get.bat && call upgrade_youtube-dl.bat
-echo You-Get %str_already-upgraded% && echo Youtube-dl %str_already-upgraded%
+echo You-Get %str_already-upgraded% & echo Youtube-dl %str_already-upgraded%
 cd .. && goto upgrade_done
 
 
@@ -435,45 +425,6 @@ if NOT exist download\7za.exe (
 goto :eof
 
 
-:Setup_Python
-:: Get the full name of "python-3.x.x-embed*.zip" -> %pyZip%
-for /f "delims=" %%i in ('dir /b /a:a python*embed*.zip') do ( set "pyZip=%%i" )
-echo %str_unzipping% %pyZip%...
-:: https://superuser.com/questions/331148/7-zip-command-line-extract-silently-quietly
-7za x %pyZip% -o"%pyBin%" > NUL
-echo Python-embed %str_already-deploy%
-goto :eof
-
-
-:Setup_YouGet
-for /f "delims=" %%i in ('dir /b /a:a you-get*.tar.gz') do ( set "ygZip=%%i" )
-echo %str_unzipping% %ygZip%...
-:: https://superuser.com/questions/80019/how-can-i-unzip-a-tar-gz-in-one-step-using-7-zip
-7za x %ygZip% -so | 7za x -aoa -si -ttar > NUL
-set ygDir=%ygZip:~0,-7%
-move %ygDir% "%ygBin%" > NUL
-echo You-Get %str_already-deploy%
-goto :eof
-
-
-:Setup_YoutubeDL
-for /f "delims=" %%i in ('dir /b /a:a youtube-dl*.tar.gz') do ( set "ydZip=%%i" )
-echo %str_unzipping% %ydZip%...
-7za x %ydZip% -so | 7za x -aoa -si -ttar > NUL
-set ydDir=youtube-dl
-move %ydDir% "%ydBin%" > NUL
-echo Youtube-dl %str_already-deploy%
-goto :eof
-
-
-:Setup_Annie
-for /f "delims=" %%i in ('dir /b /a:a annie*Windows*.zip') do ( set "anZip=%%i" )
-echo %str_unzipping% %anZip%...
-7za x %anZip% -o"%anBin%" > NUL
-echo Annie %str_already-deploy%
-goto :eof
-
-
 :Create_Download-bat
 set isInInitDeploy=%~1
 call res\scripts\GenerateDownloadBatch.bat %DeployMode%
@@ -529,49 +480,6 @@ goto :eof
 if exist wget.opt (
     for /f "eol=# delims=" %%i in (wget.opt) do ( set "_WgetOptions_=%%i" && goto :eof )    
 ) else ( set "_WgetOptions_=-q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc" )
-goto :eof
-
-
-:Upgrade_YouGet
-echo %str_upgrading% you-get...
-:: %ygCurrentVersion% was set in res\scripts\CheckUpdate.bat :CheckUpdate_youget
-del /Q download\you-get-%ygCurrentVersion%.tar.gz >NUL 2>NUL
-del /Q sources.txt >NUL 2>NUL
-wget %_WgetOptions_% %_RemoteRes_%/sources.txt
-call scripts\SourcesSelector.bat sources.txt youget %_Region_% %_SystemType_% download\to-be-downloaded.txt
-wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
-rd /S /Q "%ygBin%" >NUL 2>NUL
-cd download && call :Setup_YouGet
-cd ..
-echo You-Get %str_already-upgraded%
-goto :eof
-
-
-:Upgrade_YoutubeDL
-echo %str_upgrading% youtube-dl...
-:: %ydCurrentVersion% and %ydLatestVersion% were set in res\scripts\CheckUpdate.bat :CheckUpdate_youtubedl
-del /Q download\youtube-dl-%ydCurrentVersion%.tar.gz >NUL 2>NUL
-set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/youtube-dl-%ydLatestVersion%.tar.gz"
-echo %ydLatestVersion_Url%>> download\to-be-downloaded.txt
-wget %_WgetOptions_% %ydLatestVersion_Url% -P download
-rd /S /Q "%ydBin%" >NUL 2>NUL
-cd download && call :Setup_YoutubeDL
-cd ..
-echo You-Get %str_already-upgraded%
-goto :eof
-
-
-:Upgrade_Annie
-echo %str_upgrading% annie...
-:: %anCurrentVersion% and %anLatestVersion% were set in res\scripts\CheckUpdate.bat :CheckUpdate_annie
-del /Q download\annie_%anCurrentVersion%_Windows*.zip >NUL 2>NUL
-set "anLatestVersion_Url=https://github.com/iawia002/annie/releases/download/%anLatestVersion%/annie_%anLatestVersion%_Windows_%_SystemType_%-bit.zip"
-echo %anLatestVersion_Url%>> download\to-be-downloaded.txt
-wget %_WgetOptions_% %anLatestVersion_Url% -P download
-del /Q "%anBin%\annie.exe" >NUL 2>NUL
-cd download && call :Setup_Annie
-cd ..
-echo Annie %str_already-upgraded%
 goto :eof
 
 

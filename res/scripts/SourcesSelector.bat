@@ -1,5 +1,5 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
-:: Used for "Deploy.bat" in :Setup_FFmpeg & :Common & :Upgrade_YouGet & 
+:: Used for "Deploy.bat" in :Common & :InitDeploy-ffmpeg ; Used for "res\scripts\DoDeploy.bat" in :Upgrade_youget
 :: Please make sure that: only call this batch when %cd% is "res\".
 :: e.g. 
 :: call scripts\SourcesSelector.bat sources.txt portable cn 64 download\to-be-downloaded.txt
