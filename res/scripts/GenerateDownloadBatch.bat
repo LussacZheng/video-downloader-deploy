@@ -26,11 +26,11 @@ echo     pause^>NUL ^& exit>>%dl-bat-filename%
 echo )>>%dl-bat-filename%
 echo color F0>>%dl-bat-filename%
 echo.>>%dl-bat-filename%
-echo cd usr>>%dl-bat-filename%
+echo cd res>>%dl-bat-filename%
 echo if exist deploy.settings (>>%dl-bat-filename%
-echo      for /f "tokens=2 delims= " %%%%i in ('findstr /i "Proxy" deploy.settings') do ( set "state_proxy=%%%%i" )>>%dl-bat-filename%
-echo      for /f "tokens=2 delims= " %%%%i in ('findstr /i "FFmpeg" deploy.settings') do ( set "state_ffmpeg=%%%%i" )>>%dl-bat-filename%
-echo ) else ( set "state_proxy=disable" ^&^& set "state_ffmpeg=enable" )>>%dl-bat-filename%
+echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "ProxyHint" deploy.settings') do ( set "state_proxyHint=%%%%i" )>>%dl-bat-filename%
+echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "FFmpeg" deploy.settings') do ( set "state_ffmpeg=%%%%i" )>>%dl-bat-filename%
+echo ) else ( set "state_proxyHint=disable" ^&^& set "state_ffmpeg=enable" )>>%dl-bat-filename%
 echo cd ..>>%dl-bat-filename%
 echo.>>%dl-bat-filename%
 echo set "root=%%cd%%">>%dl-bat-filename%
@@ -68,8 +68,8 @@ echo echo youtube-dl: https://github.com/ytdl-org/youtube-dl/blob/master/README.
 echo echo annie:      https://github.com/iawia002/annie/blob/master/README.md>>%dl-bat-filename%
 echo echo. ^& echo.>>%dl-bat-filename%
 echo if "%%state_ffmpeg%%"=="disable" ( echo %str_ffmpeg-disabled% ^& echo. ^& echo. )>>%dl-bat-filename%
-echo if "%%state_proxy%%"=="enable" (>>%dl-bat-filename%
-echo     echo %str_proxy-setting%>>%dl-bat-filename%
+echo if "%%state_proxyHint%%"=="enable" (>>%dl-bat-filename%
+echo     echo %str_proxyHint-setting%>>%dl-bat-filename%
 echo     echo you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
 echo     echo youtube-dl --proxy socks5://127.0.0.1:1080/ https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
 echo     echo annie -x http://127.0.0.1:7777 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%

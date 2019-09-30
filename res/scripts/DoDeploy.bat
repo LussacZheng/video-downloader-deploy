@@ -69,7 +69,7 @@ echo Annie %str_already-deploy%
 goto :eof
 
 
-:Setup_FFmpeg
+:Setup_ffmpeg
 for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do ( set "ffZip=%%i" )
 echo %str_unzipping% %ffZip% ...
 7za x %ffZip% > NUL

@@ -42,7 +42,7 @@
 当通过 `AutoGenerateLatestSourcesLists.bat` 生成了新的 `sources.txt` 后，比较并输出其与 `..\sources.txt` 之间的差异，以直观体现是否有更新可用。
 
 ### 使用
-确保 `SourcesListsDiff.bat` 当前所在目录和上级目录都存在 `sources.txt` ，直接运行脚本即可。
+确保 `SourcesListsDiff.bat` 当前所在目录和上级目录都存在 `sources.txt` ，使用文本编辑器将两个 `sources.txt` 的换行符都设置为 `CRLF` ，直接运行脚本即可。
 
 ### 注意
 请勿将此脚本当作真正的 Diff 工具使用，它只适用于 `sources.txt` 的比较。Windows 系统下可以使用 `fc` 命令比较差异，CMD 下输入 `help fc` 以查看细节。
