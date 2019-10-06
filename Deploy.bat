@@ -2,13 +2,13 @@
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
 :: Version: 1.3.0
-:: Last updated: 2019-09-30
+:: Last updated: 2019-10-07
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
 set "version=1.3.0"
-set "lastUpdated=2019-09-30"
+set "lastUpdated=2019-10-07"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -351,35 +351,35 @@ set /p opt6_choice= %str_please-choose%
 echo.
 if "%opt6_choice%"=="0" goto MENU
 if "%opt6_choice%"=="1" goto setting_Language
-if "%opt6_choice%"=="11" ( call res\scripts\Config.bat Language en && goto _ReturnToSetting_ )
-if "%opt6_choice%"=="12" ( call res\scripts\Config.bat Language zh && goto _ReturnToSetting_ )
+if "%opt6_choice%"=="11" ( call res\scripts\Config.bat Language en && goto _PleaseRerun_ )
+if "%opt6_choice%"=="12" ( call res\scripts\Config.bat Language zh && goto _PleaseRerun_ )
 if "%opt6_choice%"=="2" goto setting_Region
-if "%opt6_choice%"=="21" ( call res\scripts\Config.bat Region origin && goto _ReturnToSetting_ )
-if "%opt6_choice%"=="22" ( call res\scripts\Config.bat Region cn && goto _ReturnToSetting_ )
+if "%opt6_choice%"=="21" ( call res\scripts\Config.bat Region origin && goto _PleaseRerun_ )
+if "%opt6_choice%"=="22" ( call res\scripts\Config.bat Region cn && goto _PleaseRerun_ )
 if "%opt6_choice%"=="3" goto setting_ProxyHint
 if "%opt6_choice%"=="4" goto setting_FFmpeg
 if "%opt6_choice%"=="5" goto setting_Wget
 if "%opt6_choice%"=="50" goto setting_Wget2
 echo. & echo %str_please-input-valid-num%
-call :_ReturnToSetting_
+goto _ReturnToSetting_
 
 
 :setting_Language
 echo %str_please-select-language%
-call :_ReturnToSetting_
+goto _ReturnToSetting_
 
 :setting_Region
 echo %str_current-region% %_Region_%
 echo %str_please-select-region%
-call :_ReturnToSetting_
+goto _ReturnToSetting_
 
 :setting_ProxyHint
 call res\scripts\Config.bat ProxyHint
-call :_ReturnToSetting_
+goto _ReturnToSetting_
 
 :setting_FFmpeg
 call res\scripts\Config.bat FFmpeg
-call :_ReturnToSetting_
+goto _ReturnToSetting_
 
 :setting_Wget
 echo. & echo %str_wget-option-is%
@@ -391,12 +391,12 @@ cd ..
 echo. & echo %str_please-edit-wget-opt_1%
 echo %str_please-edit-wget-opt_2%
 echo %str_please-edit-wget-opt_3%
-call :_ReturnToSetting_
+goto _ReturnToSetting_
 
 :setting_Wget2
 cd res && call scripts\GenerateWgetOptions.bat
 cd .. && echo %str_reset-wget-opt-ok%
-call :_ReturnToSetting_
+goto _ReturnToSetting_
 
 
 rem ================= FUNCTIONS =================
@@ -410,6 +410,11 @@ goto MENU
 :_ReturnToSetting_
 pause > NUL
 goto Setting
+
+
+:_PleaseRerun_
+pause > NUL
+exit
 
 
 :: Please make sure that: only call :Common* when %cd% is "res\".
