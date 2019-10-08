@@ -22,7 +22,7 @@ echo @echo off>>%dl-bat-filename%
 echo.>>%dl-bat-filename%
 echo if NOT exist usr\ (>>%dl-bat-filename%
 echo     echo. ^& echo %str_dl-bat-moved%>>%dl-bat-filename%
-echo     pause^>NUL ^& exit>>%dl-bat-filename%
+echo     pause ^> NUL ^& exit>>%dl-bat-filename%
 echo )>>%dl-bat-filename%
 echo color F0>>%dl-bat-filename%
 echo.>>%dl-bat-filename%

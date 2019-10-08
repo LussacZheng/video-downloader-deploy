@@ -24,7 +24,8 @@ rem ================= FUNCTIONS =================
 cd res
 if NOT exist %cfg_File% (
     :: Set to default
-    echo Language: %_Language_%> %cfg_File%
+    echo # NEVER EDIT THIS FILE.> %cfg_File%
+    echo Language: %_Language_%>> %cfg_File%
     echo Region: %_Region_%>> %cfg_File%
     echo ProxyHint: disable>> %cfg_File%
     echo FFmpeg: enable>> %cfg_File%
@@ -43,7 +44,7 @@ goto :eof
 :Config_Language
 for /f "delims=" %%i in (%cfg_File%.bak) do (
     set "cfg_Content=%%i" 
-    echo %%i | findstr "Language">nul && ( set "cfg_Content=Language: %cfg_Extra%" )
+    echo %%i | findstr "Language" >NUL && ( set "cfg_Content=Language: %cfg_Extra%" )
     echo !cfg_Content!>>%cfg_File%
 )
 call scripts\lang_%cfg_Extra%.bat
@@ -55,7 +56,7 @@ goto :eof
 :Config_Region
 for /f "delims=" %%i in (%cfg_File%.bak) do (
     set "cfg_Content=%%i" 
-    echo %%i | findstr "Region">nul && ( set "cfg_Content=Region: %cfg_Extra%" )
+    echo %%i | findstr "Region" >NUL && ( set "cfg_Content=Region: %cfg_Extra%" )
     echo !cfg_Content!>>%cfg_File%
 )
 echo %str_region-set-to% %cfg_Extra% 

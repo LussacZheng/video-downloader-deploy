@@ -98,10 +98,11 @@ for /f "delims=" %%i in ('youtube-dl --version') do ( set "log_ydVer=%%i" )
 goto :eof
 
 :Log_init
-echo Initialized: true> %log_File%
-echo DeployMode: %log_DeployMode%>> %log_File%
-echo.>> %log_File%
+echo # NEVER EDIT THIS FILE.> %log_File%
 echo # py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip>> %log_File%
+echo.>> %log_File%
+echo Initialized: true>> %log_File%
+echo DeployMode: %log_DeployMode%>> %log_File%
 echo.>> %log_File%
 call :Log_time
 goto :eof
