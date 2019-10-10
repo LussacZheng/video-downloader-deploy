@@ -88,7 +88,7 @@ call scripts\SourcesSelector.bat sources.txt youget %_Region_% %_SystemType_% do
 wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
 rd /S /Q "%ygBin%" >NUL 2>NUL
 cd download && call :Setup_youget
-cd .. && echo You-Get %str_already-upgraded%
+cd .. && echo You-Get %str_already-upgrade%
 goto :eof
 
 
@@ -101,7 +101,7 @@ echo %ydLatestVersion_Url%>> download\to-be-downloaded.txt
 wget %_WgetOptions_% %ydLatestVersion_Url% -P download
 rd /S /Q "%ydBin%" >NUL 2>NUL
 cd download && call :Setup_youtubedl
-cd .. && echo Youtube-dl %str_already-upgraded%
+cd .. && echo Youtube-dl %str_already-upgrade%
 goto :eof
 
 
@@ -114,7 +114,7 @@ echo %anLatestVersion_Url%>> download\to-be-downloaded.txt
 wget %_WgetOptions_% %anLatestVersion_Url% -P download
 del /Q "%anBin%\annie.exe" >NUL 2>NUL
 cd download && call :Setup_annie
-cd .. && echo Annie %str_already-upgraded%
+cd .. && echo Annie %str_already-upgrade%
 goto :eof
 
 

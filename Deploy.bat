@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.3.0
-:: Last updated: 2019-10-07
+:: Version: 1.3.1
+:: Last updated: 2019-10-10
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "version=1.3.0"
-set "lastUpdated=2019-10-07"
+set "version=1.3.1"
+set "lastUpdated=2019-10-10"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -104,7 +104,7 @@ rem ================= OPTION 1 =================
 
 :InitDeploy
 echo. & echo %str_please-choose-from%
-call :_ReturnToMenu_
+goto _ReturnToMenu_
 
 
 rem ================= OPTION 11 =================
@@ -179,7 +179,7 @@ rem ================= OPTION 11-13 InitLog =================
 :InitLog
 call scripts\Log.bat Init %DeployMode%
 cd .. && call :Create_Download-bat 1
-call :_ReturnToMenu_
+goto _ReturnToMenu_
 
 
 rem ================= OPTION 2 =================
@@ -187,8 +187,8 @@ rem ================= OPTION 2 =================
 
 :InitDeploy-ffmpeg
 :: Check whether FFmpeg already exists
-echo %PATH% | findstr /i "ffmpeg" > NUL && goto ffmpeg-deploy-ok
-if exist "%ffBin%\ffmpeg.exe" goto ffmpeg-deploy-ok
+echo %PATH% | findstr /i "ffmpeg" >NUL && goto ffmpeg-exists
+if exist "%ffBin%\ffmpeg.exe" goto ffmpeg-exists
 
 call :AskForInit
 cd res && call :Common_wget
@@ -199,9 +199,15 @@ wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
 call scripts\DoDeploy.bat Setup ffmpeg
 call scripts\Log.bat Init ffmpeg
 
-:ffmpeg-deploy-ok
-echo. & echo FFmpeg %str_already-deploy%
-call :_ReturnToMenu_
+echo. 
+echo ====================================================
+echo FFmpeg %str_already-deploy%
+echo ====================================================
+goto _ReturnToMenu_
+
+:ffmpeg-exists
+echo. & echo FFmpeg %str_already-exist%
+goto _ReturnToMenu_
 
 
 rem ================= OPTION 3 =================
@@ -278,14 +284,14 @@ echo pip3 install --upgrade youtube-dl %pip_option%> upgrade_youtube-dl.bat
 :: Directly use "pip3 install --upgrade you-get" here will crash for some unknown reason.
 :: So write the command into a bat and then call it.
 call upgrade_you-get.bat && call upgrade_youtube-dl.bat
-echo You-Get %str_already-upgraded% & echo Youtube-dl %str_already-upgraded%
+echo You-Get %str_already-upgrade% & echo Youtube-dl %str_already-upgrade%
 cd .. && goto upgrade_done
 
 
 :upgrade_done
 if "%whetherToLog%"=="true" call scripts\Log.bat Upgrade %DeployMode%
 echo. & echo. & echo %str_upgrade-ok%
-call :_ReturnToMenu_
+goto _ReturnToMenu_
 
 
 rem ================= OPTION 4 =================
@@ -306,7 +312,7 @@ goto reset_dl-bat_Manually
 
 :create_dl-bat
 cd .. && call :Create_Download-bat 0
-call :_ReturnToMenu_
+goto _ReturnToMenu_
 
 
 rem ================= OPTION 5 =================
@@ -326,7 +332,7 @@ if "%_isLatestVersion%"=="1" (
 )
 pause > NUL
 start https://github.com/LussacZheng/video-downloader-deploy
-call :_ReturnToMenu_
+goto _ReturnToMenu_
 
 
 rem ================= OPTION 6 =================
@@ -413,6 +419,7 @@ goto Setting
 
 
 :_PleaseRerun_
+echo. & echo %str_exit%
 pause > NUL
 exit
 
@@ -468,8 +475,7 @@ goto :eof
 :: Check whether already InitDeploy,
 if exist usr (
     echo. & echo %str_please-re-init%
-    pause > NUL
-    exit
+    call :_PleaseRerun_
 )
 goto :eof
 
