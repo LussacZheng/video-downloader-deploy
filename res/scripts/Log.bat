@@ -54,7 +54,7 @@ call :Log_common
 goto :eof
 
 
-:: %ygCurrentVersion%, %ydLatestVersion%, %anLatestVersion% were set in res\scripts\CheckUpdate.bat :CheckUpdate_*
+:: %ygLatestVersion%, %ydLatestVersion%, %anLatestVersion% were set in res\scripts\CheckUpdate.bat :CheckUpdate_*
 :Log_Upgrade-portable
 call :Log_time
 echo ygVer: %ygLatestVersion%>> %log_File%
@@ -91,10 +91,14 @@ set "formatedDateTime=%LDT:~0,4%-%LDT:~4,2%-%LDT:~6,2% %LDT:~8,2%:%LDT:~10,2%:%L
 goto :eof
 
 :GetPackagesInfo
-for /f "tokens=2 delims= " %%i in ('pip -V') do ( set "log_pipVer=%%i" )
-for /f "tokens=2 delims=-" %%i in ('dir /b "%pyBin%\Lib\site-packages\you_get*.dist-info"') do ( set "log_ygVer=%%i" )
+pushd "%pyBin%\Lib\site-packages"
+for /f "tokens=2 delims=-" %%i in ('dir /b "pip*.dist-info"') do ( set "log_pipVer=%%i" )
+set "log_pipVer=%log_pipVer:.dist=%"
+for /f "tokens=2 delims=-" %%i in ('dir /b "you_get*.dist-info"') do ( set "log_ygVer=%%i" )
 set "log_ygVer=%log_ygVer:.dist=%"
-for /f "delims=" %%i in ('youtube-dl --version') do ( set "log_ydVer=%%i" )
+for /f "tokens=2 delims=-" %%i in ('dir /b "youtube_dl*.dist-info"') do ( set "log_ydVer=%%i" )
+set "log_ydVer=%log_ydVer:.dist=%"
+popd
 goto :eof
 
 :Log_init

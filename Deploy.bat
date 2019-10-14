@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.3.1
-:: Last updated: 2019-10-10
+:: Version: 1.3.2
+:: Last updated: 2019-10-14
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "version=1.3.1"
-set "lastUpdated=2019-10-10"
+set "version=1.3.2"
+set "lastUpdated=2019-10-14"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -273,11 +273,12 @@ if "%_isAnLatestVersion%"=="1" (
 )
 
 :: Re-create a pip3.cmd in case of the whole folder had been moved.
-set "PATH=%root%\res\command;%pyBin%;%pyBin%\Scripts;%PATH%"
-if NOT exist command md command
+pushd "%root%\usr"
+set "PATH=%root%\usr\command;%pyBin%;%pyBin%\Scripts;%PATH%"
+if NOT exist command\ md command
 cd command
 echo @"%pyBin%\python.exe" "%pyBin%\Scripts\pip3.exe" %%*> pip3.cmd
-REM echo @python.exe ..\..\usr\python-embed\Scripts\pip3.exe %%*> pip3.cmd
+:: OR  echo @python ..\python-embed\Scripts\pip3.exe %%*> pip3.cmd
 if "%_Region_%"=="cn" set "pip_option=--index-url=https://pypi.tuna.tsinghua.edu.cn/simple"
 echo pip3 install --upgrade you-get %pip_option%> upgrade_you-get.bat
 echo pip3 install --upgrade youtube-dl %pip_option%> upgrade_youtube-dl.bat
@@ -285,7 +286,7 @@ echo pip3 install --upgrade youtube-dl %pip_option%> upgrade_youtube-dl.bat
 :: So write the command into a bat and then call it.
 call upgrade_you-get.bat && call upgrade_youtube-dl.bat
 echo You-Get %str_already-upgrade% & echo Youtube-dl %str_already-upgrade%
-cd .. && goto upgrade_done
+popd && goto upgrade_done
 
 
 :upgrade_done

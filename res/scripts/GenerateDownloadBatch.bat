@@ -39,9 +39,9 @@ echo set "ygBin=%%root%%\usr\you-get">>%dl-bat-filename%
 echo set "ydBin=%%root%%\usr\youtube-dl">>%dl-bat-filename%
 echo set "anBin=%%root%%\usr">>%dl-bat-filename%
 echo if "%%state_ffmpeg%%"=="enable" ( set "ffBin=%%root%%\usr\ffmpeg\bin;" )>>%dl-bat-filename%
-echo set "PATH=%%root%%\res\command;%%pyBin%%;%%pyBin%%\Scripts;%%anBin%%;%%ffBin%%%%PATH%%">>%dl-bat-filename%
-echo if NOT exist res\command md res\command>>%dl-bat-filename%
-echo del /Q res\command\*.cmd ^>NUL 2^>NUL>>%dl-bat-filename%
+echo set "PATH=%%root%%\usr\command;%%pyBin%%;%%pyBin%%\Scripts;%%anBin%%;%%ffBin%%%%PATH%%">>%dl-bat-filename%
+echo if NOT exist usr\command md usr\command>>%dl-bat-filename%
+echo del /Q usr\command\*.cmd ^>NUL 2^>NUL>>%dl-bat-filename%
 echo.>>%dl-bat-filename%
 goto :eof
 
@@ -83,24 +83,23 @@ goto :eof
 
 
 :GenerateDownloadBatch-portable
-echo echo @"%%pyBin%%\python.exe" "%%ygBin%%\you-get" %%%%*^> res\command\you-get.cmd>>%dl-bat-filename%
-:: echo @python ..\usr\you-get\you-get %%*> res\command\you-get.cmd
-echo echo @"%%pyBin%%\python.exe" "%%ydBin%%\youtube-dl" %%%%*^> res\command\youtube-dl.cmd>>%dl-bat-filename%
+echo echo @"%%pyBin%%\python.exe" "%%ygBin%%\you-get" %%%%*^> usr\command\you-get.cmd>>%dl-bat-filename%
+:: OR  echo @python ..\usr\you-get\you-get %%*> usr\command\you-get.cmd
+echo echo @"%%pyBin%%\python.exe" "%%ydBin%%\youtube-dl" %%%%*^> usr\command\youtube-dl.cmd>>%dl-bat-filename%
+goto :eof
+
+:GenerateDownloadBatch-quickstart
+echo echo @"%%pyBin%%\python.exe" "%%ygBin%%\you-get" %%%%*^> usr\command\you-get.cmd>>%dl-bat-filename%
 goto :eof
 
 
 :GenerateDownloadBatch-withpip
-echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\pip3.exe" %%%%*^> res\command\pip3.cmd>>%dl-bat-filename%
-echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\pip.exe" %%%%*^> res\command\pip.cmd>>%dl-bat-filename%
-echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\wheel.exe" %%%%*^> res\command\wheel.cmd>>%dl-bat-filename%
-echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\easy_install.exe" %%%%*^> res\command\easy_install.cmd>>%dl-bat-filename%
-echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\you-get.exe" %%%%*^> res\command\you-get.cmd>>%dl-bat-filename%
-echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\youtube-dl.exe" %%%%*^> res\command\youtube-dl.cmd>>%dl-bat-filename%
-goto :eof
-
-
-:GenerateDownloadBatch-quickstart
-echo echo @"%%pyBin%%\python.exe" "%%ygBin%%\you-get" %%%%*^> res\command\you-get.cmd>>%dl-bat-filename%
+echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\pip3.exe" %%%%*^> usr\command\pip3.cmd>>%dl-bat-filename%
+echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\pip.exe" %%%%*^> usr\command\pip.cmd>>%dl-bat-filename%
+echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\wheel.exe" %%%%*^> usr\command\wheel.cmd>>%dl-bat-filename%
+echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\easy_install.exe" %%%%*^> usr\command\easy_install.cmd>>%dl-bat-filename%
+echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\you-get.exe" %%%%*^> usr\command\you-get.cmd>>%dl-bat-filename%
+echo echo @"%%pyBin%%\python.exe" "%%pyBin%%\Scripts\youtube-dl.exe" %%%%*^> usr\command\youtube-dl.cmd>>%dl-bat-filename%
 goto :eof
 
 
