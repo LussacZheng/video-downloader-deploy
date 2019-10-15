@@ -56,10 +56,11 @@ echo pyLatestVersion: %pyLatestVersion%
 
 :: The output of 'findstr /n /i /c:"Python 3.7.4 -" pyLatestRelease.txt' should be like: 
 ::     514:                        <a href="/downloads/release/python-374/">Python 3.7.4 - July 8, 2019</a>
+:: OR  514:                        <a href="/downloads/release/python-380/">Python 3.8.0 - Oct. 14, 2019</a>
 for /f "tokens=6-8 delims=< " %%x in ('findstr /n /i /c:"Python %pyLatestVersion% -" pyLatestRelease.txt') do (
     set "pyLatestReleasedTime_month=%%x" && set "pyLatestReleasedTime_day=%%y" && set "pyLatestReleasedTime_year=%%z"
 )
-set "pyLatestReleasedTime=%pyLatestReleasedTime_year:"=%-%pyLatestReleasedTime_month%-%pyLatestReleasedTime_day:,=%"
+set "pyLatestReleasedTime=%pyLatestReleasedTime_year:"=%-%pyLatestReleasedTime_month:.=%-%pyLatestReleasedTime_day:,=%"
 echo pyLatestReleasedTime: %pyLatestReleasedTime%
 echo.
 
