@@ -268,8 +268,8 @@ echo Mirrors{>> %filePath%
 echo     [origin]>> %filePath%
 echo     https://www.python.org/ftp/python/%pyLatestVersion%/python-%pyLatestVersion%-embed-win32.zip>> %filePath%
 echo     [cn]>> %filePath%
-echo     @ https://npm.taobao.org/mirrors/python/%pyLatestVersion%/python-%pyLatestVersion%-embed-win32.zip>> %filePath%
-echo     $ https://mirrors.huaweicloud.com/python/%pyLatestVersion%/python-%pyLatestVersion%-embed-win32.zip>> %filePath%
+echo     @ https://mirrors.huaweicloud.com/python/%pyLatestVersion%/python-%pyLatestVersion%-embed-win32.zip>> %filePath%
+echo     $ https://npm.taobao.org/mirrors/python/%pyLatestVersion%/python-%pyLatestVersion%-embed-win32.zip>> %filePath%
 echo     [test]>> %filePath%
 echo     @ https://mirrors.huaweicloud.com/python/%pyLatestVersion%/python-%pyLatestVersion%-embed-win32.zip>> %filePath%
 echo }>> %filePath%
