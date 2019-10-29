@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.3.2
-:: Last updated: 2019-10-14
+:: Version: 1.3.3
+:: Last updated: 2019-10-29
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "version=1.3.2"
-set "lastUpdated=2019-10-14"
+set "version=1.3.3"
+set "lastUpdated=2019-10-29"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -351,6 +351,7 @@ echo. & echo  [2] %str_opt6_opt2%
 echo. & echo  [3] %str_opt6_opt3%
 echo. & echo  [4] %str_opt6_opt4%
 echo. & echo  [5] %str_opt6_opt5%
+echo. & echo  [6] %str_opt6_opt6%
 echo. & echo.
 echo ====================================================
 set opt6_choice=-1
@@ -367,6 +368,7 @@ if "%opt6_choice%"=="3" goto setting_ProxyHint
 if "%opt6_choice%"=="4" goto setting_FFmpeg
 if "%opt6_choice%"=="5" goto setting_Wget
 if "%opt6_choice%"=="50" goto setting_Wget2
+if "%opt6_choice%"=="6" goto setting_NetTest
 echo. & echo %str_please-input-valid-num%
 goto _ReturnToSetting_
 
@@ -403,6 +405,10 @@ goto _ReturnToSetting_
 :setting_Wget2
 cd res && call scripts\GenerateWgetOptions.bat
 cd .. && echo %str_reset-wget-opt-ok%
+goto _ReturnToSetting_
+
+:setting_NetTest
+call res\scripts\Config.bat NetTest
 goto _ReturnToSetting_
 
 
@@ -491,6 +497,10 @@ goto :eof
 
 
 :StopIfDisconnected
+if exist deploy.settings (
+    for /f "tokens=2 delims= " %%i in ('findstr /i "NetTest" deploy.settings') do ( set "state_netTest=%%i" )
+)
+if "%state_netTest%"=="disable" goto :eof
 echo %str_checking-connection%...
 wget -q --no-check-certificate %_RemoteRes_%/scripts/CurrentVersion -O NetTest && set "_isNetConnected=true" || set "_isNetConnected=false"
 if exist NetTest del NetTest
