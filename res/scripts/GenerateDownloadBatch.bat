@@ -26,12 +26,10 @@ echo     pause ^> NUL ^& exit>>%dl-bat-filename%
 echo )>>%dl-bat-filename%
 echo color F0>>%dl-bat-filename%
 echo.>>%dl-bat-filename%
-echo cd res>>%dl-bat-filename%
-echo if exist deploy.settings (>>%dl-bat-filename%
-echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "ProxyHint" deploy.settings') do ( set "state_proxyHint=%%%%i" )>>%dl-bat-filename%
-echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "FFmpeg" deploy.settings') do ( set "state_ffmpeg=%%%%i" )>>%dl-bat-filename%
+echo if exist res\deploy.settings (>>%dl-bat-filename%
+echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "ProxyHint" res\deploy.settings') do ( set "state_proxyHint=%%%%i" )>>%dl-bat-filename%
+echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "FFmpeg" res\deploy.settings') do ( set "state_ffmpeg=%%%%i" )>>%dl-bat-filename%
 echo ) else ( set "state_proxyHint=disable" ^&^& set "state_ffmpeg=enable" )>>%dl-bat-filename%
-echo cd ..>>%dl-bat-filename%
 echo.>>%dl-bat-filename%
 echo set "root=%%cd%%">>%dl-bat-filename%
 echo set "pyBin=%%root%%\usr\python-embed">>%dl-bat-filename%
@@ -40,9 +38,9 @@ echo set "ydBin=%%root%%\usr\youtube-dl">>%dl-bat-filename%
 echo set "anBin=%%root%%\usr">>%dl-bat-filename%
 echo if "%%state_ffmpeg%%"=="enable" ( set "ffBin=%%root%%\usr\ffmpeg\bin;" )>>%dl-bat-filename%
 echo set "PATH=%%root%%\usr\command;%%pyBin%%;%%pyBin%%\Scripts;%%anBin%%;%%ffBin%%%%PATH%%">>%dl-bat-filename%
+echo.>>%dl-bat-filename%
 echo if NOT exist usr\command md usr\command>>%dl-bat-filename%
 echo del /Q usr\command\*.cmd ^>NUL 2^>NUL>>%dl-bat-filename%
-echo.>>%dl-bat-filename%
 goto :eof
 
 
@@ -76,8 +74,9 @@ echo     echo annie -x http://127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5
 echo     echo annie -s 127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
 echo     echo. ^& echo.>>%dl-bat-filename%
 echo )>>%dl-bat-filename%
-::PROMPT [$D $T$h$h$h$h$h$h]$_$P$_$G$G$G
+echo.>>%dl-bat-filename%
 echo PROMPT $P$_$G$G$G>>%dl-bat-filename%
+::PROMPT [$D $T$h$h$h$h$h$h]$_$P$_$G$G$G
 echo cmd /Q /K>>%dl-bat-filename%
 goto :eof
 
