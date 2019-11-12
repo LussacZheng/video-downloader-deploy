@@ -70,9 +70,9 @@ echo echo. ^& echo.>>%dl-bat-filename%
 echo if "%%state_ffmpeg%%"=="disable" ( echo %str_ffmpeg-disabled% ^& echo. ^& echo. )>>%dl-bat-filename%
 echo if "%%state_proxyHint%%"=="enable" (>>%dl-bat-filename%
 echo     echo %str_proxyHint-setting%>>%dl-bat-filename%
-echo     echo you-get -x 127.0.0.1:8087 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
+echo     echo you-get -x 127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
 echo     echo youtube-dl --proxy socks5://127.0.0.1:1080/ https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
-echo     echo annie -x http://127.0.0.1:7777 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
+echo     echo annie -x http://127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
 echo     echo annie -s 127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
 echo     echo. ^& echo.>>%dl-bat-filename%
 echo )>>%dl-bat-filename%
@@ -87,6 +87,7 @@ echo echo @"%%pyBin%%\python.exe" "%%ygBin%%\you-get" %%%%*^> usr\command\you-ge
 :: OR  echo @python ..\usr\you-get\you-get %%*> usr\command\you-get.cmd
 echo echo @"%%pyBin%%\python.exe" "%%ydBin%%\youtube-dl" %%%%*^> usr\command\youtube-dl.cmd>>%dl-bat-filename%
 goto :eof
+
 
 :GenerateDownloadBatch-quickstart
 echo echo @"%%pyBin%%\python.exe" "%%ygBin%%\you-get" %%%%*^> usr\command\you-get.cmd>>%dl-bat-filename%
