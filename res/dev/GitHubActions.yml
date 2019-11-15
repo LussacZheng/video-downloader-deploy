@@ -1,0 +1,125 @@
+name: Check for updates of sources list for "video-downloader-deploy"
+
+on:
+  schedule:
+  - cron: "0 5 * * *"
+
+jobs:
+  get_latest_sources_info:
+
+    name: Get latest sources info
+
+    runs-on: windows-latest
+
+    env:
+      OUTPUT: output.txt
+
+    steps:
+    # py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
+    # Scripts rearranged from https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/dev/AutoGenerateLatestSourcesLists.bat
+    - name: Download all the webpages
+      run: |
+        echo py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip > %OUTPUT%
+        echo. >> %OUTPUT%
+        curl -s https://www.python.org/downloads/windows/ >> pyLatestRelease.txt
+        curl -s https://pypi.org/project/you-get/ >> ygLatestRelease.txt
+        curl -s -L https://github.com/ytdl-org/youtube-dl/releases/latest >> ydLatestRelease.txt
+        curl -s -L https://github.com/iawia002/annie/releases/latest >> anLatestRelease.txt
+        curl -s https://ffmpeg.zeranoe.com/builds/win64/static/ >> ffLatestRelease.txt
+        curl -s https://pypi.org/project/pip/ >> pipLatestRelease.txt
+      shell: cmd
+
+    - name: Get the latest version of Python
+      run: |
+        for /f "tokens=10 delims=< " %%a in ('findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt') do ( set "pyLatestVersion=%%a" )
+        echo pyLatestVersion: %pyLatestVersion% >> %OUTPUT%
+        for /f "tokens=6-8 delims=< " %%x in ('findstr /n /i /c:"Python %pyLatestVersion% -" pyLatestRelease.txt') do (
+            set "pyLatestReleasedTime_month=%%x" && set "pyLatestReleasedTime_day=%%y" && set "pyLatestReleasedTime_year=%%z"
+        )
+        set "pyLatestReleasedTime=%pyLatestReleasedTime_year:"=%-%pyLatestReleasedTime_month:.=%-%pyLatestReleasedTime_day:,=%"
+        echo pyLatestReleasedTime: %pyLatestReleasedTime% >> %OUTPUT%
+        echo. >> %OUTPUT%
+      shell: cmd
+      continue-on-error: true
+
+    - name: Get the latest version of you-get
+      run: |
+        for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt') do ( set "ygUrl=%%a" )
+        set "ygUrl=%ygUrl:"=%"
+        for /f "tokens=3 delims=-" %%b in ("%ygUrl%") do ( set "ygLatestVersion=%%b")
+        set ygLatestVersion=%ygLatestVersion:.tar.gz=%
+        echo ygLatestVersion: %ygLatestVersion% >> %OUTPUT%
+        for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Last released" ygLatestRelease.txt') do ( set "ygLatestReleasedTime=%%c" )
+        set "ygLatestReleasedTime=%ygLatestReleasedTime:~1,10%"
+        echo ygLatestReleasedTime: %ygLatestReleasedTime% >> %OUTPUT%
+        for /f "tokens=4-6 delims=/" %%x in ("%ygUrl%") do (
+            set "ygUrl_BLAKE2_1=%%x" && set "ygUrl_BLAKE2_2=%%y" && set "ygUrl_BLAKE2_3=%%z"
+        )
+        set "ygBLAKE2=%ygUrl_BLAKE2_1%/%ygUrl_BLAKE2_2%/%ygUrl_BLAKE2_3%"
+        echo ygBLAKE2-256: %ygBLAKE2% >> %OUTPUT%
+        echo. >> %OUTPUT%
+      shell: cmd
+      continue-on-error: true
+
+    - name: Get the latest version of youtube-dl
+      run: |
+        for /f "tokens=4 delims= " %%a in ('findstr /n /i "<title>" ydLatestRelease.txt') do ( set "ydLatestVersion=%%a" )
+        echo ydLatestVersion: %ydLatestVersion% >> %OUTPUT%
+        echo. >> %OUTPUT%
+      shell: cmd
+      continue-on-error: true
+
+    - name: Get the latest version of annie
+      run: |
+        for /f "tokens=3 delims= " %%a in ('findstr /n /i "<title>" anLatestRelease.txt') do ( set "anLatestVersion=%%a" )
+        echo anLatestVersion: %anLatestVersion% >> %OUTPUT%
+        for /f "tokens=3 delims==:" %%b in ('findstr /n /i "relative-time" anLatestRelease.txt') do ( set "anLatestReleasedTime=%%b" )
+        set "anLatestReleasedTime=%anLatestReleasedTime:~1,10%"
+        echo anLatestReleasedTime: %anLatestReleasedTime% >> %OUTPUT%
+        echo. >> %OUTPUT%
+      shell: cmd
+      continue-on-error: true
+
+    - name: Get the latest version of FFmpeg
+      run: |
+        for /f "delims=:" %%a in ('findstr /n /i "latest" ffLatestRelease.txt') do ( set "lineNum=%%a" )
+        set /a lineNum-=2
+        for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :next )
+        :next
+        for /f "tokens=2 delims=-" %%c in (%ffInfo%) do ( set "ffLatestVersion=%%c" )
+        echo ffLatestVersion: %ffLatestVersion% >> %OUTPUT%
+        for /f "tokens=12 delims=> " %%d in (%ffInfo%) do ( set "ffLatestReleasedTime=%%d" )
+        echo ffLatestReleasedTime: %ffLatestReleasedTime% >> %OUTPUT%
+        echo. >> %OUTPUT%
+      shell: cmd
+      continue-on-error: true
+
+    - name: Get the latest version of pip
+      run: |
+        for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" pipLatestRelease.txt') do ( set "pipUrl=%%a" )
+        set "pipUrl=%pipUrl:"=%"
+        for /f "tokens=2 delims=-" %%b in ("%pipUrl%") do ( set "pipLatestVersion=%%b")
+        set pipLatestVersion=%pipLatestVersion:.tar.gz=%
+        echo pipLatestVersion: %pipLatestVersion% >> %OUTPUT%
+        for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Last released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
+        set "pipLatestReleasedTime=%pipLatestReleasedTime:~1,10%"
+        echo pipLatestReleasedTime: %pipLatestReleasedTime% >> %OUTPUT%
+      shell: cmd
+      continue-on-error: true
+
+    - name: Show all info HERE
+      run: |
+        echo.
+        type %OUTPUT%
+      shell: cmd
+
+    - name: Delete all the files
+      run: |
+        del /Q pyLatestRelease.txt >NUL 2>NUL
+        del /Q ygLatestRelease.txt >NUL 2>NUL
+        del /Q ydLatestRelease.txt >NUL 2>NUL
+        del /Q anLatestRelease.txt >NUL 2>NUL
+        del /Q ffLatestRelease.txt >NUL 2>NUL
+        del /Q pipLatestRelease.txt >NUL 2>NUL
+        del %OUTPUT% >NUL 2>NUL
+      shell: cmd

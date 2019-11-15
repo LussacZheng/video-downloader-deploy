@@ -22,15 +22,15 @@
 网页解析算法可能会因为网站改版而失效。
 
 ### 参考资料
-1. Another method to get Python latest version number.   
-   [GitHub - corpnewt/gibMacOS : gibMacOS.bat#L87-L124](https://github.com/corpnewt/gibMacOS/blob/ce6f62c388f2bd48ec57aeca057e29ff90406dbb/gibMacOS.bat#L87-L124)
-2. Another method to get YouGet latest version number.
+1. 另一种获得 Python 最新版本号的方法：   
+   GitHub - corpnewt/gibMacOS : [gibMacOS.bat#L87-L124](https://github.com/corpnewt/gibMacOS/blob/ce6f62c388f2bd48ec57aeca057e29ff90406dbb/gibMacOS.bat#L87-L124)
+2. 另一种获得 You-Get 最新版本号的方法：
    ```batch
-   wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://github.com/soimort/you-get/releases/latest -O ygLatestRelease_Github.txt
-   :: The output of 'findstr /n /i "<title>" ygLatestRelease_Github.txt' should be like: 
+   wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://github.com/soimort/you-get/releases/latest -O yg.txt
+   :: The output of 'findstr /n /i "<title>" yg.txt' should be like: 
    ::     31:  <title>Release 0.4.1328 · soimort/you-get · GitHub</title>
-   for /f "tokens=3 delims= " %%i in ('findstr /n /i "<title>" ygLatestRelease_Github.txt') do ( set "ygLatestVersion=%%i" )
-   del /Q ygLatestRelease_Github.txt >NUL 2>NUL
+   for /f "tokens=3 delims= " %%i in ('findstr /n /i "<title>" yg.txt') do ( set "ygLatestVersion=%%i" )
+   del /Q yg.txt >NUL 2>NUL
    echo ygLatestVersion: %ygLatestVersion%
    ```
    此方法已用于 `res\scripts\CheckUpdate.bat` 的 `:CheckUpdate_youget` 方法中。
@@ -49,6 +49,48 @@
 ```batch
 fc /N sources.txt ..\sources.txt
 ```
+
+---
+
+## GitHubActions.yml
+
+GitHub Actions 是 GitHub 提供的非常强大的的持续集成服务，在 GitHub 仓库顶部的 `Actions` 选项卡中即可轻松构建一个 "workflow" 。
+
+### 使用
+将 `AutoGenerateLatestSourcesLists.bat` 的脚本流程简化并稍作改动，便可以写成 `GitHubActions.yml` 。复制其中的内容到 `.github/workflows/main.yml` 即可部署一个“定时检查各项目的最新版本”的 workflow ，相当于在服务器上部署了定时自动运行的 `AutoGenerateLatestSourcesLists.bat` 。
+
+### 简要解析
+1. 设置每天 05:00UTC (北京时间13:00) 运行
+    ```yaml
+    on:
+      schedule:
+      - cron: "0 12 * * *"
+    ```
+2. 使用指定的 Shell (如 Windows cmd)
+    ```yaml
+    steps:
+    - name: Display the path
+      run: echo %PATH%
+      shell: cmd
+    ```
+3. 注意，各个 steps 中的变量并不互通，可以使用 `env` 来定义环境变量。但 step 中似乎无法修改 job 中定义的环境变量。
+    ```yaml
+    jobs:
+      job1:
+        env:
+          FIRST_NAME: Mona
+    ```
+
+### 参考资料
+（GitHub Help 右上角可以将切换语言为中文，配合英文便于理解）
+
+1. [使用 GitHub Actions 自动化 workflow - GitHub Help](https://help.github.com/en/actions/automating-your-workflow-with-github-actions)
+2. [GitHub Actions 的 workflow 语法 - GitHub Help](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions)
+3. [GitHub Actions 的上下文和表达式语法 - GitHub Help](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/contexts-and-expression-syntax-for-github-actions)
+4. [触发 workflows 的事件：定时运行 - GitHub Help](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/events-that-trigger-workflows#scheduled-events-schedule)
+5. [GitHub - sdras/awesome-actions](https://github.com/sdras/awesome-actions): A curated list of awesome actions to use on GitHub
+6. [GitHub Actions 入门教程 - 阮一峰的网络日志](http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html)
+7. [创建 JavaScript action - GitHub Help](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-a-javascript-action)
 
 ---
 
