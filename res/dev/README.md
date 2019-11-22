@@ -54,9 +54,7 @@ fc /N sources.txt ..\sources.txt
 
 ## GitHubActions.yml
 
-GitHub Actions 是 GitHub 提供的非常强大的的持续集成服务，在 GitHub 仓库顶部的 `Actions` 选项卡中即可轻松构建一个 "workflow" 。
-
-### 使用
+GitHub Actions 是 GitHub 提供的非常强大的的持续集成服务，在 GitHub 仓库顶部的 `Actions` 选项卡中即可轻松构建一个 "workflow" 。  
 将 `AutoGenerateLatestSourcesLists.bat` 的脚本流程简化并稍作改动，便可以写成 `GitHubActions.yml` 。复制其中的内容到 `.github/workflows/main.yml` 即可部署一个“定时检查各项目的最新版本”的 workflow ，相当于在服务器上部署了定时自动运行的 `AutoGenerateLatestSourcesLists.bat` 。
 
 ### 简要解析
@@ -64,7 +62,7 @@ GitHub Actions 是 GitHub 提供的非常强大的的持续集成服务，在 Gi
     ```yaml
     on:
       schedule:
-      - cron: "0 12 * * *"
+      - cron: "0 5 * * *"
     ```
 2. 使用指定的 Shell (如 Windows cmd)
     ```yaml

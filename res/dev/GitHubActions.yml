@@ -2,6 +2,8 @@ name: Check for updates of sources list for "video-downloader-deploy"
 
 on:
   schedule:
+  # Runs at 05:00 UTC every day
+  # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/events-that-trigger-workflows#scheduled-events-schedule
   - cron: "0 5 * * *"
 
 jobs:
