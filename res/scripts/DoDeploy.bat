@@ -82,10 +82,26 @@ goto :eof
 echo %str_upgrading% you-get...
 :: %ygCurrentVersion% was set in res\scripts\CheckUpdate.bat :CheckUpdate_youget
 del /Q download\you-get-%ygCurrentVersion%.tar.gz >NUL 2>NUL
-del /Q sources.txt >NUL 2>NUL
-wget %_WgetOptions_% %_RemoteRes_%/sources.txt
-call scripts\SourcesSelector.bat sources.txt youget %_Region_% %_SystemType_% download\to-be-downloaded.txt
-wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
+if exist deploy.settings (
+    for /f "tokens=2 delims= " %%i in ('findstr /i "UpgradeOnlyViaGitHub" deploy.settings') do ( set "state_upgradeOnlyViaGitHub=%%i" )
+) else ( set "state_upgradeOnlyViaGitHub=disable" )
+setlocal EnableDelayedExpansion
+if "%state_upgradeOnlyViaGitHub%"=="enable" (
+    set "ygLatestVersion_Url=https://github.com/soimort/you-get/releases/download/v%ygLatestVersion%/you-get-%ygLatestVersion%.tar.gz"
+    echo !ygLatestVersion_Url!>> download\to-be-downloaded.txt
+    wget %_WgetOptions_% !ygLatestVersion_Url! -P download
+) else (
+    del /Q sources.txt >NUL 2>NUL
+    wget %_WgetOptions_% %_RemoteRes_%/sources.txt
+    call scripts\SourcesSelector.bat sources.txt youget %_Region_% %_SystemType_% download\to-be-downloaded.txt
+    wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
+    REM If the file fails to download because of mirror index not syncing timelier, set %_Region_% as "origin" to fetch from original source.
+    if NOT exist download\you-get-%ygLatestVersion%.tar.gz (
+        call scripts\SourcesSelector.bat sources.txt youget origin %_SystemType_% download\to-be-downloaded.txt
+        wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
+    )    
+)
+endlocal
 rd /S /Q "%ygBin%" >NUL 2>NUL
 cd download && call :Setup_youget
 cd .. && echo You-Get %str_already-upgrade%

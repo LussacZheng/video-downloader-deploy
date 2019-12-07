@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.3.4
-:: Last updated: 2019-10-29
+:: Version: 1.4.0
+:: Last updated: 2019-12-07
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "version=1.3.4"
-set "lastUpdated=2019-10-29"
+set "version=1.4.0"
+set "lastUpdated=2019-12-07"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -352,12 +352,15 @@ echo. & echo  [3] %str_opt6_opt3%
 echo. & echo  [4] %str_opt6_opt4%
 echo. & echo  [5] %str_opt6_opt5%
 echo. & echo  [6] %str_opt6_opt6%
+if NOT "%DeployMode%"=="withpip" ( echo. & echo  [7] %str_opt6_opt7% )
+echo. & echo  [99] %str_opt6_opt99%
 echo. & echo.
 echo ====================================================
 set opt6_choice=-1
 set /p opt6_choice= %str_please-choose%
 echo.
 if "%opt6_choice%"=="0" goto MENU
+if "%opt6_choice%"=="99" goto setting_Reset
 if "%opt6_choice%"=="1" goto setting_Language
 if "%opt6_choice%"=="11" ( call res\scripts\Config.bat Language en && goto _PleaseRerun_ )
 if "%opt6_choice%"=="12" ( call res\scripts\Config.bat Language zh && goto _PleaseRerun_ )
@@ -369,9 +372,21 @@ if "%opt6_choice%"=="4" goto setting_FFmpeg
 if "%opt6_choice%"=="5" goto setting_Wget
 if "%opt6_choice%"=="50" goto setting_Wget2
 if "%opt6_choice%"=="6" goto setting_NetTest
+if "%opt6_choice%"=="7" goto setting_UpgradeOnlyViaGitHub
 echo. & echo %str_please-input-valid-num%
 goto _ReturnToSetting_
 
+
+:setting_Reset
+set opt6_opt99_choice=0
+echo %str_reset-settings_1%
+set /p opt6_opt99_choice= %str_reset-settings_2%
+echo.
+if /i "%opt6_opt99_choice%"=="Y" (
+    del /Q res\deploy.settings >NUL 2>NUL
+    echo %str_reset-settings_3%
+) else echo %str_reset-settings_4%
+goto _ReturnToSetting_
 
 :setting_Language
 echo %str_please-select-language%
@@ -409,6 +424,10 @@ goto _ReturnToSetting_
 
 :setting_NetTest
 call res\scripts\Config.bat NetTest
+goto _ReturnToSetting_
+
+:setting_UpgradeOnlyViaGitHub
+call res\scripts\Config.bat UpgradeOnlyViaGitHub
 goto _ReturnToSetting_
 
 

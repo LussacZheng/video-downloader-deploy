@@ -30,6 +30,7 @@ if NOT exist %cfg_File% (
     echo ProxyHint: disable>> %cfg_File%
     echo FFmpeg: enable>> %cfg_File%
     echo NetTest: enable>> %cfg_File%
+    echo UpgradeOnlyViaGitHub: disable>> %cfg_File%
 )
 copy %cfg_File% %cfg_File%.bak > NUL
 type NUL > %cfg_File%
@@ -106,6 +107,20 @@ for /f "delims=" %%i in (%cfg_File%.bak) do (
 if "%cfg_State%"=="enable" (
     echo %str_netTest-enabled%
 ) else echo %str_netTest-disabled%
+goto :eof
+
+
+:Config_UpgradeOnlyViaGitHub
+for /f "delims=" %%i in (%cfg_File%.bak) do (
+    set "cfg_Temp=%%i"
+    set "cfg_Content=!cfg_Temp!" 
+    if "!cfg_Temp!"=="UpgradeOnlyViaGitHub: disable" ( set "cfg_Content=UpgradeOnlyViaGitHub: enable" && set "cfg_State=enable" )
+    if "!cfg_Temp!"=="UpgradeOnlyViaGitHub: enable" ( set "cfg_Content=UpgradeOnlyViaGitHub: disable" && set "cfg_State=disable" )
+    echo !cfg_Content!>>%cfg_File%
+)
+if "%cfg_State%"=="enable" (
+    echo %str_upgradeOnlyViaGitHub-enabled%
+) else echo %str_upgradeOnlyViaGitHub-disabled%
 goto :eof
 
 
