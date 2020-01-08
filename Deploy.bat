@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.4.0
-:: Last updated: 2019-12-07
+:: Version: 1.4.1
+:: Last updated: 2020-01-08
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "version=1.4.0"
-set "lastUpdated=2019-12-07"
+set "version=1.4.1"
+set "lastUpdated=2020-01-08"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -28,6 +28,9 @@ if exist res\deploy.settings (
     for /f "tokens=2 delims= " %%i in ('findstr /i "Region" res\deploy.settings') do ( set "_Region_=%%i" )
 )
 call res\scripts\SystemTypeSelector.bat
+:: Import the GlobalProxy setting and apply
+call :Get_GlobalProxy true
+
 
 :: Start of Deployment
 title %str_title%  -- By Lussac
@@ -38,6 +41,7 @@ set "ygBin=%root%\usr\you-get"
 set "ydBin=%root%\usr\youtube-dl"
 set "anBin=%root%\usr"
 set "ffBin=%root%\usr\ffmpeg\bin"
+
 
 :: If already deployed, show more info in Option3.
 set "opt3_info="
@@ -54,7 +58,9 @@ rem ================= Menu =================
 :MENU
 cd "%root%"
 cls
+:: Uncomment to check the configuration items that imported from "res\deploy.settings"
 REM echo %_Language_% & echo %_Region_%
+REM echo %http_proxy% & echo %https_proxy%
 echo ====================================================
 echo ====================================================
 echo ======%str_titleExpanded%=======
@@ -68,7 +74,7 @@ echo.
 echo. & echo  [1?] %str_opt1%
         echo    ^|
         echo    ^|-- [11] %str_portable%: you-get + youtube-dl + annie
-        echo    ^|        ( %str_opt11% ) 
+        echo    ^|        ( %str_opt11% )
         echo    ^|
         echo    ^|-- [12] %str_quickstart%: you-get
         echo    ^|        ( %str_opt12% )
@@ -199,7 +205,7 @@ wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
 call scripts\DoDeploy.bat Setup ffmpeg
 call scripts\Log.bat Init ffmpeg
 
-echo. 
+echo.
 echo ====================================================
 echo FFmpeg %str_already-deploy%
 echo ====================================================
@@ -352,7 +358,8 @@ echo. & echo  [3] %str_opt6_opt3%
 echo. & echo  [4] %str_opt6_opt4%
 echo. & echo  [5] %str_opt6_opt5%
 echo. & echo  [6] %str_opt6_opt6%
-if NOT "%DeployMode%"=="withpip" ( echo. & echo  [7] %str_opt6_opt7% )
+echo. & echo  [7] %str_opt6_opt7%
+if NOT "%DeployMode%"=="withpip" ( echo. & echo  [8] %str_opt6_opt8% )
 echo. & echo  [99] %str_opt6_opt99%
 echo. & echo.
 echo ====================================================
@@ -367,25 +374,26 @@ if "%opt6_choice%"=="12" ( call res\scripts\Config.bat Language zh && goto _Plea
 if "%opt6_choice%"=="2" goto setting_Region
 if "%opt6_choice%"=="21" ( call res\scripts\Config.bat Region origin && goto _PleaseRerun_ )
 if "%opt6_choice%"=="22" ( call res\scripts\Config.bat Region cn && goto _PleaseRerun_ )
-if "%opt6_choice%"=="3" goto setting_ProxyHint
-if "%opt6_choice%"=="4" goto setting_FFmpeg
-if "%opt6_choice%"=="5" goto setting_Wget
-if "%opt6_choice%"=="50" goto setting_Wget2
-if "%opt6_choice%"=="6" goto setting_NetTest
-if "%opt6_choice%"=="7" goto setting_UpgradeOnlyViaGitHub
+if "%opt6_choice%"=="3" goto setting_GlobalProxy
+if "%opt6_choice%"=="4" goto setting_ProxyHint
+if "%opt6_choice%"=="5" goto setting_FFmpeg
+if "%opt6_choice%"=="6" goto setting_Wget
+if "%opt6_choice%"=="7" goto setting_NetTest
+if "%opt6_choice%"=="8" goto setting_UpgradeOnlyViaGitHub
 echo. & echo %str_please-input-valid-num%
 goto _ReturnToSetting_
 
 
 :setting_Reset
+echo. & echo %str_reset-settings_1% & echo %str_reset-settings_2%
 set opt6_opt99_choice=0
-echo %str_reset-settings_1%
-set /p opt6_opt99_choice= %str_reset-settings_2%
+echo. & echo %str_reset-settings_3%
+set /p opt6_opt99_choice= %str_enter-to-cancel%
 echo.
 if /i "%opt6_opt99_choice%"=="Y" (
     del /Q res\deploy.settings >NUL 2>NUL
-    echo %str_reset-settings_3%
-) else echo %str_reset-settings_4%
+    echo %str_reset-settings-ok%
+) else ( echo %str_cancelled% )
 goto _ReturnToSetting_
 
 :setting_Language
@@ -397,6 +405,51 @@ echo %str_current-region% %_Region_%
 echo %str_please-select-region%
 goto _ReturnToSetting_
 
+:setting_GlobalProxy
+echo.
+call :Get_GlobalProxy false
+if "%state_globalProxy%"=="enable" (
+    echo %str_globalProxy-enabled%
+) else ( echo %str_globalProxy-disabled% )
+echo. & echo.
+echo %str_current-globalProxy%
+echo     HTTP_PROXY  = %_proxyHost%:%_httpPort%
+echo     HTTPS_PROXY = %_proxyHost%:%_httpsPort%
+set opt6_opt3_choice=0
+echo. & echo %str_please-set-globalProxy_1%
+echo %str_please-set-globalProxy_2%
+echo %str_please-set-globalProxy_3%
+set /p opt6_opt3_choice= %str_enter-to-cancel%
+echo.
+setlocal EnableDelayedExpansion
+if /i "%opt6_opt3_choice%"=="T" (
+    call res\scripts\Config.bat GlobalProxy
+) else if /i "%opt6_opt3_choice%"=="Y" (
+    call res\scripts\Config.bat ProxyHost http://127.0.0.1
+    call res\scripts\Config.bat HttpPort 1080
+    call res\scripts\Config.bat HttpsPort 1080
+    echo %str_reset-globalProxy-ok%
+) else if /i "%opt6_opt3_choice%"=="N" (
+    set /p opt6_opt3_proxyHost= %str_please-set-proxyHost%
+    set /p opt6_opt3_httpPort= %str_please-set-httpPort%
+    set /p opt6_opt3_httpsPort= %str_please-set-httpsPort%
+    if "!opt6_opt3_proxyHost!"=="" ( set "opt6_opt3_proxyHost=http://127.0.0.1" )
+    if "!opt6_opt3_httpPort!"=="" ( set "opt6_opt3_httpPort=1080" )
+    if "!opt6_opt3_httpsPort!"=="" ( set "opt6_opt3_httpsPort=1080" )
+    call res\scripts\Config.bat ProxyHost !opt6_opt3_proxyHost!
+    call res\scripts\Config.bat HttpPort !opt6_opt3_httpPort!
+    call res\scripts\Config.bat HttpsPort !opt6_opt3_httpsPort!
+    echo %str_set-globalProxy-ok%
+    echo. & echo %str_please-confirm-changes%
+) else ( 
+    echo %str_cancelled%
+    goto _ReturnToSetting_
+)
+endlocal
+echo %str_please-rerun%
+echo %str_please-rerun-dlbat%
+goto _PleaseRerun_
+
 :setting_ProxyHint
 call res\scripts\Config.bat ProxyHint
 goto _ReturnToSetting_
@@ -406,20 +459,22 @@ call res\scripts\Config.bat FFmpeg
 goto _ReturnToSetting_
 
 :setting_Wget
-echo. & echo %str_wget-option-is%
+echo. & echo %str_current-wgetOpt%
 set "_WgetOptions_="
 cd res && call :Get_WgetOptions
 echo. & echo "%_WgetOptions_%"
 if NOT exist wget.opt ( call scripts\GenerateWgetOptions.bat )
 cd ..
-echo. & echo %str_please-edit-wget-opt_1%
-echo %str_please-edit-wget-opt_2%
-echo %str_please-edit-wget-opt_3%
-goto _ReturnToSetting_
-
-:setting_Wget2
-cd res && call scripts\GenerateWgetOptions.bat
-cd .. && echo %str_reset-wget-opt-ok%
+echo. & echo %str_please-edit-wgetOpt_1%
+echo %str_please-confirm-changes%
+set opt6_opt6_choice=0
+echo. & echo %str_please-edit-wgetOpt_2%
+set /p opt6_opt6_choice= %str_enter-to-cancel%
+echo.
+if /i "%opt6_opt6_choice%"=="Y" (
+    cd res && call scripts\GenerateWgetOptions.bat
+    cd .. && echo %str_reset-wgetOpt-ok%
+) else ( echo %str_cancelled% )
 goto _ReturnToSetting_
 
 :setting_NetTest
@@ -498,7 +553,7 @@ goto :eof
 
 
 :ExitIfInit
-:: Check whether already InitDeploy,
+:: Check whether already InitDeploy
 if exist usr (
     echo. & echo %str_please-re-init%
     call :_PleaseRerun_
@@ -531,6 +586,22 @@ if "%_isNetConnected%"=="false" (
 goto :eof
 
 
+:Get_GlobalProxy
+:: Get (and apply) the proxy settings of CMD from res\deploy.settings
+set "whetherToSet=%~1"
+if exist res\deploy.settings (
+    for /f "tokens=2 delims= " %%i in ('findstr /i "GlobalProxy" res\deploy.settings') do ( set "state_globalProxy=%%i" )
+    for /f "tokens=2 delims= " %%i in ('findstr /i "ProxyHost" res\deploy.settings') do ( set "_proxyHost=%%i" )
+    for /f "tokens=2 delims= " %%i in ('findstr /i "HttpPort" res\deploy.settings') do ( set "_httpPort=%%i" )
+    for /f "tokens=2 delims= " %%i in ('findstr /i "HttpsPort" res\deploy.settings') do ( set "_httpsPort=%%i" )
+) else ( set "state_globalProxy=disable" )
+if "%whetherToSet%"=="true" if "%state_globalProxy%"=="enable" (
+    set "http_proxy=%_proxyHost%:%_httpPort%"
+    set "https_proxy=%_proxyHost%:%_httpsPort%"
+)
+goto :eof
+
+
 :Get_DeployMode
 :: Get %DeployMode% from res\deploy.log
 if exist deploy.log (
@@ -542,7 +613,7 @@ goto :eof
 :Get_WgetOptions
 :: Get default options for 'wget.exe' from res\wget.opt
 if exist wget.opt (
-    for /f "eol=# delims=" %%i in (wget.opt) do ( set "_WgetOptions_=%%i" && goto :eof )    
+    for /f "eol=# delims=" %%i in (wget.opt) do ( set "_WgetOptions_=%%i" && goto :eof )
 ) else ( set "_WgetOptions_=-q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc" )
 goto :eof
 

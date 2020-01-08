@@ -29,7 +29,11 @@ echo.>>%dl-bat-filename%
 echo if exist res\deploy.settings (>>%dl-bat-filename%
 echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "ProxyHint" res\deploy.settings') do ( set "state_proxyHint=%%%%i" )>>%dl-bat-filename%
 echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "FFmpeg" res\deploy.settings') do ( set "state_ffmpeg=%%%%i" )>>%dl-bat-filename%
-echo ) else ( set "state_proxyHint=disable" ^&^& set "state_ffmpeg=enable" )>>%dl-bat-filename%
+echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "GlobalProxy" res\deploy.settings') do ( set "state_globalProxy=%%%%i" )>>%dl-bat-filename%
+echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "ProxyHost" res\deploy.settings') do ( set "_proxyHost=%%%%i" )>>%dl-bat-filename%
+echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "HttpPort" res\deploy.settings') do ( set "_httpPort=%%%%i" )>>%dl-bat-filename%
+echo     for /f "tokens=2 delims= " %%%%i in ('findstr /i "HttpsPort" res\deploy.settings') do ( set "_httpsPort=%%%%i" )>>%dl-bat-filename%
+echo ) else ( set "state_proxyHint=disable" ^&^& set "state_ffmpeg=enable" ^&^& set "state_globalProxy=disable" )>>%dl-bat-filename%
 echo.>>%dl-bat-filename%
 echo set "root=%%cd%%">>%dl-bat-filename%
 echo set "pyBin=%%root%%\usr\python-embed">>%dl-bat-filename%
@@ -72,6 +76,14 @@ echo     echo you-get -x 127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EH
 echo     echo youtube-dl --proxy socks5://127.0.0.1:1080/ https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
 echo     echo annie -x http://127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
 echo     echo annie -s 127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
+echo     echo. ^& echo.>>%dl-bat-filename%
+echo )>>%dl-bat-filename%
+echo if "%%state_globalProxy%%"=="enable" (>>%dl-bat-filename%
+echo     set "http_proxy=%%_proxyHost%%:%%_httpPort%%">>%dl-bat-filename%
+echo     set "https_proxy=%%_proxyHost%%:%%_httpsPort%%">>%dl-bat-filename%
+echo     echo %str_current-globalProxy-cmd%>>%dl-bat-filename%
+echo     echo     HTTP_PROXY  = %%_proxyHost%%:%%_httpPort%%>>%dl-bat-filename%
+echo     echo     HTTPS_PROXY = %%_proxyHost%%:%%_httpsPort%%>>%dl-bat-filename%
 echo     echo. ^& echo.>>%dl-bat-filename%
 echo )>>%dl-bat-filename%
 echo.>>%dl-bat-filename%

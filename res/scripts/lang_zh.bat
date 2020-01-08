@@ -1,8 +1,8 @@
 @rem - Encoding:gb2312; Mode:Batch; Language:zh-CN; LineEndings:CRLF -
-:: START OF TRANSLATION
+:: ========================= START OF TRANSLATION =========================
 set "str_title=视频下载器 一键配置"
 set "str_titleExpanded=========  %str_title%  ========"
-:: Menu Options
+:: ================= Menu Options
 set "str_portable=绿色配置"
 set "str_quickstart=快速配置"
 set "str_withpip=完整配置"
@@ -19,7 +19,7 @@ set "str_please-choose=请输入选项的序号并按回车: "
 set "str_please-choose-from=请从 11 , 12 , 13 中选择。"
 set "str_please-input-valid-num=请输入有效的数字。"
 set "str_please-set-DeployMode=未找到 "deploy.log" ，无法判断配置模式，请手动选择 [11, 12, 13]: "
-:: Notification
+:: ================= Notification
 set "str_bat-is-latest=此脚本已是最新。"
 set "str_bat-can-update-to=此脚本可更新至"
 set "str_deploy-ok=配置已完成。"
@@ -34,7 +34,7 @@ set "str_fileLost=文件丢失，请重新下载或解压此脚本的所有文件。"
 set "str_open-webpage1=按任意键以查看 GitHub 主页 (即打开浏览器访问 GitHub^)"
 set "str_open-webpage2=按任意键以获取更新 (即打开浏览器访问 GitHub^)"
 set "str_exit=按任意键退出..."
-:: Procedure
+:: ================= Procedure
 set "str_downloading=正在下载"
 set "str_unzipping=正在解压"
 set "str_upgrading=正在更新"
@@ -44,53 +44,78 @@ set "str_checking-update=正在检查更新"
 set "str_already-deploy=已配置。"
 set "str_already-upgrade=已更新。"
 set "str_already-exist=已存在。"
-:: Guides of download batch
+:: ================= Download Batch
+:: ========= Download Batch - Guides
 set "str_dl-guide1=下载视频的命令为："
 set "str_dl-guide2=you-get/youtube-dl/annie + 视频网址"
 set "str_dl-guide3=例如："
 set "str_dl-guide4=默认下载最高清晰度。下载文件默认保存在 Download 目录。"
 set "str_dl-guide5=如果你想选择清晰度、更改默认路径，或想了解三种工具的其他用法，请百度或参考官方说明："
 set "str_dl-guide_wiki=中文说明"
-:: Contents of download batch
+:: ========= Download Batch - Contents
 set "str_dl-bat=下载视频"
 set "str_dl-bat-created=已创建启动脚本 "%str_dl-bat%.bat" 。"
 set "str_dl-bat-moved=未找到 "usr" 文件夹！请将此脚本移动到与 "Deploy.bat" 同一目录，或通过其重新创建启动脚本。"
-:: Advanced Settings
+:: ================= Advanced Settings
 set "str_opt6-Expanded======= 高级设置 ======"
 set "str_opt6_opt0=返回主菜单"
 set "str_opt6_opt1=选择语言 (Select Language)"
 set "str_opt6_opt2=选择下载地区"
-set "str_opt6_opt3=(显示/隐藏) 代理参数的命令示例"
-set "str_opt6_opt4=(禁用/启用) FFmpeg"
-set "str_opt6_opt5=为 'wget' 设置参数"
-set "str_opt6_opt6=(禁用/启用) 更新时的网络连接测试"
-set "str_opt6_opt7=通过 ^(PyPI.org/GitHub_Releases^) 更新 you-get"
+set "str_opt6_opt3=设置全局代理"
+set "str_opt6_opt4=(显示/隐藏) 代理参数的命令示例"
+set "str_opt6_opt5=(禁用/启用) FFmpeg"
+set "str_opt6_opt6=为 'wget' 设置参数"
+set "str_opt6_opt7=(禁用/启用) 更新时的网络连接测试"
+set "str_opt6_opt8=通过 ^(PyPI.org/GitHub_Releases^) 更新 you-get"
 set "str_opt6_opt99=为什么我无法切换以上的某项设置?"
+:: ========= Advanced Settings - Common Notifications
+set "str_enter-to-cancel=直接回车以取消："
+set "str_cancelled=输入无效，已取消。"
+set "str_please-confirm-changes=修改后请重新执行此选项以确认设置无误。"
+set "str_please-rerun=请重新运行此脚本以使设置生效。"
+set "str_please-rerun-dlbat=请重新运行 "%str_dl-bat%.bat" 以使设置生效。"
+:: ========= Advanced Settings - Option 1-2
 set "str_please-select-language=[11] English ; [12] 简体中文"
 set "str_language-set-to=语言已设置为："
 set "str_please-select-region=[21] 官方源 (origin) ; [22] 国内镜像源 (cn)"
 set "str_current-region=当前下载地区为："
 set "str_region-set-to=下载地区已设置为："
-set "str_please-rerun=请重新运行此脚本以使设置生效。"
+:: ========= Advanced Settings - Option 3
+set "str_globalProxy-enabled=全局代理：启用"
+set "str_globalProxy-disabled=全局代理：禁用 ^(默认^)"
+set "str_current-globalProxy=若全局代理已启用，则当前 CMD 窗口将使用的代理地址为："
+:: :: used in "dl-bat"
+set "str_current-globalProxy-cmd=当前 CMD 窗口所使用的代理地址为："
+set "str_please-set-globalProxy_1=若需(禁用/启用)全局代理，请输入T；"
+set "str_please-set-globalProxy_2=若需恢复至默认的代理地址，请输入Y；"
+set "str_please-set-globalProxy_3=若需自定义代理地址或端口号，请输入N；"
+set "str_please-set-proxyHost=请输入 - 代理服务器地址^(留空则为 http://127.0.0.1 ^)："
+set "str_please-set-httpPort=请输入 - HTTP端口^(留空则为 1080 ^)："
+set "str_please-set-httpsPort=请输入 - HTTPS端口^(留空则为 1080 ^)："
+set "str_reset-globalProxy-ok=代理地址已恢复至默认。"
+set "str_set-globalProxy-ok=自定义代理地址已设置成功。"
+:: ========= Advanced Settings - Option 4-5
 set "str_proxyHint-enabled=代理参数的命令示例：显示"
 set "str_proxyHint-disabled=代理参数的命令示例：隐藏 ^(默认^)"
+:: :: used in "dl-bat"
 set "str_proxyHint-setting=代理设置："
 set "str_ffmpeg-enabled=FFmpeg：启用 ^(默认^)"
 set "str_ffmpeg-disabled=FFmpeg：禁用"
-set "str_wget-option-is=当前 'wget' 所使用的参数为："
-set "str_please-rerun-dlbat=请重新运行 "%str_dl-bat%.bat" 以使设置生效。"
-set "str_please-edit-wget-opt_1=请自行编辑 "res\wget.opt" 以修改默认参数。"
-set "str_please-edit-wget-opt_2=修改后请重新执行此选项以确认设置无误。"
-set "str_please-edit-wget-opt_3=若需重新生成默认的 "wget.opt" ，请输入：50"
-set "str_reset-wget-opt-ok=已重新生成 "wget.opt" 。"
+:: ========= Advanced Settings - Option 6
+set "str_current-wgetOpt=当前 'wget' 所使用的参数为："
+set "str_please-edit-wgetOpt_1=请自行编辑 "res\wget.opt" 以修改默认参数。"
+set "str_please-edit-wgetOpt_2=若需重新生成默认的 "wget.opt" ，请输入Y；"
+set "str_reset-wgetOpt-ok=已重新生成 "wget.opt" 。"
+:: ========= Advanced Settings - Option 7-8
 set "str_netTest-enabled=更新时的网络连接测试：启用 ^(默认^)"
 set "str_netTest-disabled=更新时的网络连接测试：禁用"
 set "str_upgradeOnlyViaGitHub-enabled=更新 you-get 的方式：通过 GitHub_Releases"
 set "str_upgradeOnlyViaGitHub-disabled=更新 you-get 的方式：通过 PyPI.org ^(默认^)"
+:: ========= Advanced Settings - Option 99
 set "str_reset-settings_1=更新脚本后，若新增的设置无法切换，则需要删除 "res\deploy.settings" 。"
-set "str_reset-settings_2=但这会导致以上所有的设置([5]除外)恢复至默认，输入Y以继续:"
-set "str_reset-settings_3=已删除 "res\deploy.settings" ，请尝试重新更改设置。"
-set "str_reset-settings_4=输入无效，已取消。"
-:: END OF TRANSLATION
-:: Select mirror for sources.txt
+set "str_reset-settings_2=但这会导致以上所有的设置([6]除外)恢复至默认。"
+set "str_reset-settings_3=若确认删除，请输入Y；"
+set "str_reset-settings-ok=已删除 "res\deploy.settings" ，请尝试重新更改设置。"
+:: ========================= END OF TRANSLATION =========================
+:: Select %_Region_% for sources.txt
 set "_Region_=cn"

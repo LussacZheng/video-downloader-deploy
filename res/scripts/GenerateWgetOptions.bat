@@ -13,7 +13,7 @@ echo # 1*. Use a '#' symbol to comment.>> wget.opt
 echo # 2. All options should be kept on an individual line.>> wget.opt
 echo # 3. Only the first uncommented line takes effect.>> wget.opt
 echo # 4. No additional 'space' at the beginning and end of the line.>> wget.opt
-echo # 5*. Perform [ "Deploy.bat" -^> 6 -^> 5 ] to confirm the setting after editing this file.>> wget.opt
+echo # 5*. Perform [ "Deploy.bat" -^> 6 -^> 6 ] to confirm the setting after editing this file.>> wget.opt
 echo #>> wget.opt
 echo # ---------->> wget.opt
 echo #>> wget.opt

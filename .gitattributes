@@ -4,7 +4,7 @@
 * text=auto
 
 # This tells Git that never replace CRLF with LF for `.bat` files when
-# they are written to the Git object database ("checkin"). So taht,
+# they are written to the Git object database ("checkin"). So that,
 # when you download or "save as" batchfiles from GitHub (not 'git clone'),
 # the files will be saved with the line endings CRLF, which are suitable
 # for Windows batchfiles.
