@@ -1,7 +1,9 @@
 # Video Files Downloaded
 Download/
+
 # Downloaders Binary
 usr/
+
 # Files that created while depolying
 res/download/
 res/scripts/RemoteVersion
@@ -9,6 +11,11 @@ res/.wget-hsts
 res/deploy.log
 res/deploy.settings
 res/wget.opt
+
 # Download batch
 下载视频*.bat
 Download*Video*.bat
+
+# Dev / Lab Features
+res/dev/sources.txt
+res/dev/wget.exe
