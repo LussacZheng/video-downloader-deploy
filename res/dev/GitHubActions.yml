@@ -51,7 +51,7 @@ jobs:
         for /f "tokens=3 delims=-" %%b in ("%ygUrl%") do ( set "ygLatestVersion=%%b")
         set ygLatestVersion=%ygLatestVersion:.tar.gz=%
         echo ygLatestVersion: %ygLatestVersion% >> %OUTPUT%
-        for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Last released" ygLatestRelease.txt') do ( set "ygLatestReleasedTime=%%c" )
+        for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Released" ygLatestRelease.txt') do ( set "ygLatestReleasedTime=%%c" )
         set "ygLatestReleasedTime=%ygLatestReleasedTime:~1,10%"
         echo ygLatestReleasedTime: %ygLatestReleasedTime% >> %OUTPUT%
         for /f "tokens=4-6 delims=/" %%x in ("%ygUrl%") do (
@@ -103,7 +103,7 @@ jobs:
         for /f "tokens=2 delims=-" %%b in ("%pipUrl%") do ( set "pipLatestVersion=%%b")
         set pipLatestVersion=%pipLatestVersion:.tar.gz=%
         echo pipLatestVersion: %pipLatestVersion% >> %OUTPUT%
-        for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Last released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
+        for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
         set "pipLatestReleasedTime=%pipLatestReleasedTime:~1,10%"
         echo pipLatestReleasedTime: %pipLatestReleasedTime% >> %OUTPUT%
       shell: cmd

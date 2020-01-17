@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2019-10-15
+:: Last updated: 2020-01-17
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
@@ -82,9 +82,9 @@ for /f "tokens=3 delims=-" %%b in ("%ygUrl%") do ( set "ygLatestVersion=%%b")
 set ygLatestVersion=%ygLatestVersion:.tar.gz=%
 echo ygLatestVersion: %ygLatestVersion%
 
-:: The output of 'findstr /n /i /c:"Last released" ygLatestRelease.txt' should be like: 
-::     209:        Last released: <time datetime="2019-09-09T21:20:14+0000" data-controller="localized-time" data-localized-time-relative="true" data-localized-time-show-time="false">
-for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Last released" ygLatestRelease.txt') do ( set "ygLatestReleasedTime=%%c" )
+:: The output of 'findstr /n /i /c:"Released" ygLatestRelease.txt' should be like: 
+::     209:        Released: <time datetime="2019-12-28T20:35:55+0000" data-controller="localized-time" data-localized-time-relative="true" data-localized-time-show-time="false">
+for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Released" ygLatestRelease.txt') do ( set "ygLatestReleasedTime=%%c" )
 :: Now %ygLatestReleasedTime% is like: "2019-09-09T21
 set "ygLatestReleasedTime=%ygLatestReleasedTime:~1,10%"
 echo ygLatestReleasedTime: %ygLatestReleasedTime%
@@ -159,9 +159,10 @@ for /f "tokens=2 delims=-" %%b in ("%pipUrl%") do ( set "pipLatestVersion=%%b")
 set pipLatestVersion=%pipLatestVersion:.tar.gz=%
 echo pipLatestVersion: %pipLatestVersion%
 
-:: The output of 'findstr /n /i /c:"Last released" pipLatestRelease.txt' should be like: 
-::     209:        Last released: <time datetime="2019-08-25T04:37:17+0000" data-controller="localized-time" data-localized-time-relative="true" data-localized-time-show-time="false">
-for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Last released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
+:: The output of 'findstr /n /i /c:"Released" pipLatestRelease.txt' should be like: 
+::     209:        Released: <time datetime="2019-10-18T08:21:23+0000" data-controller="localized-time" data-localized-time-relative="true" data-localized-time-show-time="false">
+::     580:<p>Updates are released regularly, with a new version every 3 months. More details can be found in our documentation:</p>
+for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
 :: Now %pipLatestReleasedTime% is like: "2019-08-25T04
 set "pipLatestReleasedTime=%pipLatestReleasedTime:~1,10%"
 echo pipLatestReleasedTime: %pipLatestReleasedTime%
