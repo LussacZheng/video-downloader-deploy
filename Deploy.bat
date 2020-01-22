@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.4.1
-:: Last updated: 2020-01-08
+:: Version: 1.4.2
+:: Last updated: 2020-01-22
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "version=1.4.1"
-set "lastUpdated=2020-01-08"
+set "_Version_=1.4.2"
+set "lastUpdated=2020-01-22"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -33,7 +33,7 @@ call :Get_GlobalProxy true
 
 
 :: Start of Deployment
-title %str_title%  -- By Lussac
+title %str_title%  -- by Lussac
 :: py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
 set "root=%cd%"
 set "pyBin=%root%\usr\python-embed"
@@ -45,11 +45,19 @@ set "ffBin=%root%\usr\ffmpeg\bin"
 
 :: If already deployed, show more info in Option3.
 set "opt3_info="
-if NOT exist res\deploy.log goto MENU
-cd res && call :Get_DeployMode
-if "%DeployMode%"=="portable" set "opt3_info=(you-get,youtube-dl,annie)"
-if "%DeployMode%"=="quickstart" set "opt3_info=(you-get)"
-if "%DeployMode%"=="withpip" set "opt3_info=(you-get,youtube-dl,annie)"
+if exist res\deploy.log (
+    pushd res && call :Get_DeployMode && popd
+    if "!DeployMode!"=="portable" set "opt3_info=(you-get,youtube-dl,annie)"
+    if "!DeployMode!"=="quickstart" set "opt3_info=(you-get)"
+    if "!DeployMode!"=="withpip" set "opt3_info=(you-get,youtube-dl,annie)"
+)
+set "opt4_info="
+if exist %str_dl-bat%.bat (
+    for /f "tokens=2 delims==" %%i in ('findstr /i "_versionAtCreation=" %str_dl-bat%.bat') do ( set "_versionAtCreation=%%~i" )
+    set "_versionAtCreation=!_versionAtCreation:~0,-1!"
+    REM If "_versionAtCreation" is not found, "%_versionAtCreation%" will be "~0,-1".  Next statement will still be executed.
+    if NOT "!_versionAtCreation!"=="%_Version_%" ( set "opt4_info=%str_please-perform-after-update%" )
+)
 
 
 rem ================= Menu =================
@@ -65,9 +73,9 @@ echo ====================================================
 echo ====================================================
 echo ======%str_titleExpanded%=======
 echo ====================================================
-echo ===================  By Lussac  ====================
+echo ===================  by Lussac  ====================
 echo ====================================================
-echo ==========  version: %version% (%lastUpdated%)  ===========
+echo ==========  version: %_Version_% (%lastUpdated%)  ===========
 echo ====================================================
 echo ====================================================
 echo.
@@ -83,7 +91,7 @@ echo. & echo  [1?] %str_opt1%
         echo             ( %str_opt13% )
 echo. & echo  [2] %str_opt2%
 echo. & echo  [3] %str_opt3% %opt3_info%
-echo. & echo  [4] %str_opt4%
+echo. & echo  [4] %str_opt4% %opt4_info%
 echo. & echo  [5] %str_opt5%
 echo. & echo  [6] %str_opt6%
 echo. & echo.
