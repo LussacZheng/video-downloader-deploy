@@ -4,6 +4,7 @@
 :: e.g. 
 :: call res\scripts\Config.bat Language zh
 :: call res\scripts\Config.bat Region origin
+:: call res\scripts\Config.bat SystemType
 :: call res\scripts\Config.bat ProxyHost http://127.0.0.1
 :: call res\scripts\Config.bat FFmpeg
 
@@ -27,6 +28,7 @@ if NOT exist %cfg_File% (
     echo # NEVER EDIT THIS FILE.> %cfg_File%
     echo Language: %_Language_%>> %cfg_File%
     echo Region: %_Region_%>> %cfg_File%
+    echo SystemType: %_SystemType_%>> %cfg_File%
     echo ProxyHint: disable>> %cfg_File%
     echo FFmpeg: enable>> %cfg_File%
     echo NetTest: enable>> %cfg_File%
@@ -70,6 +72,21 @@ for /f "delims=" %%i in (%cfg_File%.bak) do (
 echo %str_region-set-to% %cfg_Extra%
 echo %str_please-rerun%
 goto :eof
+
+
+:Config_SystemType
+for /f "delims=" %%i in (%cfg_File%.bak) do (
+    set "cfg_Temp=%%i"
+    set "cfg_Content=!cfg_Temp!"
+    if "!cfg_Temp!"=="SystemType: 64" ( set "cfg_Content=SystemType: 32" && set "cfg_State=32" )
+    if "!cfg_Temp!"=="SystemType: 32" ( set "cfg_Content=SystemType: 64" && set "cfg_State=64" )
+    echo !cfg_Content!>>%cfg_File%
+)
+if "%cfg_State%"=="32" (
+    echo %str_systemType-set-to% 32bit
+) else echo %str_systemType-set-to% 64bit
+goto :eof
+
 
 
 :Config_GlobalProxy

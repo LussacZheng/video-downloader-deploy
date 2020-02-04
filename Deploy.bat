@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.4.2
-:: Last updated: 2020-01-22
+:: Version: 1.4.3
+:: Last updated: 2020-02-04
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.4.2"
-set "lastUpdated=2020-01-22"
+set "_Version_=1.4.3"
+set "lastUpdated=2020-02-04"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -19,15 +19,20 @@ rem ================= Preparation =================
 REM mode con cols=100 lines=40
 
 :: Get %_Language_% , %_Region_% , %_SystemType_%
+:: 1. Get customized %_Language_%, or decided by "LanguageSelector"
 if exist res\deploy.settings (
     for /f "tokens=2 delims= " %%i in ('findstr /i "Language" res\deploy.settings') do ( set "_Language_=%%i" )
 ) else ( call res\scripts\LanguageSelector.bat )
-:: Import translation text
+:: 2. Import translation text, and set the default %_Region_%
 call res\scripts\lang_%_Language_%.bat
+:: 3. Get %_SystemType_% by "SystemTypeSelector"
+call res\scripts\SystemTypeSelector.bat
+:: 4. Overwrite the default %_Region_% and %_SystemType_% if customized
 if exist res\deploy.settings (
     for /f "tokens=2 delims= " %%i in ('findstr /i "Region" res\deploy.settings') do ( set "_Region_=%%i" )
+    for /f "tokens=2 delims= " %%i in ('findstr /i "SystemType" res\deploy.settings') do ( set "_SystemType_=%%i" )
 )
-call res\scripts\SystemTypeSelector.bat
+
 :: Import the GlobalProxy setting and apply
 call :Get_GlobalProxy true
 
@@ -67,7 +72,7 @@ rem ================= Menu =================
 cd "%root%"
 cls
 :: Uncomment to check the configuration items that imported from "res\deploy.settings"
-REM echo %_Language_% & echo %_Region_%
+REM echo %_Language_% & echo %_Region_% & echo %_SystemType_%
 REM echo %http_proxy% & echo %https_proxy%
 echo ====================================================
 echo ====================================================
@@ -367,13 +372,14 @@ echo. & echo  [4] %str_opt6_opt4%
 echo. & echo  [5] %str_opt6_opt5%
 echo. & echo  [6] %str_opt6_opt6%
 echo. & echo  [7] %str_opt6_opt7%
-if NOT "%DeployMode%"=="withpip" ( echo. & echo  [8] %str_opt6_opt8% )
+echo. & echo  [8] %str_opt6_opt8%
+if NOT "%DeployMode%"=="withpip" ( echo. & echo  [9] %str_opt6_opt9% )
 echo. & echo  [99] %str_opt6_opt99%
 echo. & echo.
 echo ====================================================
 set opt6_choice=-1
 set /p opt6_choice= %str_please-choose%
-echo.
+echo. & echo.
 if "%opt6_choice%"=="0" goto MENU
 if "%opt6_choice%"=="99" goto setting_Reset
 if "%opt6_choice%"=="1" goto setting_Language
@@ -386,9 +392,10 @@ if "%opt6_choice%"=="3" goto setting_GlobalProxy
 if "%opt6_choice%"=="4" goto setting_ProxyHint
 if "%opt6_choice%"=="5" goto setting_FFmpeg
 if "%opt6_choice%"=="6" goto setting_Wget
-if "%opt6_choice%"=="7" goto setting_NetTest
-if "%opt6_choice%"=="8" goto setting_UpgradeOnlyViaGitHub
-echo. & echo %str_please-input-valid-num%
+if "%opt6_choice%"=="7" goto setting_SystemType
+if "%opt6_choice%"=="8" goto setting_NetTest
+if "%opt6_choice%"=="9" goto setting_UpgradeOnlyViaGitHub
+echo %str_please-input-valid-num%
 goto _ReturnToSetting_
 
 
@@ -414,7 +421,6 @@ echo %str_please-select-region%
 goto _ReturnToSetting_
 
 :setting_GlobalProxy
-echo.
 call :Get_GlobalProxy false
 if "%state_globalProxy%"=="enable" (
     echo %str_globalProxy-enabled%
@@ -467,7 +473,7 @@ call res\scripts\Config.bat FFmpeg
 goto _ReturnToSetting_
 
 :setting_Wget
-echo. & echo %str_current-wgetOpt%
+echo %str_current-wgetOpt%
 set "_WgetOptions_="
 cd res && call :Get_WgetOptions
 echo. & echo "%_WgetOptions_%"
@@ -482,6 +488,19 @@ echo.
 if /i "%opt6_opt6_choice%"=="Y" (
     cd res && call scripts\GenerateWgetOptions.bat
     cd .. && echo %str_reset-wgetOpt-ok%
+) else ( echo %str_cancelled% )
+goto _ReturnToSetting_
+
+:setting_SystemType
+echo %str_current-systemType% %_SystemType_%bit
+set opt6_opt7_choice=0
+echo. & echo %str_please-set-systemType%
+set /p opt6_opt7_choice= %str_enter-to-cancel%
+echo.
+if /i "%opt6_opt7_choice%"=="T" (
+    call res\scripts\Config.bat SystemType
+    echo %str_please-rerun%
+    goto _PleaseRerun_
 ) else ( echo %str_cancelled% )
 goto _ReturnToSetting_
 
