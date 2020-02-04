@@ -1,17 +1,31 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2020-01-17
+:: Last updated: 2020-02-04
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
-REM setlocal EnableDelayedExpansion
+setlocal EnableDelayedExpansion
+:: Read the comment at the 7th line of :WriteCommon (appr. Line#268) when EnableDelayedExpansion.
 
 
-rem ================= Requirement Check =================
+:: To set a certain version for Python instead of latest version, call this batch with additional options. Regex: ^3\.\d+(\.\d+)?$
+:: e.g. 
+:: call AutoGenerateLatestSourcesLists.bat --python=3.7      ==>  latest version of Python as 3.7.x , for now(Jan,2020) is 3.7.6
+:: call AutoGenerateLatestSourcesLists.bat --python=3.7.1    ==>  Specific version of Python at 3.7.1
+:: call AutoGenerateLatestSourcesLists.bat --python=3.4      ==>  latest version of Python as 3.4.x , for now is 3.4.10
+:: However, DON'T call like following!
+:: call AutoGenerateLatestSourcesLists.bat --python=3     (At least write the "minor" part of version number as "major.minor.micro")
+:: call AutoGenerateLatestSourcesLists.bat --python=3.99  (No such version so far)
+:: call AutoGenerateLatestSourcesLists.bat --python=2     (Python 2 not supported)
+:: call AutoGenerateLatestSourcesLists.bat --python=2.7   (Python 2 not supported)
 
 
+rem ================= Preparation =================
+
+
+:RequirementCheck
 if NOT exist wget.exe (
     if exist ..\wget.exe ( 
         xcopy ..\wget.exe .\ > NUL
@@ -50,19 +64,47 @@ rem ================= Get Variables =================
 REM @param  %pyLatestVersion%,  %pyLatestReleasedTime%
 
 :: The output of 'findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt' should be like: 
-::     503:            <li><a href="/downloads/release/python-374/">Latest Python 3 Release - Python 3.7.4</a></li>
+::     505:            <li><a href="/downloads/release/python-381/">Latest Python 3 Release - Python 3.8.1</a></li>
 for /f "tokens=10 delims=< " %%a in ('findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt') do ( set "pyLatestVersion=%%a" )
-echo pyLatestVersion: %pyLatestVersion%
 
-:: The output of 'findstr /n /i /c:"Python 3.7.4 -" pyLatestRelease.txt' should be like: 
-::     514:                        <a href="/downloads/release/python-374/">Python 3.7.4 - July 8, 2019</a>
-:: OR  514:                        <a href="/downloads/release/python-380/">Python 3.8.0 - Oct. 14, 2019</a>
-for /f "tokens=6-8 delims=< " %%x in ('findstr /n /i /c:"Python %pyLatestVersion% -" pyLatestRelease.txt') do (
-    set "pyLatestReleasedTime_month=%%x" && set "pyLatestReleasedTime_day=%%y" && set "pyLatestReleasedTime_year=%%z"
+:: If there is no option(When this batch is directly clicked), set %pySpecificVersion% to the latest version.
+if "%~1"=="--python" (
+    set "pySpecificVersion=%~2"
+    set "pyInfo1=pySpecificVersion"
+    set "pyInfo2=pySpecificReleasedTime"
+) else (
+    set "pySpecificVersion=%pyLatestVersion%"
+    set "pyInfo1=pyLatestVersion"
+    set "pyInfo2=pyLatestReleasedTime"
 )
-set "pyLatestReleasedTime=%pyLatestReleasedTime_year:"=%-%pyLatestReleasedTime_month:.=%-%pyLatestReleasedTime_day:,=%"
-echo pyLatestReleasedTime: %pyLatestReleasedTime%
-echo.
+:: If the %pyLatestVersion% is "3.8.x", and %pySpecificVersion% is also "3.8", skip the first line of output of next step.
+if "%pySpecificVersion:~0,3%"=="%pyLatestVersion:~0,3%" (
+    set "skipThisLoop=true"
+) else ( set "skipThisLoop=false" )
+
+:: 1. The output of 'findstr /n /i /c:"Python 3.7" pyLatestRelease.txt'
+::               or 'findstr /n /i /c:"Python 3.7.6" pyLatestRelease.txt' should be like: 
+::     538:                        <a href="/downloads/release/python-376/">Python 3.7.6 - Dec. 18, 2019</a>
+::     540:                        <p><strong>Note that Python 3.7.6 <em>cannot</em> be used on Windows XP or earlier.</strong></p>
+::     ...etc...
+:: 2. The output of 'findstr /n /i /c:"Python 3.8" pyLatestRelease.txt' should be like: 
+::     505:            <li><a href="/downloads/release/python-381/">Latest Python 3 Release - Python 3.8.1</a></li>
+::     514:                        <a href="/downloads/release/python-381/">Python 3.8.1 - Dec. 18, 2019</a>
+::     ...etc...
+:: For 1, only the first line is wanted. Break after finishing the first loop;
+:: For 2, just skip the first loop. Break at the second loop.
+for /f "tokens=4-8 delims=< " %%a in ('findstr /n /i /c:"Python %pySpecificVersion%" pyLatestRelease.txt') do (
+    if "!skipThisLoop!"=="false" (
+        set "pyLatestVersion=%%a"
+        echo %pyInfo1%: !pyLatestVersion!
+        set "pyLatestReleasedTime_month=%%c" && set "pyLatestReleasedTime_day=%%d" && set "pyLatestReleasedTime_year=%%e"
+        set "pyLatestReleasedTime=!pyLatestReleasedTime_year:"=!-!pyLatestReleasedTime_month:.=!-!pyLatestReleasedTime_day:,=!"
+        echo %pyInfo2%: !pyLatestReleasedTime!
+        echo.
+        goto :GetYougetLatestVersion
+    )
+    set "skipThisLoop=false"
+)
 
 
 :GetYougetLatestVersion
@@ -224,8 +266,8 @@ echo ## https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/s
 echo ## For Initial Deployment; Deployment of FFmpeg; Upgrade of You-Get.>> %filePath%
 echo ## ( Auto-Generated by "%~nx0" at %formatedDateTime% )>> %filePath%
 echo.>> %filePath%
-:: use ^^! if EnableDelayedExpansion
-echo ^<!-- DO NOT EDIT THIS FILE unless you understand the EXAMPLE. --^>>> %filePath%
+:: Use ^^! if EnableDelayedExpansion; use single ! if not EnableDelayedExpansion.
+echo ^<^^!-- DO NOT EDIT THIS FILE unless you understand the EXAMPLE. --^>>> %filePath%
 echo.>> %filePath%
 echo EXAMPLE>> %filePath%
 echo ## Title or Info>> %filePath%
@@ -293,8 +335,8 @@ echo     [origin]>> %filePath%
 echo     https://files.pythonhosted.org/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz>> %filePath%
 echo     $ https://github.com/soimort/you-get/releases/download/v%ygLatestVersion%/you-get-%ygLatestVersion%.tar.gz>> %filePath%
 echo     [cn]>> %filePath%
-echo     @ https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz>> %filePath%
-echo     $ https://mirrors.aliyun.com/pypi/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz>> %filePath%
+echo     @ https://mirrors.aliyun.com/pypi/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz>> %filePath%
+echo     $ https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz>> %filePath%
 echo     [test]>> %filePath%
 echo     @ http://mirrors.163.com/pypi/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz>> %filePath%
 echo }>> %filePath%

@@ -2,7 +2,7 @@
 > [`video-downloader-deploy/res/dev/`](https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev)  
 > *English translation is NOT provided for this instruction. Please translate it by yourself.*
 
-- 此目录下的脚本为 `develop` 状态，不保证功能稳定，请自行抉择是否使用；
+- 此目录下的脚本为 `develop` 状态，不保证功能稳定，请阅读下文后自行抉择是否使用；
 - 下文中，称 `Deploy.bat` 为 “主程序” ；
 - 此目录下的脚本未被 主程序 引用。删除该文件夹不影响 主程序 运行。
 
@@ -22,9 +22,11 @@
 网页解析算法可能会因为网站改版而失效。
 
 ### 参考资料
-1. 另一种获得 Python 最新版本号的方法：   
+1. 由于 `AutoGenerateWithSpecificVersion.bat` 的引入，为了使此脚本能处理各种版本号的不同情况，复杂化了获得指定版本 Python 的最新版本号的流程。  
+   原先的简易流程另见: [AutoGenerateLatestSourcesLists.bat#L49-L65](https://github.com/LussacZheng/video-downloader-deploy/blob/5512cb8605c8f273940de3ad70c6da521c6fa824/res/dev/AutoGenerateLatestSourcesLists.bat#L49-L65)
+2. 另一种获得 Python 最新版本号的方法：   
    GitHub - corpnewt/gibMacOS : [gibMacOS.bat#L87-L124](https://github.com/corpnewt/gibMacOS/blob/ce6f62c388f2bd48ec57aeca057e29ff90406dbb/gibMacOS.bat#L87-L124)
-2. 另一种获得 You-Get 最新版本号的方法：
+3. 另一种获得 You-Get 最新版本号的方法：
    ```batch
    wget -q --show-progress --progress=bar:force:noscroll --no-check-certificate -np https://github.com/soimort/you-get/releases/latest -O yg.txt
    :: The output of 'findstr /n /i "<title>" yg.txt' should be like: 
@@ -34,6 +36,19 @@
    echo ygLatestVersion: %ygLatestVersion%
    ```
    此方法已用于 `res\scripts\CheckUpdate.bat` 的 `:CheckUpdate_youget` 方法中。
+
+---
+
+## AutoGenerateWithSpecificVersion
+
+> 由于 Python 3.8.x 在 Windows 7 上可能有潜在的兼容性问题（当未安装 Microsoft Visual C++ 2015 Redistributable (x64) 运行库时）， [`#95ee51c`](https://github.com/LussacZheng/video-downloader-deploy/commit/95ee51c61225f05206dcde53e59013217bd9ab46) 将 `sources.txt` 中的默认使用的 Python 版本改为了 3.7.x 。但 `AutoGenerateLatestSourcesLists.bat` 只能获取到 Python 最新版本的信息（目前为 3.8.x）。同时为了方便地设置代理，需要对其进行一些修改。
+
+在保证 `AutoGenerateLatestSourcesLists.bat` 仍可直接点击使用的前提下，通过该脚本指定 Python 版本号和设置代理，同时调用 `AutoGenerateLatestSourcesLists.bat` 来生成 `sources.txt` 。 
+
+### 使用
+确保此脚本与 `AutoGenerateLatestSourcesLists.bat` 处于同一目录，且当前所在目录或上级目录存在 `wget.exe` ，直接运行脚本即可。若正常运行，则会在当前目录生成 `sources.txt` ，移动并覆盖 `res\` 目录下的同名文件即可。
+- 首次使用时会生成同名的 `.settings` 文件，建议关闭脚本窗口 ，先修改自定义设置后再次执行脚本。
+- `AutoGenerateWithSpecificVersion.settings` 中的设置只对此脚本生效。
 
 ---
 
