@@ -104,8 +104,9 @@ echo if "%%state_proxyHint%%"=="enable" (>>%dl-bat-filename%
 echo     echo [4] %str_proxyHint-option%>>%dl-bat-filename%
 echo     echo       you-get -x 127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
 echo     echo       youtube-dl --proxy socks5://127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
-echo     echo       annie -x http://127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
-echo     echo       annie -s 127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
+echo     echo       * %str_proxyHint_annie1%>>%dl-bat-filename%
+echo     echo         %str_proxyHint_annie2%>>%dl-bat-filename%
+echo     echo       set "HTTP_PROXY=socks5://127.0.0.1:1080" ^^^& annie https://www.youtube.com/watch?v=Ie5qE1EHm_w>>%dl-bat-filename%
 echo     echo.>>%dl-bat-filename%
 echo )>>%dl-bat-filename%
 

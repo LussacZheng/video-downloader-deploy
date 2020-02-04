@@ -53,7 +53,7 @@ set "str_dl-guide3=For example:"
 set "str_dl-guide4=By default, you will get the video of highest quality. And the files downloaded will be saved in "Download"."
 set "str_dl-guide5=If you want to choose the quality of video, change the directory saved in, or learn more usage of these tools, please Google it or refer to the Official Instructions:"
 set "str_dl-guide6=To change the following settings, turn to "Deploy.bat - Advanced Settings" and toggle the related options according to the corresponding index number"
-set "str_dl-guide7=While downloading from foreign website, please enable the GlobalProxy for current console window, or use proxy options."
+set "str_dl-guide7=While downloading from foreign website, please enable GlobalProxy for current console window, or use proxy options."
 set "str_dl-guide_wiki="
 :: ========= Download Batch - Contents
 set "str_dl-bat=Download_Video"
@@ -98,11 +98,14 @@ set "str_please-set-httpPort=Please input - Http Port ^(DEFAULT 1080 ^): "
 set "str_please-set-httpsPort=Please input - Https Port ^(DEFAULT 1080 ^): "
 set "str_reset-globalProxy-ok=The Proxy Server has been reset to the default."
 set "str_set-globalProxy-ok=The custom Proxy Server has been set successfully."
-:: ========= Advanced Settings - Option 4-5
+:: ========= Advanced Settings - Option 4
 set "str_proxyHint-enabled=Examples of proxy options: Displayed"
 set "str_proxyHint-disabled=Examples of proxy options: Hidden ^(DEFAULT^)"
 :: :: used in "dl-bat"
-set "str_proxyHint-option=Proxy options:"
+set "str_proxyHint-option=Proxy options examples:"
+set "str_proxyHint_annie1=Since annie v0.9.8, it is no longer supported to set the proxy with the -x or -s option."
+set "str_proxyHint_annie2=Set the HTTP/SOCKS5 proxy using environment variables %%%%HTTP_PROXY%%%%, or enable [3]GlobalProxy."
+:: ========= Advanced Settings - Option 5
 set "str_ffmpeg-enabled=FFmpeg: enabled ^(DEFAULT^)"
 set "str_ffmpeg-disabled=FFmpeg: disabled"
 :: ========= Advanced Settings - Option 6

@@ -98,11 +98,14 @@ set "str_please-set-httpPort=请输入 - HTTP端口^(留空则为 1080 ^)："
 set "str_please-set-httpsPort=请输入 - HTTPS端口^(留空则为 1080 ^)："
 set "str_reset-globalProxy-ok=代理地址已恢复至默认。"
 set "str_set-globalProxy-ok=自定义代理地址已设置成功。"
-:: ========= Advanced Settings - Option 4-5
+:: ========= Advanced Settings - Option 4
 set "str_proxyHint-enabled=代理参数的命令示例：显示"
 set "str_proxyHint-disabled=代理参数的命令示例：隐藏 ^(默认^)"
 :: :: used in "dl-bat"
-set "str_proxyHint-option=代理参数："
+set "str_proxyHint-option=代理参数示例："
+set "str_proxyHint_annie1=自 annie v0.9.8 起，其不再支持通过 -x 或 -s 参数设置代理。"
+set "str_proxyHint_annie2=可通过环境变量 %%%%HTTP_PROXY%%%% 来设置代理，或启用 [3]全局代理。"
+:: ========= Advanced Settings - Option 5
 set "str_ffmpeg-enabled=FFmpeg：启用 ^(默认^)"
 set "str_ffmpeg-disabled=FFmpeg：禁用"
 :: ========= Advanced Settings - Option 6
