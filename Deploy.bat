@@ -2,13 +2,13 @@
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
 :: Version: 1.4.3
-:: Last updated: 2020-02-04
+:: Last updated: 2020-02-05
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
 set "_Version_=1.4.3"
-set "lastUpdated=2020-02-04"
+set "lastUpdated=2020-02-05"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -33,7 +33,7 @@ if exist res\deploy.settings (
     for /f "tokens=2 delims= " %%i in ('findstr /i "SystemType" res\deploy.settings') do ( set "_SystemType_=%%i" )
 )
 
-:: Import the GlobalProxy setting and apply
+:: Import the GlobalProxy setting and apply. Then show more info in Option6.
 call :Get_GlobalProxy true
 
 
@@ -98,7 +98,7 @@ echo. & echo  [2] %str_opt2%
 echo. & echo  [3] %str_opt3% %opt3_info%
 echo. & echo  [4] %str_opt4% %opt4_info%
 echo. & echo  [5] %str_opt5%
-echo. & echo  [6] %str_opt6%
+echo. & echo  [6] %str_opt6% %opt6_info%
 echo. & echo.
 echo ====================================================
 set choice=0
@@ -622,10 +622,13 @@ if exist res\deploy.settings (
     for /f "tokens=2 delims= " %%i in ('findstr /i "HttpPort" res\deploy.settings') do ( set "_httpPort=%%i" )
     for /f "tokens=2 delims= " %%i in ('findstr /i "HttpsPort" res\deploy.settings') do ( set "_httpsPort=%%i" )
 ) else ( set "state_globalProxy=disable" )
-if "%whetherToSet%"=="true" if "%state_globalProxy%"=="enable" (
-    set "http_proxy=%_proxyHost%:%_httpPort%"
-    set "https_proxy=%_proxyHost%:%_httpsPort%"
-)
+if "%state_globalProxy%"=="enable" (
+    if "%whetherToSet%"=="true" (
+        set "http_proxy=%_proxyHost%:%_httpPort%"
+        set "https_proxy=%_proxyHost%:%_httpsPort%"
+    )
+    set "opt6_info=(%str_globalProxy-enabled%)"
+) else ( set "opt6_info=" )
 goto :eof
 
 
