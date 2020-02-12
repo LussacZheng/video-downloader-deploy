@@ -32,7 +32,7 @@ rem ================= FUNCTIONS =================
 
 :Setup_python
 :: Get the full name of "python-3.x.x-embed*.zip" -> %pyZip%
-for /f "delims=" %%i in ('dir /b /a:a python*embed*.zip') do ( set "pyZip=%%i" )
+for /f "delims=" %%i in ('dir /b /a:a /o:d python*embed*.zip') do ( set "pyZip=%%i" )
 echo %str_unzipping% %pyZip%...
 :: https://superuser.com/questions/331148/7-zip-command-line-extract-silently-quietly
 7za x %pyZip% -o"%pyBin%" > NUL
@@ -41,7 +41,8 @@ goto :eof
 
 
 :Setup_youget
-for /f "delims=" %%i in ('dir /b /a:a you-get*.tar.gz') do ( set "ygZip=%%i" )
+for /f "delims=" %%i in ('dir /b /a:a /o:d you-get*.tar.gz') do ( set "ygZip=%%i" )
+if NOT "%~1"=="" ( set "ygZip=%~1" )
 echo %str_unzipping% %ygZip%...
 :: https://superuser.com/questions/80019/how-can-i-unzip-a-tar-gz-in-one-step-using-7-zip
 7za x %ygZip% -so | 7za x -aoa -si -ttar > NUL
@@ -52,7 +53,8 @@ goto :eof
 
 
 :Setup_youtubedl
-for /f "delims=" %%i in ('dir /b /a:a youtube-dl*.tar.gz') do ( set "ydZip=%%i" )
+for /f "delims=" %%i in ('dir /b /a:a /o:d youtube-dl*.tar.gz') do ( set "ydZip=%%i" )
+if NOT "%~1"=="" ( set "ydZip=%~1" )
 echo %str_unzipping% %ydZip%...
 7za x %ydZip% -so | 7za x -aoa -si -ttar > NUL
 set ydDir=youtube-dl
@@ -62,7 +64,8 @@ goto :eof
 
 
 :Setup_annie
-for /f "delims=" %%i in ('dir /b /a:a annie*Windows*.zip') do ( set "anZip=%%i" )
+for /f "delims=" %%i in ('dir /b /a:a /o:d annie*Windows*.zip') do ( set "anZip=%%i" )
+if NOT "%~1"=="" ( set "anZip=%~1" )
 echo %str_unzipping% %anZip%...
 7za x %anZip% -o"%anBin%" > NUL
 echo Annie %str_already-deploy%
@@ -70,7 +73,7 @@ goto :eof
 
 
 :Setup_ffmpeg
-for /f "delims=" %%i in ('dir /b /a:a ffmpeg*.zip') do ( set "ffZip=%%i" )
+for /f "delims=" %%i in ('dir /b /a:a /o:d ffmpeg*.zip') do ( set "ffZip=%%i" )
 echo %str_unzipping% %ffZip% ...
 7za x %ffZip% > NUL
 set "ffDir=%ffZip:~0,-4%"
@@ -103,7 +106,7 @@ if "%state_upgradeOnlyViaGitHub%"=="enable" (
 )
 endlocal
 rd /S /Q "%ygBin%" >NUL 2>NUL
-cd download && call :Setup_youget
+cd download && call :Setup_youget "you-get-%ygLatestVersion%.tar.gz"
 cd .. && echo You-Get %str_already-upgrade%
 goto :eof
 
@@ -116,7 +119,7 @@ set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/downloa
 echo %ydLatestVersion_Url%>> download\to-be-downloaded.txt
 wget %_WgetOptions_% %ydLatestVersion_Url% -P download
 rd /S /Q "%ydBin%" >NUL 2>NUL
-cd download && call :Setup_youtubedl
+cd download && call :Setup_youtubedl "youtube-dl-%ydLatestVersion%.tar.gz"
 cd .. && echo Youtube-dl %str_already-upgrade%
 goto :eof
 
@@ -129,7 +132,7 @@ set "anLatestVersion_Url=https://github.com/iawia002/annie/releases/download/%an
 echo %anLatestVersion_Url%>> download\to-be-downloaded.txt
 wget %_WgetOptions_% %anLatestVersion_Url% -P download
 del /Q "%anBin%\annie.exe" >NUL 2>NUL
-cd download && call :Setup_annie
+cd download && call :Setup_annie "annie_%anLatestVersion%_Windows_%_SystemType_%-bit.zip"
 cd .. && echo Annie %str_already-upgrade%
 goto :eof
 
