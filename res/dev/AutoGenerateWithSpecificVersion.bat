@@ -16,19 +16,19 @@ rem ================= Configuration =================
 set "_config=%~n0.settings"
 
 if NOT exist %_config% (
-    echo # EDIT AT YOUR OWN RISK.>%_config%
-    echo.>>%_config%
-    echo # Regex of version number : ^^3\.\d+^(\.\d+^)?$>>%_config%
-    echo # Right : "3.7", "3.7.1", "3.4";>>%_config%
-    echo # Wrong: "3", "3.99", "2", "2.7".>>%_config%
-    echo # See the comments in "AutoGenerateLatestSourcesLists.bat" for details.>>%_config%
-    echo PythonSpecificVersion: 3.7>>%_config%
-    echo.>>%_config%
-    echo # "enable" or "disable">>%_config%
-    echo GlobalProxy: disable>>%_config%
-    echo ProxyHost: http://127.0.0.1>>%_config%
-    echo HttpPort: 1080>>%_config%
-    echo HttpsPort: 1080>>%_config%
+    ( echo # EDIT AT YOUR OWN RISK.
+    echo.
+    echo # Regex of version number : ^^3\.\d+^(\.\d+^)?$
+    echo # Right : "3.7", "3.7.1", "3.4";
+    echo # Wrong: "3", "3.99", "2", "2.7".
+    echo # See the comments in "AutoGenerateLatestSourcesLists.bat" for details.
+    echo PythonSpecificVersion: 3.7
+    echo.
+    echo # "enable" or "disable"
+    echo GlobalProxy: disable
+    echo ProxyHost: http://127.0.0.1
+    echo HttpPort: 1080
+    echo HttpsPort: 1080) > %_config%
     echo.
     echo * You'd better close this window and edit the configuration file "%_config%" first.
     echo.

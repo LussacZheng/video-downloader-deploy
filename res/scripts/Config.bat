@@ -21,24 +21,27 @@ goto :eof
 rem ================= FUNCTIONS =================
 
 
+:: Using the `::` to comment in `if` or `for` structure will cause unpredictable error. Use `REM` instead.
+
+
 :Config_Common
 cd res
 if NOT exist %cfg_File% (
-    :: Set to default
-    echo # NEVER EDIT THIS FILE.> %cfg_File%
-    echo Language: %_Language_%>> %cfg_File%
-    echo Region: %_Region_%>> %cfg_File%
-    echo SystemType: %_SystemType_%>> %cfg_File%
-    echo ProxyHint: disable>> %cfg_File%
-    echo FFmpeg: enable>> %cfg_File%
-    echo NetTest: enable>> %cfg_File%
-    echo UpgradeOnlyViaGitHub: disable>> %cfg_File%
-    echo GlobalProxy: disable>> %cfg_File%
-    echo {>> %cfg_File%
-    echo     ProxyHost: http://127.0.0.1>> %cfg_File%
-    echo     HttpPort: 1080>> %cfg_File%
-    echo     HttpsPort: 1080>> %cfg_File%
-    echo }>> %cfg_File%
+    REM Set to default
+    ( echo # NEVER EDIT THIS FILE.
+    echo Language: %_Language_%
+    echo Region: %_Region_%
+    echo SystemType: %_SystemType_%
+    echo ProxyHint: disable
+    echo FFmpeg: enable
+    echo NetTest: enable
+    echo UpgradeOnlyViaGitHub: disable
+    echo GlobalProxy: disable
+    echo {
+    echo     ProxyHost: http://127.0.0.1
+    echo     HttpPort: 1080
+    echo     HttpsPort: 1080
+    echo })> %cfg_File%
 )
 copy %cfg_File% %cfg_File%.bak > NUL
 type NUL > %cfg_File%

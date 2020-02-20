@@ -39,9 +39,9 @@ goto :eof
 :Log_Init-withpip
 call :Log_init
 call :GetPackagesInfo
-echo pipVer: %log_pipVer%>> %log_File%
-echo ygVer: %log_ygVer%>> %log_File%
-echo ydVer: %log_ydVer%>> %log_File%
+( echo pipVer: %log_pipVer%
+echo ygVer: %log_ygVer%
+echo ydVer: %log_ydVer%) >> %log_File%
 call :Log_an
 call :Log_common
 goto :eof
@@ -57,9 +57,9 @@ goto :eof
 :: %ygLatestVersion%, %ydLatestVersion%, %anLatestVersion% were set in res\scripts\CheckUpdate.bat :CheckUpdate_*
 :Log_Upgrade-portable
 call :Log_time
-echo ygVer: %ygLatestVersion%>> %log_File%
-echo ydVer: %ydLatestVersion%>> %log_File%
-echo anVer: %anLatestVersion%>> %log_File%
+( echo ygVer: %ygLatestVersion%
+echo ydVer: %ydLatestVersion%
+echo anVer: %anLatestVersion%) >> %log_File%
 call :Log_common
 goto :eof
 
@@ -74,10 +74,10 @@ goto :eof
 :Log_Upgrade-withpip
 call :Log_time
 call :GetPackagesInfo
-echo pipVer: %log_pipVer%>> %log_File%
-echo ygVer: %log_ygVer%>> %log_File%
-echo ydVer: %log_ydVer%>> %log_File%
-echo anVer: %anLatestVersion%>> %log_File%
+( echo pipVer: %log_pipVer%
+echo ygVer: %log_ygVer%
+echo ydVer: %log_ydVer%
+echo anVer: %anLatestVersion%) >> %log_File%
 call :Log_common
 goto :eof
 
@@ -102,18 +102,18 @@ popd
 goto :eof
 
 :Log_init
-echo # NEVER EDIT THIS FILE.> %log_File%
-echo # py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip>> %log_File%
-echo.>> %log_File%
-echo Initialized: true>> %log_File%
-echo DeployMode: %log_DeployMode%>> %log_File%
-echo.>> %log_File%
+( echo # NEVER EDIT THIS FILE.
+echo # py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
+echo.
+echo Initialized: true
+echo DeployMode: %log_DeployMode%
+echo.) > %log_File%
 call :Log_time
 goto :eof
 
 :Log_time
-echo ----- %log_Type% ----->> %log_File%
-echo.>> %log_File%
+( echo ----- %log_Type% -----
+echo.) >> %log_File%
 call :GetDateTime
 echo time: %formatedDateTime%>> %log_File%
 :: echo time: %date:~0,10% %time:~0,8%>> %log_File%
@@ -121,34 +121,34 @@ echo.>> %log_File%
 goto :eof
 
 :Log_common
-echo.>> %log_File%
-echo errorlevel: !errorlevel!>> %log_File%
-echo.>> %log_File%
+( echo.
+echo errorlevel: !errorlevel!
+echo.) >> %log_File%
 goto :eof
 
 :Log_py
-echo pyZip: %pyZip%>> %log_File%
-echo pyBin: "%pyBin%">> %log_File%
+( echo pyZip: %pyZip%
+echo pyBin: "%pyBin%") >> %log_File%
 goto :eof
 
 :Log_yg
-echo ygZip: %ygZip%>> %log_File%
-echo ygBin: "%ygBin%">> %log_File%
+( echo ygZip: %ygZip%
+echo ygBin: "%ygBin%") >> %log_File%
 goto :eof
 
 :Log_yd
-echo ydZip: %ydZip%>> %log_File%
-echo ydBin: "%ydBin%">> %log_File%
+( echo ydZip: %ydZip%
+echo ydBin: "%ydBin%") >> %log_File%
 goto :eof
 
 :Log_an
-echo anZip: %anZip%>> %log_File%
-echo anBin: "%anBin%">> %log_File%
+( echo anZip: %anZip%
+echo anBin: "%anBin%") >> %log_File%
 goto :eof
 
 :Log_ff
-echo ffZip: %ffZip%>> %log_File%
-echo ffBin: "%ffBin%">> %log_File%
+( echo ffZip: %ffZip%
+echo ffBin: "%ffBin%") >> %log_File%
 goto :eof
 
 
