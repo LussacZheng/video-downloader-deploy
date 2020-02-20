@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Used for "Deploy.bat" in :InitLog & :InitDeploy-ffmpeg & :upgrade_done
 :: Please make sure that: only call this batch when %cd% is "res\".
-:: e.g. 
+:: e.g.
 :: call scripts\Log.bat Init portable
 :: call scripts\Log.bat Upgrade withpip
 

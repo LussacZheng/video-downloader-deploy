@@ -20,3 +20,18 @@ Download*Video*.bat
 res/dev/AutoGenerateWithSpecificVersion.settings
 res/dev/sources.txt
 res/dev/wget.exe
+
+# VS Code / Editor
+.editorconfig
+## Used for triming whitespace
+## Add this into .gitignore in consideration of
+##     reducing the number of files in the main folder
+## Content:
+##     root = true
+##
+##     [*]
+##     insert_final_newline = true
+##     trim_trailing_whitespace = true
+##
+##     [*.md]
+##     trim_trailing_whitespace = false

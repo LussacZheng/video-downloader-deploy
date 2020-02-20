@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Used for "Deploy.bat" in :Update & :Upgrade-portable & :Upgrade-quickstart & :Upgrade-withpip
 :: Please make sure that: only call this batch when %cd% is "res\".
-:: e.g. 
+:: e.g.
 :: call scripts\CheckUpdate.bat self
 :: call scripts\CheckUpdate.bat youget
 
@@ -25,7 +25,7 @@ goto :eof
 :CheckUpdate_youget
 for /f "tokens=2 delims='" %%a in ('type "%ygBin%\src\you_get\version.py" ^| find "version"') do ( set "ygCurrentVersion=%%a" )
 wget %_WgetOptions_% -np https://github.com/soimort/you-get/releases/latest -O ygLatestRelease.txt
-:: The output of 'findstr /n /i "<title>" ygLatestRelease.txt' should be like: 
+:: The output of 'findstr /n /i "<title>" ygLatestRelease.txt' should be like:
 ::     31:  <title>Release 0.4.1328 · soimort/you-get · GitHub</title>
 for /f "tokens=3 delims= " %%i in ('findstr /n /i "<title>" ygLatestRelease.txt') do ( set "ygLatestVersion=%%i" )
 del /Q ygLatestRelease.txt >NUL 2>NUL
@@ -44,7 +44,7 @@ goto :eof
 :CheckUpdate_youtubedl
 for /f "tokens=2 delims='" %%a in ('type "%ydBin%\youtube_dl\version.py" ^| find "version"') do ( set "ydCurrentVersion=%%a" )
 wget %_WgetOptions_% -np https://github.com/ytdl-org/youtube-dl/releases/latest -O ydLatestRelease.txt
-:: The output of 'findstr /n /i "<title>" ydLatestRelease.txt' should be like: 
+:: The output of 'findstr /n /i "<title>" ydLatestRelease.txt' should be like:
 ::     31:  <title>Release youtube-dl 2019.08.02 · ytdl-org/youtube-dl · GitHub</title>
 for /f "tokens=4 delims= " %%i in ('findstr /n /i "<title>" ydLatestRelease.txt') do ( set "ydLatestVersion=%%i" )
 del /Q ydLatestRelease.txt >NUL 2>NUL
@@ -56,7 +56,7 @@ goto :eof
 for /f "tokens=3 delims= " %%a in ('"%anBin%\annie.exe" -v') do ( set "anCurrentVersion=%%a" )
 set "anCurrentVersion=%anCurrentVersion:,=%"
 wget %_WgetOptions_% -np https://github.com/iawia002/annie/releases/latest -O anLatestRelease.txt
-:: The output of 'findstr /n /i "<title>" anLatestRelease.txt' should be like: 
+:: The output of 'findstr /n /i "<title>" anLatestRelease.txt' should be like:
 ::     31:  <title>Release 0.9.4 · iawia002/annie · GitHub</title>
 for /f "tokens=3 delims= " %%i in ('findstr /n /i "<title>" anLatestRelease.txt') do ( set "anLatestVersion=%%i" )
 del /Q anLatestRelease.txt >NUL 2>NUL

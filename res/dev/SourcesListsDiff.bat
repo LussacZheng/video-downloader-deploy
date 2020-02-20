@@ -31,13 +31,13 @@ echo  What from "%new%" is not in "%old%" :
 echo -------------------------------------------------------
 echo.
 findstr /b /e /ivg:"%old%" "%new%" > diff1.txt
-for /f "delims=" %%i in (diff1.txt) do ( 
+for /f "delims=" %%i in (diff1.txt) do (
     set "temp=%%i"
     REM :: Escape character \"
     set "temp=!temp:"=\"!"
     for /f "tokens=1,* delims=:" %%a in ('findstr /b /e /n /i /c:"!temp!" "%new%"') do (
         echo %%a:    %%b
-    )  
+    )
 )
 
 echo. & echo.
@@ -48,13 +48,13 @@ echo  What from "%old%" is not in "%new%" :
 echo -------------------------------------------------------
 echo.
 findstr /b /e /ivg:"%new%" "%old%" > diff2.txt
-for /f "delims=" %%i in (diff2.txt) do ( 
+for /f "delims=" %%i in (diff2.txt) do (
     set "temp=%%i"
     REM :: Escape character \"
     set "temp=!temp:"=\"!"
     for /f "tokens=1,* delims=:" %%a in ('findstr /b /e /n /i /c:"!temp!" "%old%"') do (
         echo %%a:    %%b
-    )  
+    )
 )
 
 del /Q diff1.txt >NUL 2>NUL

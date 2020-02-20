@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Used for "Deploy.bat" in :setting_Proxy & :setting_FFmpeg
 :: Please make sure that: only call this batch when %cd% is %root%; call "res\scripts\lang_*.bat" before calling this batch.
-:: e.g. 
+:: e.g.
 :: call res\scripts\Config.bat Language zh
 :: call res\scripts\Config.bat Region origin
 :: call res\scripts\Config.bat SystemType

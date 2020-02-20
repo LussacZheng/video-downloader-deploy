@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Used for "Deploy.bat" in :Create_Download-bat
 :: Please make sure that: only call this batch when %cd% is %root%; call "res\scripts\lang_*.bat" before calling this batch.
-:: e.g. 
+:: e.g.
 :: call res\scripts\GenerateDownloadBatch.bat portable
 
 @echo off

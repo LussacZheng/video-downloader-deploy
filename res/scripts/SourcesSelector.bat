@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Used for "Deploy.bat" in :Common & :InitDeploy-ffmpeg ; Used for "res\scripts\DoDeploy.bat" in :Upgrade_youget
 :: Please make sure that: only call this batch when %cd% is "res\".
-:: e.g. 
+:: e.g.
 :: call scripts\SourcesSelector.bat sources.txt portable cn 64 download\to-be-downloaded.txt
 :: call scripts\SourcesSelector.bat sources.txt youget origin 32 download\to-be-downloaded.txt
 
@@ -25,7 +25,7 @@ set "ss_Final=%~5"
 :: 1: Switch on (delete '@' from) the next line.
 :: 2: Switch off (add '@' to) the next line.
 :: 3(Unused now): Logical negation. Switch on/off (delete/add '@' from/to) the next line.
-::      echo !ss_Temp! | findstr "@" >NUL && ( set "ss_Temp=!ss_Temp:@ =!" ) || ( set "ss_Temp=!ss_Temp:http=@ http!" ) 
+::      echo !ss_Temp! | findstr "@" >NUL && ( set "ss_Temp=!ss_Temp:@ =!" ) || ( set "ss_Temp=!ss_Temp:http=@ http!" )
 :: }
 
 set ss_Tag_required=0
@@ -42,7 +42,7 @@ for /f "eol=# skip=%ss_SkipLine% delims=" %%i in (%ss_Input%) do (
         if !ss_Tag_switch!==0 (
             REM ::  use '\' to avoid wrong match, caused by a special match rule, like: findstr "[0-9]" is ture for number "6".
             REM ::  set ss_Tag_switch=2 by default if this line conains '['
-            echo %%i | findstr "\[" >NUL && ( set "ss_Tag_switch=2" )      
+            echo %%i | findstr "\[" >NUL && ( set "ss_Tag_switch=2" )
             echo %%i | findstr "\[%ss_Region%\]" >NUL && ( set "ss_Tag_switch=1" )
             echo %%i | findstr "\[%ss_SystemType%\]" >NUL && ( set "ss_Tag_switch=1" )
             echo %%i>> %ss_Output%
@@ -56,7 +56,7 @@ for /f "eol=# skip=%ss_SkipLine% delims=" %%i in (%ss_Input%) do (
             echo !ss_Temp!>> %ss_Output%
             set ss_Tag_switch=0
         )
-    )     
+    )
     echo %%i | findstr "\[/%ss_Required%\]" >NUL && ( set "ss_Tag_required=0" )
 )
 

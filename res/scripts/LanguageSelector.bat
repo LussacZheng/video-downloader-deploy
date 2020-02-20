@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Used for "Deploy.bat" in ==Preparation==
 :: No %cd% limit.
-:: e.g. 
+:: e.g.
 :: call res\scripts\LanguageSelector.bat
 :: Get system language -> %_Language_%
 

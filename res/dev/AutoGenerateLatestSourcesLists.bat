@@ -11,7 +11,7 @@ setlocal EnableDelayedExpansion
 
 
 :: To set a certain version for Python instead of latest version, call this batch with additional options. Regex: ^3\.\d+(\.\d+)?$
-:: e.g. 
+:: e.g.
 :: call AutoGenerateLatestSourcesLists.bat --python=3.7      ==>  latest version of Python as 3.7.x , for now(Jan,2020) is 3.7.6
 :: call AutoGenerateLatestSourcesLists.bat --python=3.7.1    ==>  Specific version of Python at 3.7.1
 :: call AutoGenerateLatestSourcesLists.bat --python=3.4      ==>  latest version of Python as 3.4.x , for now is 3.4.10
@@ -27,14 +27,14 @@ rem ================= Preparation =================
 
 :RequirementCheck
 if NOT exist wget.exe (
-    if exist ..\wget.exe ( 
+    if exist ..\wget.exe (
         xcopy ..\wget.exe .\ > NUL
-    ) else ( 
+    ) else (
         echo "wget.exe" not founded. Please download it from
         echo https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res/wget.exe
         pause > NUL
         exit
-    ) 
+    )
 )
 
 
@@ -63,7 +63,7 @@ rem ================= Get Variables =================
 :GetPythonLatestVersion
 REM @param  %pyLatestVersion%,  %pyLatestReleasedTime%
 
-:: The output of 'findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt' should be like: 
+:: The output of 'findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt' should be like:
 ::     505:            <li><a href="/downloads/release/python-381/">Latest Python 3 Release - Python 3.8.1</a></li>
 for /f "tokens=10 delims=< " %%a in ('findstr /n /i /c:"Latest Python 3 Release" pyLatestRelease.txt') do ( set "pyLatestVersion=%%a" )
 
@@ -83,11 +83,11 @@ if "%pySpecificVersion:~0,3%"=="%pyLatestVersion:~0,3%" (
 ) else ( set "skipThisLoop=false" )
 
 :: 1. The output of 'findstr /n /i /c:"Python 3.7" pyLatestRelease.txt'
-::               or 'findstr /n /i /c:"Python 3.7.6" pyLatestRelease.txt' should be like: 
+::               or 'findstr /n /i /c:"Python 3.7.6" pyLatestRelease.txt' should be like:
 ::     538:                        <a href="/downloads/release/python-376/">Python 3.7.6 - Dec. 18, 2019</a>
 ::     540:                        <p><strong>Note that Python 3.7.6 <em>cannot</em> be used on Windows XP or earlier.</strong></p>
 ::     ...etc...
-:: 2. The output of 'findstr /n /i /c:"Python 3.8" pyLatestRelease.txt' should be like: 
+:: 2. The output of 'findstr /n /i /c:"Python 3.8" pyLatestRelease.txt' should be like:
 ::     505:            <li><a href="/downloads/release/python-381/">Latest Python 3 Release - Python 3.8.1</a></li>
 ::     514:                        <a href="/downloads/release/python-381/">Python 3.8.1 - Dec. 18, 2019</a>
 ::     ...etc...
@@ -111,7 +111,7 @@ for /f "tokens=4-8 delims=< " %%a in ('findstr /n /i /c:"Python %pySpecificVersi
 REM @param  %ygUrl%,  %ygLatestVersion%,  %ygLatestReleasedTime%,  %ygBLAKE2%
 REM Get %ygUrl% from https://pypi.org/project/you-get/
 
-:: The output of 'findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt' should be like: 
+:: The output of 'findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt' should be like:
 ::     4865:   <a href="https://files.pythonhosted.org/packages/20/35/4979bb3315952a9cb20f2585455bec7ba113db5647c5739dffbc542e8761/you_get-0.4.1328-py3-none-any.whl">
 ::     4886:   <a href="https://files.pythonhosted.org/packages/fd/a5/c896dccb53f44f54c5c8bcfbc7b8d953289064bcfbf17cccb68136fde3bf/you-get-0.4.1328.tar.gz">
 for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt') do ( set "ygUrl=%%a" )
@@ -124,7 +124,7 @@ for /f "tokens=3 delims=-" %%b in ("%ygUrl%") do ( set "ygLatestVersion=%%b")
 set ygLatestVersion=%ygLatestVersion:.tar.gz=%
 echo ygLatestVersion: %ygLatestVersion%
 
-:: The output of 'findstr /n /i /c:"Released" ygLatestRelease.txt' should be like: 
+:: The output of 'findstr /n /i /c:"Released" ygLatestRelease.txt' should be like:
 ::     209:        Released: <time datetime="2019-12-28T20:35:55+0000" data-controller="localized-time" data-localized-time-relative="true" data-localized-time-show-time="false">
 for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Released" ygLatestRelease.txt') do ( set "ygLatestReleasedTime=%%c" )
 :: Now %ygLatestReleasedTime% is like: "2019-09-09T21
@@ -143,7 +143,7 @@ echo.
 :GetYoutubedlLatestVersion
 REM @param  %ydLatestVersion%
 
-:: The output of 'findstr /n /i "<title>" ydLatestRelease.txt' should be like: 
+:: The output of 'findstr /n /i "<title>" ydLatestRelease.txt' should be like:
 ::     31:  <title>Release youtube-dl 2019.08.02 · ytdl-org/youtube-dl · GitHub</title>
 for /f "tokens=4 delims= " %%a in ('findstr /n /i "<title>" ydLatestRelease.txt') do ( set "ydLatestVersion=%%a" )
 echo ydLatestVersion: %ydLatestVersion%
@@ -153,12 +153,12 @@ echo.
 :GetAnnieLatestVersion
 REM @param  %anLatestVersion%,  %anLatestReleasedTime%
 
-:: The output of 'findstr /n /i "<title>" anLatestRelease.txt' should be like: 
+:: The output of 'findstr /n /i "<title>" anLatestRelease.txt' should be like:
 ::     31:  <title>Release 0.9.4 · iawia002/annie · GitHub</title>
 for /f "tokens=3 delims= " %%a in ('findstr /n /i "<title>" anLatestRelease.txt') do ( set "anLatestVersion=%%a" )
 echo anLatestVersion: %anLatestVersion%
 
-:: The output of 'findstr /n /i "relative-time" anLatestRelease.txt' should be like: 
+:: The output of 'findstr /n /i "relative-time" anLatestRelease.txt' should be like:
 ::     700:    <relative-time datetime="2019-08-13T14:18:48Z">Aug 13, 2019</relative-time>
 for /f "tokens=3 delims==:" %%b in ('findstr /n /i "relative-time" anLatestRelease.txt') do ( set "anLatestReleasedTime=%%b" )
 :: Now %anLatestReleasedTime% is like: "2019-08-13T14
@@ -176,7 +176,7 @@ for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%
 :next
 :: Use ` set "ffInfo="%%b"" ` instead of ` set "ffInfo=%%b" `, since %%b contains '<' and '>'
 :: Now %ffInfo% is like: "<tr><td><a href="ffmpeg-4.1.4-win64-static.zip" title="ffmpeg-4.1.4-win64-static.zip">ffmpeg-4.1.4-win64-static.zip</a></td><td>61.9 MiB</td><td>2019-Jul-18 15:17</td></tr>"
-:: %ffInfo% contains "" , so next command should not have additional "" as following: 
+:: %ffInfo% contains "" , so next command should not have additional "" as following:
 :: for /f "tokens=2 delims=-" %%c in ("%ffInfo%") do ( set "ffLatestVersion=%%c" )
 for /f "tokens=2 delims=-" %%c in (%ffInfo%) do ( set "ffLatestVersion=%%c" )
 echo ffLatestVersion: %ffLatestVersion%
@@ -189,7 +189,7 @@ echo.
 REM @param  %pipUrl%,  %pipLatestVersion%,  %pipLatestReleasedTime%
 REM Get %pipUrl% from https://pypi.org/project/pip/
 
-:: The output of 'findstr /n /i "files.pythonhosted.org" pipLatestRelease.txt' should be like: 
+:: The output of 'findstr /n /i "files.pythonhosted.org" pipLatestRelease.txt' should be like:
 ::     3048:   <a href="https://files.pythonhosted.org/packages/30/db/9e38760b32e3e7f40cce46dd5fb107b8c73840df38f0046d8e6514e675a1/pip-19.2.3-py2.py3-none-any.whl">
 ::     3080:   <a href="https://files.pythonhosted.org/packages/00/9e/4c83a0950d8bdec0b4ca72afd2f9cea92d08eb7c1a768363f2ea458d08b4/pip-19.2.3.tar.gz">
 for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" pipLatestRelease.txt') do ( set "pipUrl=%%a" )
@@ -201,7 +201,7 @@ for /f "tokens=2 delims=-" %%b in ("%pipUrl%") do ( set "pipLatestVersion=%%b")
 set pipLatestVersion=%pipLatestVersion:.tar.gz=%
 echo pipLatestVersion: %pipLatestVersion%
 
-:: The output of 'findstr /n /i /c:"Released" pipLatestRelease.txt' should be like: 
+:: The output of 'findstr /n /i /c:"Released" pipLatestRelease.txt' should be like:
 ::     209:        Released: <time datetime="2019-10-18T08:21:23+0000" data-controller="localized-time" data-localized-time-relative="true" data-localized-time-show-time="false">
 ::     580:<p>Updates are released regularly, with a new version every 3 months. More details can be found in our documentation:</p>
 for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
@@ -238,7 +238,7 @@ echo Finished.
 pause
 
 :: Diff
-if exist ..\sources.txt ( 
+if exist ..\sources.txt (
     echo. & echo.
     echo  * Sources Lists Difference *
     echo. & echo.

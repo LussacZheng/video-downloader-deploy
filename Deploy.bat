@@ -455,7 +455,7 @@ if /i "%opt6_opt3_choice%"=="T" (
     call res\scripts\Config.bat HttpsPort !opt6_opt3_httpsPort!
     echo %str_set-globalProxy-ok%
     echo. & echo %str_please-confirm-changes%
-) else ( 
+) else (
     echo %str_cancelled%
     goto _ReturnToSetting_
 )

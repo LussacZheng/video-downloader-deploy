@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Used for "Deploy.bat" in :InitDeploy-* & :Upgrade-*
 :: Please make sure that: only call this batch when %cd% is "res\"; call "res\scripts\lang_*.bat" before calling this batch.
-:: e.g. 
+:: e.g.
 :: call scripts\DoDeploy.bat Setup youget
 :: call scripts\DoDeploy.bat Upgrade youtubedl
 
@@ -102,7 +102,7 @@ if "%state_upgradeOnlyViaGitHub%"=="enable" (
     if NOT exist download\you-get-%ygLatestVersion%.tar.gz (
         call scripts\SourcesSelector.bat sources.txt youget origin %_SystemType_% download\to-be-downloaded.txt
         wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
-    )    
+    )
 )
 endlocal
 rd /S /Q "%ygBin%" >NUL 2>NUL
