@@ -103,6 +103,13 @@ if "%state_upgradeOnlyViaGitHub%"=="enable" (
         call scripts\SourcesSelector.bat sources.txt youget origin %_SystemType_% download\to-be-downloaded.txt
         wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
     )
+    REM If %_RemoteRes_%/sources.txt is not updated timely after the new release of you-get, download it from GitHub
+    if NOT exist download\you-get-%ygLatestVersion%.tar.gz (
+        set "ygLatestVersion_Url=https://github.com/soimort/you-get/releases/download/v%ygLatestVersion%/you-get-%ygLatestVersion%.tar.gz"
+        ( echo # RemoteRes is not updated timely after the new release of you-get, download it from GitHub:
+        echo !ygLatestVersion_Url!) >> download\to-be-downloaded.txt
+        wget %_WgetOptions_% !ygLatestVersion_Url! -P download
+    )
 )
 endlocal
 rd /S /Q "%ygBin%" >NUL 2>NUL
