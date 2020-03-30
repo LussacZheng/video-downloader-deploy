@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2020-02-04
+:: Last updated: 2020-03-30
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
@@ -335,10 +335,11 @@ echo     [origin]
 echo     https://files.pythonhosted.org/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz
 echo     $ https://github.com/soimort/you-get/releases/download/v%ygLatestVersion%/you-get-%ygLatestVersion%.tar.gz
 echo     [cn]
-echo     @ https://mirrors.aliyun.com/pypi/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz
-echo     $ https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz
+echo     @ https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz
+echo     $ https://mirrors.aliyun.com/pypi/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz
 echo     [test]
-echo     @ http://mirrors.163.com/pypi/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz
+echo     @ https://mirrors.huaweicloud.com/repository/pypi/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz
+echo     $ http://mirrors.163.com/pypi/packages/%ygBLAKE2%/you-get-%ygLatestVersion%.tar.gz
 echo }
 echo [/youget][/portable][/quickstart]
 echo.
