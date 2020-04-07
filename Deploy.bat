@@ -1,14 +1,14 @@
-@rem - Encoding:utf-8; Mode:Batch; Language:zh-CN,en; LineEndings:CRLF -
+@rem - Encoding:utf-8; Mode:Batch; Language:chs,cht,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.4.4
-:: Last updated: 2020-03-03
+:: Version: 1.4.5
+:: Last updated: 2020-04-08
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.4.4"
-set "lastUpdated=2020-03-03"
+set "_Version_=1.4.5"
+set "lastUpdated=2020-04-08"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -385,6 +385,7 @@ if "%opt6_choice%"=="99" goto setting_Reset
 if "%opt6_choice%"=="1" goto setting_Language
 if "%opt6_choice%"=="11" ( call res\scripts\Config.bat Language en && goto _PleaseRerun_ )
 if "%opt6_choice%"=="12" ( call res\scripts\Config.bat Language zh && goto _PleaseRerun_ )
+if "%opt6_choice%"=="13" ( call res\scripts\Config.bat Language cht && goto _PleaseRerun_ )
 if "%opt6_choice%"=="2" goto setting_Region
 if "%opt6_choice%"=="21" ( call res\scripts\Config.bat Region origin && goto _PleaseRerun_ )
 if "%opt6_choice%"=="22" ( call res\scripts\Config.bat Region cn && goto _PleaseRerun_ )

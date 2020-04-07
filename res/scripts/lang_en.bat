@@ -80,7 +80,7 @@ set "str_please-confirm-changes=Please re-perform this step here to confirm the 
 set "str_please-rerun=Please re-run this batch to make the settings take effect."
 set "str_please-rerun-dlbat=Please re-run the "%str_dl-bat%.bat" to make the settings take effect."
 :: ========= Advanced Settings - Option 1-2
-set "str_please-select-language=[11] English ; [12] Simplified Chinese"
+set "str_please-select-language=[11] English ; [12] Simplified Chinese ; [13] Traditional Chinese"
 set "str_language-set-to=Language has been set to:"
 set "str_please-select-region=[21] Origin website (origin) ; [22] CN mirror (cn)"
 set "str_current-region=The current Download Region is:"
