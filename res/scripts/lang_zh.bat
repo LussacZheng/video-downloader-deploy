@@ -80,9 +80,9 @@ set "str_please-confirm-changes=修改后请重新执行此选项以确认设置无误。"
 set "str_please-rerun=请重新运行此脚本以使设置生效。"
 set "str_please-rerun-dlbat=请重新运行 "%str_dl-bat%.bat" 以使设置生效。"
 :: ========= Advanced Settings - Option 1-2
-set "str_please-select-language=[11] English ; [12] 简体中文"
+set "str_please-select-language=[11] English ; [12] 简体中文 ; [13] 繁體中文"
 set "str_language-set-to=语言已设置为："
-set "str_please-select-region=[21] 官方源 (origin) ; [22] 国内镜像源 (cn)"
+set "str_please-select-region=[21] 官方源 (origin) ; [22] 中国大陆镜像源 (cn)"
 set "str_current-region=当前下载地区为："
 set "str_region-set-to=下载地区已设置为："
 :: ========= Advanced Settings - Option 3

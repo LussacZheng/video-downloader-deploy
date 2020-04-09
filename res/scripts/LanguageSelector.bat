@@ -5,18 +5,16 @@
 :: call res\scripts\LanguageSelector.bat
 :: Get system language -> %_Language_%
 
-chcp | find "936" >NUL && set "_Language_=zh" || set "_Language_=en"
+:: By default, set language to "en".
+set "_Language_=en"
+:: Then enumerate all the existing translations.
+:: chcp | find "437" >NUL && set "_Language_=en"
+chcp | find "936" >NUL && set "_Language_=zh"
+chcp | find "950" >NUL && set "_Language_=cht"
+:: chcp | find "932" >NUL && set "_Language_=ja"
+:: ... etc.
 goto :eof
 
-::chcp 65001
+REM chcp 65001
 
-
-:: For more languages selection, re-write this batch as follow:
-
-:: :: By default, set language as "en".
-:: set "_Language_=en"
-:: :: Then enumerate all existing translations.
-:: chcp | find "437" >NUL && set "_Language_=en"
-:: chcp | find "936" >NUL && set "_Language_=zh"
-:: chcp | find "932" >NUL && set "_Language_=ja"
-:: :: ... etc.
+:: chcp | find "936" >NUL && set "_Language_=zh" || set "_Language_=en"
