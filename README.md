@@ -1,4 +1,4 @@
-**| [English](README_en.md) | Simplified Chinese |**
+**| [English](README_en.md) | Simplified Chinese | <a href="#" title="Corresponding documentation is temporarily unavailable.">Traditional Chinese</a> |**
 
 # 视频下载器 一键配置脚本 (Windows)
 
@@ -10,10 +10,11 @@
 快速配置和使用 **[You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , 和 [FFmpeg](https://ffmpeg.org)** 的一键配置脚本。
 - 无需安装 Python ，一键配置绿色便携版的 you-get , youtube-dl 。
 - 此绿色版基于 Python 的 embeddable 版。
+- 除了一键部署，后续 you-get, youtube-dl, annie 的更新同样一键完成。
 
 ## 使用方法
 
-下载 [一键配置脚本](https://github.com/LussacZheng/video-downloader-deploy/archive/master.zip) 。解压并运行 `Deploy.bat`。
+下载 [一键配置脚本](https://github.com/LussacZheng/video-downloader-deploy/archive/master.zip) （国内用户可以从 [蓝奏网盘](https://www.lanzous.com/b926232/) 下载）。解压并运行 `Deploy.bat`。
 
 演示动画 ( 2 min 52 s ) ：  
 ![demo.gif](https://s2.ax1x.com/2019/08/17/muTbIs.gif)
@@ -24,7 +25,7 @@
    - 只能整体移动或重命名整个文件夹，且文件夹名称和路径不应包含 `!@$;%^&` 等特殊符号；
    - 配置完成后，你可以自行删除 `res\download\` 目录下所有下载的文件，以节省储存空间；
    - 除了 `Download\` 目录下所下载的视频文件，请勿随意改变里面的其他文件。
-- 如果脚本运行时出现问题（如下载速度过慢），请查阅 [FAQ](https://github.com/LussacZheng/video-downloader-deploy/wiki/FAQ) 或 [提交 Issue](https://github.com/LussacZheng/video-downloader-deploy/issues) 。
+- 如果脚本运行时出现问题（如 **下载速度过慢 / 卡在 0%**），请查阅 [FAQ](https://github.com/LussacZheng/video-downloader-deploy/wiki/FAQ) 或 [提交 Issue](https://github.com/LussacZheng/video-downloader-deploy/issues) 。
 
 ### FFmpeg
 
@@ -34,7 +35,29 @@
 
 ---
 
-## Source
+## 其他
+
+### Git
+
+如果你已经安装了 [Git](https://git-scm.com/) ，建议你通过 `git clone` 获取脚本文件，因为后续可以通过 `git pull` 更新脚本文件。
+
+```shell
+git clone https://github.com/LussacZheng/video-downloader-deploy.git
+```
+
+国内用户可以从 [Gitee 镜像仓库](https://gitee.com/lussac/video-downloader-deploy) 克隆。
+
+```shell
+git clone https://gitee.com/lussac/video-downloader-deploy.git
+```
+
+只有当你此前是通过 `git clone` 获取的脚本文件时，才可以通过 `git pull` 更新。
+
+```shell
+git pull
+```
+
+### Source
 
 - `7za.exe`
   ```
@@ -59,3 +82,7 @@
   MD5:        7f66b79bf181521f6851a75848aad8b2
   Source:     https://bootstrap.pypa.io/get-pip.py
   ```
+
+### 更多信息
+
+查阅 [Wiki](https://github.com/LussacZheng/video-downloader-deploy/wiki) 以了解更多信息。
