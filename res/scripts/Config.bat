@@ -54,6 +54,16 @@ cd ..
 goto :eof
 
 
+:: There are 3 types of configuration items: assignable, toggle-able, or both.
+::     Assignable : You should call it with an argument `%2`.
+::     Toggle-able: No argument `%2`. If it is already enabled, set it to disabled and vice versa.
+::     Both       : If you call it without argument `%2`, toggle it. Otherwise assign it.
+
+:: Toggle-able: SystemType, ProxyHint, FFmpeg, NetTest, UpgradeOnlyViaGitHub
+:: Assignable : Language, Region, ProxyHost, HttpPort, HttpsPort
+:: Both       : GlobalProxy
+
+
 :Config_Language
 for /f "delims=" %%i in (%cfg_File%.bak) do (
     set "cfg_Content=%%i"
@@ -91,14 +101,25 @@ if "%cfg_State%"=="32" (
 goto :eof
 
 
-
+:: call res\scripts\Config.bat GlobalProxy ==> Toggle enabled/disabled
+:: call res\scripts\Config.bat GlobalProxy enable ==> Enable it
+:: call res\scripts\Config.bat GlobalProxy disable ==> Disable it
 :Config_GlobalProxy
-for /f "delims=" %%i in (%cfg_File%.bak) do (
-    set "cfg_Temp=%%i"
-    set "cfg_Content=!cfg_Temp!"
-    if "!cfg_Temp!"=="GlobalProxy: disable" ( set "cfg_Content=GlobalProxy: enable" && set "cfg_State=enable" )
-    if "!cfg_Temp!"=="GlobalProxy: enable" ( set "cfg_Content=GlobalProxy: disable" && set "cfg_State=disable" )
-    echo !cfg_Content!>>%cfg_File%
+if "%cfg_Extra%"=="" (
+    for /f "delims=" %%i in (%cfg_File%.bak) do (
+        set "cfg_Temp=%%i"
+        set "cfg_Content=!cfg_Temp!"
+        if "!cfg_Temp!"=="GlobalProxy: disable" ( set "cfg_Content=GlobalProxy: enable" && set "cfg_State=enable" )
+        if "!cfg_Temp!"=="GlobalProxy: enable" ( set "cfg_Content=GlobalProxy: disable" && set "cfg_State=disable" )
+        echo !cfg_Content!>>%cfg_File%
+    )
+) else (
+    for /f "delims=" %%i in (%cfg_File%.bak) do (
+        set "cfg_Content=%%i"
+        echo %%i | findstr "GlobalProxy" >NUL && ( set "cfg_Content=GlobalProxy: %cfg_Extra%" )
+        echo !cfg_Content!>>%cfg_File%
+    )
+    set "cfg_State=%cfg_Extra%"
 )
 if "%cfg_State%"=="enable" (
     echo %str_globalProxy-enabled%

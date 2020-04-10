@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:chs,cht,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.4.5
-:: Last updated: 2020-04-08
+:: Version: 1.4.6
+:: Last updated: 2020-04-10
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.4.5"
-set "lastUpdated=2020-04-08"
+set "_Version_=1.4.6"
+set "lastUpdated=2020-04-10"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -206,7 +206,9 @@ rem ================= OPTION 2 =================
 
 :InitDeploy-ffmpeg
 :: Check whether FFmpeg already exists
-echo %PATH% | findstr /i "ffmpeg" >NUL && goto ffmpeg-exists
+::   where /Q ffmpeg && echo yes || echo no
+::   OR where /Q $path:ffmpeg && echo yes || echo no
+where /Q $path:ffmpeg && goto ffmpeg-exists
 if exist "%ffBin%\ffmpeg.exe" goto ffmpeg-exists
 
 call :AskForInit
@@ -444,6 +446,7 @@ if /i "%opt6_opt3_choice%"=="T" (
     call res\scripts\Config.bat HttpPort 1080
     call res\scripts\Config.bat HttpsPort 1080
     echo %str_reset-globalProxy-ok%
+    call res\scripts\Config.bat GlobalProxy enable
 ) else if /i "%opt6_opt3_choice%"=="N" (
     set /p opt6_opt3_proxyHost= %str_please-set-proxyHost%
     set /p opt6_opt3_httpPort= %str_please-set-httpPort%
@@ -454,14 +457,16 @@ if /i "%opt6_opt3_choice%"=="T" (
     call res\scripts\Config.bat ProxyHost !opt6_opt3_proxyHost!
     call res\scripts\Config.bat HttpPort !opt6_opt3_httpPort!
     call res\scripts\Config.bat HttpsPort !opt6_opt3_httpsPort!
+    echo.
+    call res\scripts\Config.bat GlobalProxy enable
     echo %str_set-globalProxy-ok%
-    echo. & echo %str_please-confirm-changes%
+    echo %str_please-confirm-changes%
 ) else (
     echo %str_cancelled%
     goto _ReturnToSetting_
 )
 endlocal
-echo %str_please-rerun%
+echo. & echo %str_please-rerun%
 echo %str_please-rerun-dlbat%
 goto _PleaseRerun_
 
