@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:chs,cht,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.4.6
-:: Last updated: 2020-04-10
+:: Version: 1.4.7
+:: Last updated: 2020-04-18
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.4.6"
-set "lastUpdated=2020-04-10"
+set "_Version_=1.4.7"
+set "lastUpdated=2020-04-18"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -18,23 +18,14 @@ rem ================= Preparation =================
 
 REM mode con cols=100 lines=40
 
-:: Get %_Language_% , %_Region_% , %_SystemType_%
-:: 1. Get customized %_Language_%, or decided by "LanguageSelector"
-if exist res\deploy.settings (
-    for /f "tokens=2 delims= " %%i in ('findstr /i "Language" res\deploy.settings') do ( set "_Language_=%%i" )
-) else ( call res\scripts\LanguageSelector.bat )
-:: 2. Import translation text, and set the default %_Region_%
-call res\scripts\lang_%_Language_%.bat
-:: 3. Get %_SystemType_% by "SystemTypeSelector"
-call res\scripts\SystemTypeSelector.bat
-:: 4. Overwrite the default %_Region_% and %_SystemType_% if customized
-if exist res\deploy.settings (
-    for /f "tokens=2 delims= " %%i in ('findstr /i "Region" res\deploy.settings') do ( set "_Region_=%%i" )
-    for /f "tokens=2 delims= " %%i in ('findstr /i "SystemType" res\deploy.settings') do ( set "_SystemType_=%%i" )
-)
-
+:: Import main settings (%_Language_%, %_Region_%, %_SystemType_%) and translation text.
+call res\scripts\Getter.bat Main
 :: Import the GlobalProxy setting and apply. Then show more info in Option6.
-call :Get_GlobalProxy true
+call res\scripts\Getter.bat GlobalProxy
+call res\scripts\Getter.bat InfoOpt6
+:: If already deployed, show more info in Option3.
+call res\scripts\Getter.bat InfoOpt3
+call res\scripts\Getter.bat InfoOpt4
 
 
 :: Start of Deployment
@@ -48,23 +39,6 @@ set "anBin=%root%\usr"
 set "ffBin=%root%\usr\ffmpeg\bin"
 
 
-:: If already deployed, show more info in Option3.
-set "opt3_info="
-if exist res\deploy.log (
-    pushd res && call :Get_DeployMode && popd
-    if "!DeployMode!"=="portable" set "opt3_info=(you-get,youtube-dl,annie)"
-    if "!DeployMode!"=="quickstart" set "opt3_info=(you-get)"
-    if "!DeployMode!"=="withpip" set "opt3_info=(you-get,youtube-dl,annie)"
-)
-set "opt4_info="
-if exist %str_dl-bat%.bat (
-    for /f "tokens=2 delims==" %%i in ('findstr /i "_versionAtCreation=" %str_dl-bat%.bat') do ( set "_versionAtCreation=%%~i" )
-    set "_versionAtCreation=!_versionAtCreation:~0,-1!"
-    REM If "_versionAtCreation" is not found, "%_versionAtCreation%" will be "~0,-1".  Next statement will still be executed.
-    if NOT "!_versionAtCreation!"=="%_Version_%" ( set "opt4_info=%str_please-perform-after-update%" )
-)
-
-
 rem ================= Menu =================
 
 
@@ -74,6 +48,7 @@ cls
 :: Uncomment to check the configuration items that imported from "res\deploy.settings"
 REM echo %_Language_% & echo %_Region_% & echo %_SystemType_%
 REM echo %http_proxy% & echo %https_proxy%
+REM echo %DeployMode%
 echo ====================================================
 echo ====================================================
 echo ======%str_titleExpanded%=======
@@ -132,7 +107,7 @@ rem ================= OPTION 11 =================
 :InitDeploy-portable
 set "DeployMode=portable"
 call :ExitIfInit
-cd res && call :Common
+cd res && call scripts\Download.bat main
 if NOT exist "%pyBin%" call scripts\DoDeploy.bat Setup python
 if NOT exist "%ygBin%" call scripts\DoDeploy.bat Setup youget
 if NOT exist "%ydBin%" call scripts\DoDeploy.bat Setup youtubedl
@@ -146,7 +121,7 @@ rem ================= OPTION 12 =================
 :InitDeploy-quickstart
 set "DeployMode=quickstart"
 call :ExitIfInit
-cd res && call :Common
+cd res && call scripts\Download.bat main
 if NOT exist "%pyBin%" call scripts\DoDeploy.bat Setup python
 if NOT exist "%ygBin%" call scripts\DoDeploy.bat Setup youget
 goto InitLog
@@ -163,7 +138,7 @@ if exist scripts\get-pip.py (
     if NOT exist download md download
     xcopy /Y scripts\get-pip.py download\ > NUL
 )
-call :Common
+call scripts\Download.bat main
 if NOT exist "%pyBin%" call scripts\DoDeploy.bat Setup python
 if NOT exist "%anBin%\annie.exe" call scripts\DoDeploy.bat Setup annie
 
@@ -212,11 +187,8 @@ where /Q $path:ffmpeg && goto ffmpeg-exists
 if exist "%ffBin%\ffmpeg.exe" goto ffmpeg-exists
 
 call :AskForInit
-cd res && call :Common_wget
-echo %str_downloading%...
-call :Common_7za
-call scripts\SourcesSelector.bat sources.txt ffmpeg %_Region_% %_SystemType_% download\to-be-downloaded.txt
-wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
+set "DeployMode=ffmpeg"
+cd res && call scripts\Download.bat main
 call scripts\DoDeploy.bat Setup ffmpeg
 call scripts\Log.bat Init ffmpeg
 
@@ -236,9 +208,9 @@ rem ================= OPTION 3 =================
 
 :Upgrade
 call :AskForInit
-cd res && call :Common_wget && call :Common_7za
+cd res && call scripts\Download.bat dependency
 call :StopIfDisconnected
-call :Get_DeployMode
+call scripts\Getter.bat DeployMode
 set "whetherToLog=false"
 echo %str_checking-update%...
 if "%DeployMode%"=="portable" goto Upgrade-portable
@@ -321,7 +293,7 @@ rem ================= OPTION 4 =================
 
 :Reset_dl-bat
 call :AskForInit
-cd res && call :Get_DeployMode
+cd res && call scripts\Getter.bat DeployMode
 if NOT "%DeployMode%"=="unknown" goto create_dl-bat
 
 :reset_dl-bat_Manually
@@ -341,7 +313,7 @@ rem ================= OPTION 5 =================
 
 
 :Update
-cd res && call :Common_wget
+cd res && call scripts\Download.bat wget
 echo %str_checking-update%...
 :: Get %_isLatestVersion% from "scripts\CheckUpdate.bat". 0: false; 1: true.
 call scripts\CheckUpdate.bat self
@@ -424,7 +396,7 @@ echo %str_please-select-region%
 goto _ReturnToSetting_
 
 :setting_GlobalProxy
-call :Get_GlobalProxy false
+call res\scripts\Getter.bat GlobalProxy
 if "%state_globalProxy%"=="enable" (
     echo %str_globalProxy-enabled%
 ) else ( echo %str_globalProxy-disabled% )
@@ -481,7 +453,7 @@ goto _ReturnToSetting_
 :setting_Wget
 echo %str_current-wgetOpt%
 set "_WgetOptions_="
-cd res && call :Get_WgetOptions
+cd res && call scripts\Getter.bat WgetOptions
 echo. & echo "%_WgetOptions_%"
 if NOT exist wget.opt ( call scripts\GenerateWgetOptions.bat )
 cd ..
@@ -538,42 +510,6 @@ pause > NUL
 exit
 
 
-:: Please make sure that: only call :Common* when %cd% is "res\".
-:Common
-call :Common_wget
-echo %str_downloading%...
-call :Common_7za
-:: %_Region_% was set in res\scripts\lang_%_Language_%.bat
-call scripts\SourcesSelector.bat sources.txt %DeployMode% %_Region_% %_SystemType_% download\to-be-downloaded.txt
-:: https://stackoverflow.com/questions/4686464/how-to-show-wget-progress-bar-only
-wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
-:: if exist .wget-hsts del .wget-hsts
-goto :eof
-
-
-:Common_wget
-:: Make sure the existence of res\wget.exe
-if NOT exist wget.exe (
-    echo %str_downloading% "wget.exe", %str_please-wait%...
-    REM :: use ^) instead of )
-    REM powershell (New-Object Net.WebClient^).DownloadFile('%_RemoteRes_%/wget.exe', 'wget.exe'^)
-    powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (new-object System.Net.WebClient).DownloadFile('%_RemoteRes_%/wget.exe','wget.exe')"
-)
-call :Get_WgetOptions
-goto :eof
-
-
-:Common_7za
-:: Make sure the existence of res\7za.exe, res\download\7za.exe
-if NOT exist 7za.exe (
-    wget %_WgetOptions_% %_RemoteRes_%/7za.exe
-)
-if NOT exist download\7za.exe (
-    xcopy 7za.exe download\ > NUL
-)
-goto :eof
-
-
 :Create_Download-bat
 set isInInitDeploy=%~1
 call res\scripts\GenerateDownloadBatch.bat %DeployMode%
@@ -616,41 +552,6 @@ if "%_isNetConnected%"=="false" (
     pause > NUL
     goto MENU
 )
-goto :eof
-
-
-:Get_GlobalProxy
-:: Get (and apply) the proxy settings of CMD from res\deploy.settings
-set "whetherToSet=%~1"
-if exist res\deploy.settings (
-    for /f "tokens=2 delims= " %%i in ('findstr /i "GlobalProxy" res\deploy.settings') do ( set "state_globalProxy=%%i" )
-    for /f "tokens=2 delims= " %%i in ('findstr /i "ProxyHost" res\deploy.settings') do ( set "_proxyHost=%%i" )
-    for /f "tokens=2 delims= " %%i in ('findstr /i "HttpPort" res\deploy.settings') do ( set "_httpPort=%%i" )
-    for /f "tokens=2 delims= " %%i in ('findstr /i "HttpsPort" res\deploy.settings') do ( set "_httpsPort=%%i" )
-) else ( set "state_globalProxy=disable" )
-if "%state_globalProxy%"=="enable" (
-    if "%whetherToSet%"=="true" (
-        set "http_proxy=%_proxyHost%:%_httpPort%"
-        set "https_proxy=%_proxyHost%:%_httpsPort%"
-    )
-    set "opt6_info=(%str_globalProxy-enabled%)"
-) else ( set "opt6_info=" )
-goto :eof
-
-
-:Get_DeployMode
-:: Get %DeployMode% from res\deploy.log
-if exist deploy.log (
-    for /f "tokens=2 delims= " %%i in ('findstr /i "DeployMode" deploy.log') do ( set "DeployMode=%%i" )
-) else ( set "DeployMode=unknown" )
-goto :eof
-
-
-:Get_WgetOptions
-:: Get default options for 'wget.exe' from res\wget.opt
-if exist wget.opt (
-    for /f "eol=# delims=" %%i in (wget.opt) do ( set "_WgetOptions_=%%i" && goto :eof )
-) else ( set "_WgetOptions_=-q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc" )
 goto :eof
 
 
