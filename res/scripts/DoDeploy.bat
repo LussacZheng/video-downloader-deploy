@@ -46,6 +46,7 @@ if NOT "%~1"=="" ( set "ygZip=%~1" )
 echo %str_unzipping% %ygZip%...
 :: https://superuser.com/questions/80019/how-can-i-unzip-a-tar-gz-in-one-step-using-7-zip
 7za x %ygZip% -so | 7za x -aoa -si -ttar > NUL
+ping -n 3 127.0.0.1 > NUL
 set ygDir=%ygZip:~0,-7%
 move %ygDir% "%ygBin%" > NUL
 echo You-Get %str_already-deploy%
@@ -57,6 +58,8 @@ for /f "delims=" %%i in ('dir /b /a:a /o:d youtube-dl*.tar.gz') do ( set "ydZip=
 if NOT "%~1"=="" ( set "ydZip=%~1" )
 echo %str_unzipping% %ydZip%...
 7za x %ydZip% -so | 7za x -aoa -si -ttar > NUL
+:: In order to avoid access denied, wait for the decompression to complete.
+ping -n 5 127.0.0.1 > NUL
 set ydDir=youtube-dl
 move %ydDir% "%ydBin%" > NUL
 echo Youtube-dl %str_already-deploy%
