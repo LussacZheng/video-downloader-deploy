@@ -5,6 +5,7 @@
 :: call scripts\Download.bat main
 :: call scripts\Download.bat dependency
 :: call scripts\Download.bat wget
+:: call scripts\Download.bat preparation
 
 @echo off
 call :Download_%~1
@@ -15,6 +16,7 @@ rem ================= FUNCTIONS =================
 
 
 :Download_main
+call :Download_preparation
 call :Download_wget
 echo %str_downloading%...
 call :Download_7za
@@ -53,6 +55,35 @@ goto :eof
 :Download_dependency
 call :Download_wget
 call :Download_7za
+goto :eof
+
+
+:: %cd%: No limit
+:: Move the existing files, which are manually downloaded, from "%root%" into "res\download\"
+:Download_preparation
+pushd "%root%"
+setlocal EnableDelayedExpansion
+set /a dl_Count=0
+for /f "delims=" %%i in ('dir /b /a-d ^| findstr "\.zip$ \.gz$"') do ( set /a dl_Count=!dl_Count!+1 )
+if NOT "%dl_Count%"=="0" (
+    echo %str_manually-downloaded% %dl_Count% %str_manually-downloaded2%...
+    echo.
+    if NOT exist res\download\ md res\download
+    if exist python*embed*.zip ( move /Y python*embed*.zip res\download\ > NUL )
+    if exist you-get*.tar.gz ( move /Y you-get*.tar.gz res\download\ > NUL )
+    REM For "youtube-dl*.tar.gz" downloaded from Lanzou Netdisk, complete the filename.
+    REM   "-dl-2020.03.24.tar.gz" -> "youtube-dl-2020.03.24.tar.gz"
+    if exist -dl*.tar.gz (
+        for /f "delims=" %%i in ('dir /b /a-d /o:d -dl*.tar.gz') do ( set "dl_Filename=%%i" )
+        move /Y !dl_Filename! youtube!dl_Filename! > NUL
+    )
+    if exist youtube-dl*.tar.gz ( move /Y youtube-dl*.tar.gz res\download\ > NUL )
+    if exist annie*Windows*.zip ( move /Y annie*Windows*.zip res\download\ > NUL )
+    if exist ffmpeg*.zip ( move /Y annie*Windows*.zip res\download\ > NUL )
+    echo.
+)
+endlocal
+popd
 goto :eof
 
 

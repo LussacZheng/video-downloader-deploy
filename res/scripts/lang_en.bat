@@ -21,6 +21,8 @@ set "str_please-input-valid-num=Please input a valid number."
 set "str_please-set-DeployMode=NOT founded "deploy.log" . Unable to judge the Deploy Mode. Please choose manually [11, 12, 13]: "
 set "str_please-perform-after-update= ^>^>^>Perform this action after update^<^<^<"
 :: ================= Notification
+set "str_manually-downloaded=Totally"
+set "str_manually-downloaded2=manually downloaded file^(s^) have been found. Moving them into "res\download\" directory"
 set "str_bat-is-latest=This batch is the latest version."
 set "str_bat-can-update-to=This batch can be updated to"
 set "str_deploy-ok=Deployment done."

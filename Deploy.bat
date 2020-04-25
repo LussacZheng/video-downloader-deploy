@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:chs,cht,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.4.7
-:: Last updated: 2020-04-18
+:: Version: 1.5.0
+:: Last updated: 2020-04-25
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.4.7"
-set "lastUpdated=2020-04-18"
+set "_Version_=1.5.0"
+set "lastUpdated=2020-04-25"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -78,7 +78,7 @@ echo. & echo.
 echo ====================================================
 set choice=0
 set /p choice= %str_please-choose%
-echo.
+echo. & echo.
 if "%choice%"=="1" goto InitDeploy
 if "%choice%"=="11" goto InitDeploy-portable
 if "%choice%"=="12" goto InitDeploy-quickstart
@@ -208,7 +208,9 @@ rem ================= OPTION 3 =================
 
 :Upgrade
 call :AskForInit
-cd res && call scripts\Download.bat dependency
+cd res
+call scripts\Download.bat preparation
+call scripts\Download.bat dependency
 call :StopIfDisconnected
 call scripts\Getter.bat DeployMode
 set "whetherToLog=false"

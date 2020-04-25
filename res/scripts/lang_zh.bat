@@ -21,6 +21,8 @@ set "str_please-input-valid-num=请输入有效的数字。"
 set "str_please-set-DeployMode=未找到 "deploy.log" ，无法判断配置模式，请手动选择 [11, 12, 13]: "
 set "str_please-perform-after-update= ^>^>^>建议更新后执行一次该选项^<^<^<"
 :: ================= Notification
+set "str_manually-downloaded=已找到"
+set "str_manually-downloaded2=个手动下载的文件，正在将其移动到 "res\download\" 目录下"
 set "str_bat-is-latest=此脚本已是最新。"
 set "str_bat-can-update-to=此脚本可更新至"
 set "str_deploy-ok=配置已完成。"
