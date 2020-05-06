@@ -87,7 +87,7 @@ rem ================= FUNCTIONS =================
 
 :GetDateTime
 for /f %%a in ('WMIC OS GET LocalDateTime ^| find "."') do ( set "LDT=%%a" )
-set "formatedDateTime=%LDT:~0,4%-%LDT:~4,2%-%LDT:~6,2% %LDT:~8,2%:%LDT:~10,2%:%LDT:~12,2%"
+set "formattedDateTime=%LDT:~0,4%-%LDT:~4,2%-%LDT:~6,2% %LDT:~8,2%:%LDT:~10,2%:%LDT:~12,2%"
 goto :eof
 
 :GetPackagesInfo
@@ -115,7 +115,7 @@ goto :eof
 ( echo ----- %log_Type% -----
 echo.) >> %log_File%
 call :GetDateTime
-echo time: %formatedDateTime%>> %log_File%
+echo time: %formattedDateTime%>> %log_File%
 :: echo time: %date:~0,10% %time:~0,8%>> %log_File%
 echo.>> %log_File%
 goto :eof

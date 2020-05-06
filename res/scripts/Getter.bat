@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Used for "Deploy.bat" in =Preparation= & :Upgrade & :Reset_dl-bat & :setting_GlobalProxy & :setting_Wget ;
 :: Used for "res\scripts\Download.bat" in :Download_wget
-:: Pay attention to %cd% limit accroding to each Function.
+:: Pay attention to %cd% limit according to each Function.
 :: e.g.
 :: call res\scripts\Getter.bat GlobalProxy
 :: call res\scripts\Getter.bat InfoOpt6

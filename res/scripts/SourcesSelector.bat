@@ -41,7 +41,7 @@ for /f "eol=# skip=%ss_SkipLine% delims=" %%i in (%ss_Input%) do (
     if !ss_Tag_required!==1 (
         if !ss_Tag_switch!==0 (
             REM ::  use '\' to avoid wrong match, caused by a special match rule, like: findstr "[0-9]" is ture for number "6".
-            REM ::  set ss_Tag_switch=2 by default if this line conains '['
+            REM ::  set ss_Tag_switch=2 by default if this line contains '['
             echo %%i | findstr "\[" >NUL && ( set "ss_Tag_switch=2" )
             echo %%i | findstr "\[%ss_Region%\]" >NUL && ( set "ss_Tag_switch=1" )
             echo %%i | findstr "\[%ss_SystemType%\]" >NUL && ( set "ss_Tag_switch=1" )
