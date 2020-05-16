@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:chs,cht,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.5.0
-:: Last updated: 2020-04-25
+:: Version: 1.5.1
+:: Last updated: 2020-05-16
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.5.0"
-set "lastUpdated=2020-04-25"
+set "_Version_=1.5.1"
+set "lastUpdated=2020-05-16"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -186,6 +186,8 @@ rem ================= OPTION 2 =================
 where /Q $path:ffmpeg && goto ffmpeg-exists
 if exist "%ffBin%\ffmpeg.exe" goto ffmpeg-exists
 
+:ffmpeg-deploy
+:: if NOT exist usr\ md usr
 call :AskForInit
 set "DeployMode=ffmpeg"
 cd res && call scripts\Download.bat main
@@ -200,6 +202,18 @@ goto _ReturnToMenu_
 
 :ffmpeg-exists
 echo. & echo FFmpeg %str_already-exist%
+echo.
+set opt2_choice=0
+echo. & echo %str_deploy-although-exist%
+set /p opt2_choice= %str_enter-to-cancel%
+echo.
+:: If we don't delete this directory, DoDeploy.bat will move
+::   the `ffmpeg-*-static\` into `usr\ffmpeg\ffmpeg-*-static\` ,
+::   instead of renaming it to `usr\ffmpeg\` .
+if /i "%opt2_choice%"=="Y" (
+    if exist "%root%\usr\ffmpeg" rd /S /Q "%root%\usr\ffmpeg"
+    goto ffmpeg-deploy
+) else ( echo %str_cancelled% )
 goto _ReturnToMenu_
 
 
