@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2020-05-06
+:: Last updated: 2020-05-21
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
@@ -175,12 +175,15 @@ set /a lineNum-=2
 for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :next )
 :next
 :: Use ` set "ffInfo="%%b"" ` instead of ` set "ffInfo=%%b" `, since %%b contains '<' and '>'
-:: Now %ffInfo% is like: "<tr><td><a href="ffmpeg-4.1.4-win64-static.zip" title="ffmpeg-4.1.4-win64-static.zip">ffmpeg-4.1.4-win64-static.zip</a></td><td>61.9 MiB</td><td>2019-Jul-18 15:17</td></tr>"
+:: Now %ffInfo% is like: "<a href="ffmpeg-4.2.2-win64-static.zip">ffmpeg-4.2.2-win64-static.zip</a>  27-Jan-2020 00:51  66M"
 :: %ffInfo% contains "" , so next command should not have additional "" as following:
 :: for /f "tokens=2 delims=-" %%c in ("%ffInfo%") do ( set "ffLatestVersion=%%c" )
-for /f "tokens=2 delims=-" %%c in (%ffInfo%) do ( set "ffLatestVersion=%%c" )
+for /f "tokens=3,9-11 delims=- " %%c in (%ffInfo%) do (
+    set "ffLatestVersion=%%c"
+    set "ffLatestReleasedTime_day=%%d" && set "ffLatestReleasedTime_month=%%e" && set "ffLatestReleasedTime_year=%%f"
+)
 echo ffLatestVersion: %ffLatestVersion%
-for /f "tokens=12 delims=> " %%d in (%ffInfo%) do ( set "ffLatestReleasedTime=%%d" )
+set "ffLatestReleasedTime=%ffLatestReleasedTime_year%-%ffLatestReleasedTime_month%-%ffLatestReleasedTime_day%"
 echo ffLatestReleasedTime: %ffLatestReleasedTime%
 echo.
 

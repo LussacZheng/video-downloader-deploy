@@ -88,10 +88,13 @@ jobs:
         set /a lineNum-=2
         for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :next )
         :next
-        for /f "tokens=2 delims=-" %%c in (%ffInfo%) do ( set "ffLatestVersion=%%c" )
+        for /f "tokens=3,9-11 delims=- " %%c in (%ffInfo%) do (
+        set "ffLatestVersion=%%c"
+        set "ffLatestReleasedTime_day=%%d" && set "ffLatestReleasedTime_month=%%e" && set "ffLatestReleasedTime_year=%%f"
+        )
         echo ffLatestVersion: %ffLatestVersion% >> %OUTPUT%
-        for /f "tokens=12 delims=> " %%d in (%ffInfo%) do ( set "ffLatestReleasedTime=%%d" )
-        echo ffLatestReleasedTime: %ffLatestReleasedTime% >> %OUTPUT%
+        set "ffLatestReleasedTime=%ffLatestReleasedTime_year%-%ffLatestReleasedTime_month%-%ffLatestReleasedTime_day%"
+        cho ffLatestReleasedTime: %ffLatestReleasedTime% >> %OUTPUT%
         echo. >> %OUTPUT%
       shell: cmd
       continue-on-error: true
