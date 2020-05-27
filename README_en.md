@@ -3,7 +3,7 @@
 # Video Downloaders One-Click Deployment Batch (Windows)
 
 ![language](https://img.shields.io/badge/language-batchfile-c1f12e)
-![platform](https://img.shields.io/badge/platform-windows-brightgreen)
+![platform](https://img.shields.io/badge/paltform-Windows_7/8/10;_32/64--bit-brightgreen)
 ![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy)
 ![version](https://img.shields.io/github/package-json/v/LussacZheng/video-downloader-deploy_info?color=important)
 
