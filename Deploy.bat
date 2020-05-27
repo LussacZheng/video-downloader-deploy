@@ -5,6 +5,7 @@
 :: Last updated: 2020-05-27
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
+:: >>> Attention! NEVER use `::` to comment in `( )` code block, use `REM` instead!!!
 @echo off
 setlocal EnableDelayedExpansion
 set "_Version_=1.5.2"
