@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:chs,cht,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.5.1
-:: Last updated: 2020-05-16
+:: Version: 1.5.2
+:: Last updated: 2020-05-27
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.5.1"
-set "lastUpdated=2020-05-16"
+set "_Version_=1.5.2"
+set "lastUpdated=2020-05-27"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -17,6 +17,13 @@ rem ================= Preparation =================
 
 
 REM mode con cols=100 lines=40
+
+
+:: Set the root directory
+set "root=%~dp0"
+set "root=%root:~0,-1%"
+cd "%root%"
+
 
 :: Import main settings (%_Language_%, %_Region_%, %_SystemType_%) and translation text.
 call res\scripts\Getter.bat Main
@@ -31,7 +38,6 @@ call res\scripts\Getter.bat InfoOpt4
 :: Start of Deployment
 title %str_title%  -- by Lussac
 :: py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
-set "root=%cd%"
 set "pyBin=%root%\usr\python-embed"
 set "ygBin=%root%\usr\you-get"
 set "ydBin=%root%\usr\youtube-dl"

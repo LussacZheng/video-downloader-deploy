@@ -63,6 +63,8 @@ set "str_dl-bat=Download_Video"
 set "str_dl-bat-created=The start batch "%str_dl-bat%.bat" has been created."
 set "str_dl-bat-reset=The batch may have been updated. It's recommend to perform "Deploy.bat - [4]%str_opt4%"."
 set "str_dl-bat-moved=The "usr" folder was not found. Please move this batch to the same directory as "Deploy.bat" or re-create the start batch through it."
+:: :: file mode must be the same as the first line (emacs-like-style)
+set "str_dl-bat_fileMode=- Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -"
 :: ================= Advanced Settings
 set "str_opt6-Expanded== Advanced  Settings ="
 set "str_opt6_opt0=Return to the Main Menu"

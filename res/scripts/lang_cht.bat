@@ -63,6 +63,8 @@ set "str_dl-bat=下載影片"
 set "str_dl-bat-created=已創建啟動腳本 "%str_dl-bat%.bat" 。"
 set "str_dl-bat-reset=檢測到腳本可能進行了更新，建議您執行一次 "Deploy.bat - [4]%str_opt4%" 。"
 set "str_dl-bat-moved=未找到 "usr" 文件夾！請將此腳本移動到與 "Deploy.bat" 同一目錄，或通過其重新創建啟動腳本。"
+:: :: file mode must be the same as the first line (emacs-like-style)
+set "str_dl-bat_fileMode=- Encoding:big5; Mode:Batch; Language:zh-HK,zh-TW; LineEndings:CRLF -"
 :: ================= Advanced Settings
 set "str_opt6-Expanded======= 高級設置 ======"
 set "str_opt6_opt0=返回主菜單"
