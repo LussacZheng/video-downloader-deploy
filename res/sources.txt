@@ -105,7 +105,7 @@ SystemType{
 [ffmpeg]
 ## Release log - FFmpeg
 ## https://ffmpeg.org/download.html#releases   or   https://ffmpeg.zeranoe.com/builds/win64/static/
-## Last released: 2020-Jun-24
+## Last released: 2020-Jun-29
 
 ## ffmpeg-static.zip , v4.3
 SystemType{
