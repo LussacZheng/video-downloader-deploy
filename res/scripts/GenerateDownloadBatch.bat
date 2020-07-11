@@ -63,7 +63,7 @@ echo set "_ygBin=%%_root%%\usr\you-get"
 echo set "_ydBin=%%_root%%\usr\youtube-dl"
 echo set "_anBin=%%_root%%\usr"
 echo if "%%_state_ffmpeg%%"=="enable" ^( set "_ffBin=%%_root%%\usr\ffmpeg\bin;" ^)
-echo set "PATH=%%_root%%\usr\command;%%_pyBin%%;%%_pyBin%%\Scripts;%%_anBin%%;%%_ffBin%%%%PATH%%"
+echo set "PATH=%%_root%%\usr\alias;%%_root%%\usr\command;%%_pyBin%%;%%_pyBin%%\Scripts;%%_anBin%%;%%_ffBin%%%%PATH%%"
 echo.
 
 echo if NOT exist usr\command md usr\command

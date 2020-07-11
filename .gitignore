@@ -22,6 +22,9 @@ res/dev/AutoGenerateWithSpecificVersion.settings
 res/dev/sources.txt
 res/dev/wget.exe
 
+# Used for test when coding
+_test/
+
 # VS Code / Editor
 .editorconfig
 ## Used for triming whitespace

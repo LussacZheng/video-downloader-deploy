@@ -3,11 +3,12 @@
 # 视频下载器 一键配置脚本 (Windows)
 
 ![language](https://img.shields.io/badge/language-batchfile-c1f12e)
-![platform](https://img.shields.io/badge/platform-Windows_7/8/10;_32/64--bit-brightgreen)
+![platform](https://img.shields.io/badge/platform-Windows_7/8/10;_32/64--bit-brightgreen?logo=windows)
 ![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy)
 ![version](https://img.shields.io/github/package-json/v/LussacZheng/video-downloader-deploy_info?color=important)
 
 快速配置和使用 **[You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , 和 [FFmpeg](https://ffmpeg.org)** 的一键配置脚本。
+
 - 无需安装 Python ，一键配置绿色便携版的 you-get , youtube-dl 。
 - 此绿色版基于 Python 的 embeddable 版。
 - 除了一键部署，后续 you-get, youtube-dl, annie 的更新同样一键完成。
@@ -22,9 +23,9 @@
 ### 注意
 
 - 对于 `Deploy.bat` 所在的文件夹，
-   - 只能整体移动或重命名整个文件夹，且文件夹名称和路径不应包含 `!@$;%^&` 等特殊符号；
-   - 配置完成后，你可以自行删除 `res\download\` 目录下所有下载的文件，以节省储存空间；
-   - 除了 `Download\` 目录下所下载的视频文件，请勿随意改变里面的其他文件。
+  - 只能整体移动或重命名整个文件夹，且文件夹名称和路径不应包含 `!@$;%^&` 等特殊符号；
+  - 配置完成后，你可以自行删除 `res\download\` 目录下所有下载的文件，以节省储存空间；
+  - 除了 `Download\` 目录下所下载的视频文件，请勿随意改变里面的其他文件。
 - 如果脚本运行时出现问题（如 **下载速度过慢 / 卡在 0%**），请查阅 [FAQ](https://github.com/LussacZheng/video-downloader-deploy/wiki/FAQ) 或 [提交 Issue](https://github.com/LussacZheng/video-downloader-deploy/issues) 。
 
 ### FFmpeg
@@ -32,6 +33,14 @@
 > 没有 FFmpeg 不影响视频下载，只影响分段视频的合并。
 
 此绿色版默认不配置 FFmpeg 。若需要配置 FFmpeg ，请重新运行 `Deploy.bat` 并选择 `配置 FFmpeg` 。
+
+### 别名 / alias
+
+运行 `Deploy.bat` 并选择 `别名管理` 即可配置自定义别名。
+
+> 在新增自定义别名之前，不妨先尝试 `导入默认别名` ，然后打开启动脚本 `下载视频.bat` ，输入 `open` 并执行。
+
+**注意**：自定义别名的命名，最好是英文字母、数字的组合。尽管可以包含横杠、下划线、或中文，但其至少应符合正则表达式 `^[\w\-\u4e00-\u9fa5]+$` ，尤其不应含有空格和上文提及的特殊符号。
 
 ---
 
@@ -60,6 +69,7 @@ git pull
 ### Source
 
 - `7za.exe`
+
   ```
   Version:    v19.00
   MD5:        43141e85e7c36e31b52b22ab94d5e574
@@ -68,6 +78,7 @@ git pull
   ```
 
 - `wget.exe`
+
   ```
   Version:    v1.20.3 , win32
   MD5:        f8247397ae65792524d949c825969391
@@ -77,6 +88,7 @@ git pull
   ```
 
 - `get-pip.py`
+
   ```
   Version:    v19.2.2 (pip)
   MD5:        7f66b79bf181521f6851a75848aad8b2

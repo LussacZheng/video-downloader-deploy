@@ -3,14 +3,15 @@
 # Video Downloaders One-Click Deployment Batch (Windows)
 
 ![language](https://img.shields.io/badge/language-batchfile-c1f12e)
-![platform](https://img.shields.io/badge/platform-Windows_7/8/10;_32/64--bit-brightgreen)
+![platform](https://img.shields.io/badge/platform-Windows_7/8/10;_32/64--bit-brightgreen?logo=windows)
 ![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy)
 ![version](https://img.shields.io/github/package-json/v/LussacZheng/video-downloader-deploy_info?color=important)
 
 A One-Click batch for the deployment and quickstart of **[You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , and [FFmpeg](https://ffmpeg.org)** .
-   - No need to install Python, one-click to deploy a portable version of you-get, youtube-dl.
-   - This portable deployment is based on the embeddable version of Python.
-   - Besides one-click deployment, the upgrades of you-get, youtube-dl, annie in the future can also be carried out with one-click.
+
+- No need to install Python, one-click to deploy a portable version of you-get, youtube-dl.
+- This portable deployment is based on the embeddable version of Python.
+- Besides one-click deployment, the upgrades of you-get, youtube-dl, annie in the future can also be carried out with one-click.
 
 ## Getting Started
 
@@ -25,9 +26,9 @@ Demo.gif ( 2 min 52 s ) :
 ### Note
 
 - For the folder where `Deploy.bat` is located,
-   - You can only move or rename the entire folder as a whole. The name of this folder or the file path should NOT contains special punctuation like: `!@$;%^&` ;
-   - After the deployment, you can delete all the files downloaded in directory `res\download\` , to save storage;
-   - Except the video files downloaded under the `Download\` directory, please do NOT change other files inside.
+  - You can only move or rename the entire folder as a whole. The name of this folder or the file path should NOT contains special punctuation like: `!@$;%^&` ;
+  - After the deployment, you can delete all the files downloaded in directory `res\download\` , to save storage;
+  - Except the video files downloaded under the `Download\` directory, please do NOT change other files inside.
 - If the batch has a run-time error (such as download speed is too slow), please refer to [FAQ](https://github.com/LussacZheng/video-downloader-deploy/wiki/FAQ) or [Submit new issue](https://github.com/LussacZheng/video-downloader-deploy/issues) .
 
 ### FFmpeg
@@ -35,6 +36,14 @@ Demo.gif ( 2 min 52 s ) :
 > It has no effect on downloading video if without FFmpeg, which only affects the merging of multiple parts video.
 
 This portable version does NOT deploy FFmpeg by default. To deploy FFmpeg, re-run `Deploy.bat` and select `Deploy FFmpeg`.
+
+### alias
+
+Run `Deploy.bat` and select `Aliases Management` to add customize aliases.
+
+> Before adding a custom alias, please try `Import default alias`. Then start the `Download_Video.bat`, input `open` and ENTER.
+
+**Notice**: The name of customize alias is preferably a combination of letters, numbers, dashes and/or underscores. It should macth the RegExp `^[\w\-]+$`, and particularly no whitespace or the special punctuations mentioned above.
 
 ---
 
@@ -57,6 +66,7 @@ git pull
 ### Source
 
 - `7za.exe`
+  
   ```
   Version:    v19.00
   MD5:        43141e85e7c36e31b52b22ab94d5e574
@@ -65,6 +75,7 @@ git pull
   ```
 
 - `wget.exe`
+
   ```
   Version:    v1.20.3 , win32
   MD5:        f8247397ae65792524d949c825969391
@@ -74,6 +85,7 @@ git pull
   ```
 
 - `get-pip.py`
+
   ```
   Version:    v19.2.2 (pip)
   MD5:        7f66b79bf181521f6851a75848aad8b2

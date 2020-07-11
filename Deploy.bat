@@ -1,15 +1,15 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:chs,cht,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.5.2
-:: Last updated: 2020-05-27
+:: Version: 1.6.0
+:: Last updated: 2020-07-11
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 :: >>> Attention! NEVER use `::` to comment in `( )` code block, use `REM` instead!!!
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.5.2"
-set "lastUpdated=2020-05-27"
+set "_Version_=1.6.0"
+set "lastUpdated=2020-07-11"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -81,6 +81,7 @@ echo. & echo  [3] %str_opt3% %opt3_info%
 echo. & echo  [4] %str_opt4% %opt4_info%
 echo. & echo  [5] %str_opt5%
 echo. & echo  [6] %str_opt6% %opt6_info%
+echo. & echo  [7] %str_opt7%
 echo. & echo.
 echo ====================================================
 set choice=0
@@ -95,6 +96,7 @@ if "%choice%"=="3" goto Upgrade
 if "%choice%"=="4" goto Reset_dl-bat
 if "%choice%"=="5" goto Update
 if "%choice%"=="6" goto Setting
+if "%choice%"=="7" goto Aliases
 echo. & echo %str_please-input-valid-num%
 pause > NUL
 goto MENU
@@ -514,6 +516,69 @@ call res\scripts\Config.bat UpgradeOnlyViaGitHub
 goto _ReturnToSetting_
 
 
+rem ================= OPTION 7 =================
+
+
+:Aliases
+cls
+echo ====================================================
+echo ===============%str_opt7-Expanded%===============
+echo ====================================================
+echo.
+echo. & echo  [0] %str_opt7_opt0%
+echo. & echo  [1] %str_opt7_opt1%
+echo. & echo  [2] %str_opt7_opt2%: open, yb
+echo. & echo  [3] %str_opt7_opt3%
+echo. & echo  [4] %str_opt7_opt4%
+echo. & echo  [5] %str_opt7_opt5%
+echo. & echo.
+echo ====================================================
+set opt7_choice=-1
+set /p opt7_choice= %str_please-choose%
+echo. & echo.
+if "%opt7_choice%"=="0" goto MENU
+if "%opt7_choice%"=="1" goto aliases_List
+if "%opt7_choice%"=="2" goto aliases_Default
+if "%opt7_choice%"=="3" goto aliases_Add
+if "%opt7_choice%"=="4" goto aliases_Remove
+if "%opt7_choice%"=="5" goto aliases_File
+echo %str_please-input-valid-num%
+goto _ReturnToAliases_
+
+
+:aliases_List
+call res\scripts\Alias.bat list
+goto _ReturnToAliases_
+
+:aliases_Default
+call res\scripts\Alias.bat add open="explorer .\"
+call res\scripts\Alias.bat add yb="youtube-dl -f bestvideo+bestaudio"
+goto _ReturnToAliases_
+
+:aliases_Add
+set "opt7_opt3_alias="
+set /p opt7_opt3_alias= %str_please-set-alias%
+if "%opt7_opt3_alias%"=="" ( echo. & echo %str_cancelled% && goto _ReturnToAliases_ )
+set /p opt7_opt3_command= %str_please-set-command%
+if "%opt7_opt3_command%"=="" ( echo. & echo %str_cancelled% && goto _ReturnToAliases_ )
+echo.
+call res\scripts\Alias.bat add %opt7_opt3_alias%="%opt7_opt3_command%"
+goto _ReturnToAliases_
+
+:aliases_Remove
+call res\scripts\Alias.bat list
+set "opt7_opt4_alias="
+set /p opt7_opt4_alias= %str_please-set-alias%
+if "%opt7_opt4_alias%"=="" ( echo. & echo %str_cancelled% && goto _ReturnToAliases_ )
+echo.
+call res\scripts\Alias.bat rm %opt7_opt4_alias%
+goto _ReturnToAliases_
+
+:aliases_File
+call res\scripts\Alias.bat file
+goto _ReturnToAliases_
+
+
 rem ================= FUNCTIONS =================
 
 
@@ -525,6 +590,11 @@ goto MENU
 :_ReturnToSetting_
 pause > NUL
 goto Setting
+
+
+:_ReturnToAliases_
+pause > NUL
+goto Aliases
 
 
 :_PleaseRerun_
