@@ -520,6 +520,7 @@ rem ================= OPTION 7 =================
 
 
 :Aliases
+call :AskForInit
 cls
 echo ====================================================
 echo ===============%str_opt7-Expanded%===============
@@ -557,6 +558,7 @@ goto _ReturnToAliases_
 
 :aliases_Add
 set "opt7_opt3_alias="
+set "opt7_opt3_command="
 set /p opt7_opt3_alias= %str_please-set-alias%
 if "%opt7_opt3_alias%"=="" ( echo. & echo %str_cancelled% && goto _ReturnToAliases_ )
 set /p opt7_opt3_command= %str_please-set-command%
