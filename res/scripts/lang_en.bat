@@ -147,8 +147,11 @@ set "str_alias-list=All currently available aliases:"
 set "str_alias-added=Alias has been added"
 set "str_alias-removed=Alias has been removed"
 set "str_alias-notFound=Alias not found"
-set "str_please-set-alias=Please input - Alias ^( NO whitespace^): "
+set "str_please-set-alias=Please input - Alias ^(NO whitespace^): "
 set "str_please-set-command=Please input - Command: "
+set "str_alias-add_failed=Failed to add that alias. "
+set "str_alias-add_loop=Because: the alias must NOT be the same as the command."
+set "str_alias-exist=That alias already exists. To overwrite the original command, please enter Y;"
 set "str_alias-edit-manually=Follow the instructions of README on GitHub to manually edit the aliases."
 :: ========================= END OF TRANSLATION =========================
 :: Select %_Region_% for sources.txt

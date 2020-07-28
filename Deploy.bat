@@ -2,14 +2,14 @@
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
 :: Version: 1.6.0
-:: Last updated: 2020-07-11
+:: Last updated: 2020-07-28
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 :: >>> Attention! NEVER use `::` to comment in `( )` code block, use `REM` instead!!!
 @echo off
 setlocal EnableDelayedExpansion
 set "_Version_=1.6.0"
-set "lastUpdated=2020-07-11"
+set "lastUpdated=2020-07-28"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -528,7 +528,7 @@ echo ====================================================
 echo.
 echo. & echo  [0] %str_opt7_opt0%
 echo. & echo  [1] %str_opt7_opt1%
-echo. & echo  [2] %str_opt7_opt2%: open, yb
+echo. & echo  [2] %str_opt7_opt2%: "open", "yb"
 echo. & echo  [3] %str_opt7_opt3%
 echo. & echo  [4] %str_opt7_opt4%
 echo. & echo  [5] %str_opt7_opt5%
@@ -552,8 +552,8 @@ call res\scripts\Alias.bat list
 goto _ReturnToAliases_
 
 :aliases_Default
-call res\scripts\Alias.bat add open="explorer .\"
-call res\scripts\Alias.bat add yb="youtube-dl -f bestvideo+bestaudio"
+call res\scripts\Alias.bat addf open="explorer .\"
+call res\scripts\Alias.bat addf yb="youtube-dl -f bestvideo+bestaudio"
 goto _ReturnToAliases_
 
 :aliases_Add

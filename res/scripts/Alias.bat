@@ -7,12 +7,14 @@
 :: call res\scripts\Alias.bat add open="explorer .\"
 :: call res\scripts\Alias.bat add yb="youtube-dl -f bestvideo+bestaudio"
 :: call res\scripts\Alias.bat add yf="youtube-dl --proxy http://127.0.0.1:10809 -F"
+:: call res\scripts\Alias.bat addf open="explorer .\"
 :: call res\scripts\Alias.bat rm open
 :: call res\scripts\Alias.bat file
 
 @echo off
 set "als_Alias=%~2"
 set "als_Command=%~3"
+set "als_Flag=false"
 if NOT exist usr\alias\ md usr\alias
 pushd usr\alias
 call :Alias_%~1
@@ -28,25 +30,43 @@ rem ================= Action Types =================
 echo %str_alias-list%
 setlocal EnableDelayedExpansion
 for /f "delims=" %%i in ('dir /b /a-d /o:n ^| findstr "\.cmd$ \.bat$"') do (
-    set "als_Alias=%%i"
-    set "als_Alias=!als_Alias:~0,-4!"
-    echo  * !als_Alias!
+    set "als_Item=%%i"
+    set "als_Item=!als_Item:~0,-4!"
+    echo  * !als_Item!
 )
 endlocal
 goto :eof
 
 
 :Alias_add
-echo @%als_Command% %%*> "%als_Alias%.cmd" && call :als_added "%als_Alias%"
-echo   alias %als_Alias%="%als_Command%"
+if "%als_Alias%"=="%als_Command%" (
+    echo %str_alias-add_failed%
+    echo %str_alias-add_loop%
+    goto :eof
+)
+if exist "%als_Alias%.cmd" ( set "als_Flag=true" )
+if exist "%als_Alias%.bat" ( set "als_Flag=true" )
+if NOT "%als_Flag%"=="true" call :als_do_add
+set als_Choice=0
+echo %str_alias-exist%
+set /p als_Choice= %str_enter-to-cancel%
+echo.
+if /i "%als_Choice%"=="Y" (
+    call :als_do_add
+) else ( echo %str_cancelled% && goto :eof )
+goto :eof
+
+
+:Alias_addf
+:: alias add --force
+call :als_do_add
 goto :eof
 
 
 :Alias_rm
-set "a_Status=false"
-if exist "%als_Alias%.cmd" ( set "a_Status=true" && del /Q "%als_Alias%.cmd" >NUL 2>NUL)
-if exist "%als_Alias%.bat" ( set "a_Status=true" && del /Q "%als_Alias%.bat" >NUL 2>NUL)
-if "%a_Status%"=="true" (
+if exist "%als_Alias%.cmd" ( set "als_Flag=true" && del /Q "%als_Alias%.cmd" >NUL 2>NUL )
+if exist "%als_Alias%.bat" ( set "als_Flag=true" && del /Q "%als_Alias%.bat" >NUL 2>NUL )
+if "%als_Flag%"=="true" (
     call :als_removed "%als_Alias%"
 ) else ( call :als_notFound "%als_Alias%" )
 goto :eof
@@ -59,6 +79,12 @@ goto :eof
 
 
 rem ================= FUNCTIONS =================
+
+
+:als_do_add
+echo @%als_Command% %%*> "%als_Alias%.cmd" && call :als_added "%als_Alias%"
+echo   alias %als_Alias%="%als_Command%"
+goto :eof
 
 
 :als_added

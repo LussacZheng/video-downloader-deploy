@@ -4,7 +4,7 @@
 
 ![language](https://img.shields.io/badge/language-batchfile-c1f12e)
 ![platform](https://img.shields.io/badge/platform-Windows_7/8/10;_32/64--bit-brightgreen?logo=windows)
-![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy)
+![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy?logo=github)
 ![version](https://img.shields.io/github/package-json/v/LussacZheng/video-downloader-deploy_info?color=important)
 
 A One-Click batch for the deployment and quickstart of **[You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , and [FFmpeg](https://ffmpeg.org)** .
@@ -43,7 +43,7 @@ Run `Deploy.bat` and select `Aliases Management` to add customize aliases.
 
 > Before adding a custom alias, please try `Import default alias`. Then start the `Download_Video.bat`, input `open` and ENTER.
 
-**Notice**: The name of customize alias is preferably a combination of letters, numbers, dashes and/or underscores. It should macth the RegExp `^[\w\-]+$`, and particularly no whitespace or the special punctuations mentioned above.
+**Notice**: The name of customize alias is preferably a combination of letters, numbers, dashes and/or underscores. It should macth the RegExp `^[\w\-]+$`, and particularly no whitespace or the special punctuations mentioned above. In addition, the alias must NOT be the same as the command, otherwise it will cause an endless loop.
 
 ---
 

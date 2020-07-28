@@ -4,7 +4,7 @@
 
 ![language](https://img.shields.io/badge/language-batchfile-c1f12e)
 ![platform](https://img.shields.io/badge/platform-Windows_7/8/10;_32/64--bit-brightgreen?logo=windows)
-![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy)
+![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy?logo=github)
 ![version](https://img.shields.io/github/package-json/v/LussacZheng/video-downloader-deploy_info?color=important)
 
 快速配置和使用 **[You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , 和 [FFmpeg](https://ffmpeg.org)** 的一键配置脚本。
@@ -40,7 +40,7 @@
 
 > 在新增自定义别名之前，不妨先尝试 `导入默认别名` ，然后打开启动脚本 `下载视频.bat` ，输入 `open` 并执行。
 
-**注意**：自定义别名的命名，最好是英文字母、数字的组合。尽管可以包含横杠、下划线、或中文，但其至少应符合正则表达式 `^[\w\-\u4e00-\u9fa5]+$` ，尤其不应含有空格和上文提及的特殊符号。
+**注意**：自定义别名的命名，最好是英文字母、数字的组合。尽管可以包含横杠、下划线、或中文，但其至少应符合正则表达式 `^[\w\-\u4e00-\u9fa5]+$` ，尤其不应含有空格和上文提及的特殊符号。另外，别名切忌与命令相同，否则会导致无限循环调用。
 
 ---
 

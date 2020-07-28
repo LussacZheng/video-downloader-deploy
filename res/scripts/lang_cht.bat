@@ -149,6 +149,9 @@ set "str_alias-removed=別名已刪除"
 set "str_alias-notFound=別名未找到"
 set "str_please-set-alias=請輸入 - 別名 ^(勿含空格^)："
 set "str_please-set-command=請輸入 - 命令："
+set "str_alias-add_failed=無法添加該別名。"
+set "str_alias-add_loop=因為：別名不能與命令相同。"
+set "str_alias-exist=別名已存在。若需覆蓋原命令，請輸入Y；"
 set "str_alias-edit-manually=請依照 GitHub 主頁說明，手動管理別名。"
 :: ========================= END OF TRANSLATION =========================
 :: Select %_Region_% for sources.txt
