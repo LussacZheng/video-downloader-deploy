@@ -46,13 +46,13 @@ if "%als_Alias%"=="%als_Command%" (
 )
 if exist "%als_Alias%.cmd" ( set "als_Flag=true" )
 if exist "%als_Alias%.bat" ( set "als_Flag=true" )
-if NOT "%als_Flag%"=="true" call :als_do_add
+if NOT "%als_Flag%"=="true" goto als_do_add
 set als_Choice=0
 echo %str_alias-exist%
 set /p als_Choice= %str_enter-to-cancel%
 echo.
 if /i "%als_Choice%"=="Y" (
-    call :als_do_add
+    goto als_do_add
 ) else ( echo %str_cancelled% && goto :eof )
 goto :eof
 
