@@ -7,7 +7,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy?logo=github)
 ![version](https://img.shields.io/github/package-json/v/LussacZheng/video-downloader-deploy_info?color=important)
 
-快速配置和使用 **[You-Get](https://github.com/soimort/you-get) , [Youtube-dl](https://github.com/ytdl-org/youtube-dl) , [Annie](https://github.com/iawia002/annie) , 和 [FFmpeg](https://ffmpeg.org)** 的一键配置脚本。
+快速配置和使用 **[You-Get][you-get] , [Youtube-dl][youtube-dl] , [Annie][annie] , 和 [FFmpeg][ffmpeg]** 的一键配置脚本。
 
 - 无需安装 Python ，一键配置绿色便携版的 you-get , youtube-dl 。
 - 此绿色版基于 Python 的 embeddable 版。
@@ -39,6 +39,17 @@
 运行 `Deploy.bat` 并选择 `别名管理` 即可配置自定义别名。
 
 > 在新增自定义别名之前，不妨先尝试 `导入默认别名` ，然后打开启动脚本 `下载视频.bat` ，输入 `open` 并执行。
+
+列举几个可能比较常用的别名作为参考：
+
+| 别名                                                  | 作用                                                 |
+| :---------------------------------------------------- | :--------------------------------------------------- |
+| open = `explorer .\`                                  | 打开当前目录，即 `Download` 文件夹                   |
+| yb = `youtube-dl -f bestvideo+bestaudio`              | 使用 youtube-dl 下载最佳清晰度                       |
+| yf = `youtube-dl --proxy socks5://127.0.0.1:10808 -F` | 使用 youtube-dl 查看所有可下载的清晰度，同时启用代理 |
+| ac = `annie -c cookies.txt`                           | 使用 annie 下载并加载 cookies 文件                   |
+| ygc = `you-get -c cookies.txt`                        | 使用 you-get 下载并加载 cookies 文件                 |
+| ...                                                   | ...                                                  |
 
 **注意**：自定义别名的命名，最好是英文字母、数字的组合。尽管可以包含横杠、下划线、或中文，但其至少应符合正则表达式 `^[\w\-\u4e00-\u9fa5]+$` ，尤其不应含有空格和上文提及的特殊符号。另外，别名切忌与命令相同，否则会导致无限循环调用。
 
@@ -90,11 +101,35 @@ git pull
 - `get-pip.py`
 
   ```
-  Version:    v19.2.2 (pip)
+  Version:    v19.2.2 (pip for bootstrap)
   MD5:        7f66b79bf181521f6851a75848aad8b2
   Source:     https://bootstrap.pypa.io/get-pip.py
   ```
 
+### License
+
+|            Project             |                 License                 |
+| :----------------------------: | :-------------------------------------: |
+|       [you-get][you-get]       |     [MIT License][you-get license]      |
+|    [youtube-dl][youtube-dl]    |   [The Unlicense][youtube-dl license]   |
+|         [annie][annie]         |      [MIT License][annie license]       |
+| [FFmpeg Builds][ffmpeg builds] |    [GPL 3.0][ffmpeg builds license]     |
+|        [Python][python]        | [PSF LICENSE AGREEMENT][python license] |
+
 ### 更多信息
 
 查阅 [Wiki](https://github.com/LussacZheng/video-downloader-deploy/wiki) 以了解更多信息。
+
+<!-- Reference Links -->
+
+[you-get]: https://github.com/soimort/you-get
+[you-get license]: https://github.com/soimort/you-get/blob/develop/LICENSE.txt
+[youtube-dl]: https://github.com/ytdl-org/youtube-dl
+[youtube-dl license]: https://github.com/ytdl-org/youtube-dl/blob/master/LICENSE
+[annie]: https://github.com/iawia002/annie
+[annie license]: https://github.com/iawia002/annie/blob/master/LICENSE
+[ffmpeg]: https://ffmpeg.org
+[ffmpeg builds]: https://ffmpeg.zeranoe.com/builds/
+[ffmpeg builds license]: http://www.gnu.org/licenses/gpl-3.0.html
+[python]: https://www.python.org
+[python license]: https://docs.python.org/3.7/license.html#terms-and-conditions-for-accessing-or-otherwise-using-python
