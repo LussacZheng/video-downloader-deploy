@@ -1,5 +1,5 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
-:: Used for "Deploy.bat" in :Create_Download-bat
+:: Used for "Deploy.bat" in :Aliases
 :: Please make sure that: only call this batch when %cd% is %root%;
 ::     call "res\scripts\lang_*.bat" before calling this batch.
 :: e.g.
@@ -8,6 +8,7 @@
 :: call res\scripts\Alias.bat add yb="youtube-dl -f bestvideo+bestaudio"
 :: call res\scripts\Alias.bat add yf="youtube-dl --proxy http://127.0.0.1:10809 -F"
 :: call res\scripts\Alias.bat addf open="explorer .\"
+:: call res\scripts\Alias.bat generate proxy
 :: call res\scripts\Alias.bat rm open
 :: call res\scripts\Alias.bat file
 
@@ -16,6 +17,7 @@ set "als_Alias=%~2"
 set "als_Command=%~3"
 set "als_Flag=false"
 if NOT exist usr\alias\ md usr\alias
+if "%~1"=="generate" goto Alias_generate
 pushd usr\alias
 call :Alias_%~1
 popd
@@ -60,6 +62,15 @@ goto :eof
 :Alias_addf
 :: alias add --force
 call :als_do_add
+goto :eof
+
+
+:Alias_generate
+:: add alias by "res\scripts\GenerateAlias_*.bat" (--force)
+call res\scripts\GenerateAlias_%als_Alias%.bat usr\alias
+call :als_added "%als_Alias%"
+echo   %str_alias-help%: "%als_Alias% help"
+echo.
 goto :eof
 
 

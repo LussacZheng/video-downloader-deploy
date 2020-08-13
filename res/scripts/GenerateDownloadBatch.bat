@@ -17,8 +17,8 @@ rem ================= FUNCTIONS =================
 
 
 :GenerateDownloadBatch_Common
-( echo :: %str_dl-bat_fileMode%
-echo :: ^>^>^> EDIT AT YOUR OWN RISK. ^<^<^<
+( echo @rem %str_fileMode%
+echo @rem ^>^>^> EDIT AT YOUR OWN RISK. ^<^<^<
 echo @echo off
 echo.
 

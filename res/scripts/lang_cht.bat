@@ -1,4 +1,6 @@
 @rem - Encoding:big5; Mode:Batch; Language:zh-HK,zh-TW; LineEndings:CRLF -
+:: :: file mode must be the same as the first line (emacs-like-style)
+set "str_fileMode=- Encoding:big5; Mode:Batch; Language:zh-HK,zh-TW; LineEndings:CRLF -"
 :: ========================= START OF TRANSLATION =========================
 set "str_title=影片下載器 一鍵配置"
 set "str_titleExpanded=========  %str_title%  ========"
@@ -64,8 +66,6 @@ set "str_dl-bat=下載影片"
 set "str_dl-bat-created=已創建啟動腳本 "%str_dl-bat%.bat" 。"
 set "str_dl-bat-reset=檢測到腳本可能進行了更新，建議您執行一次 "Deploy.bat - [4]%str_opt4%" 。"
 set "str_dl-bat-moved=未找到 "usr" 文件夾！請將此腳本移動到與 "Deploy.bat" 同一目錄，或通過其重新創建啟動腳本。"
-:: :: file mode must be the same as the first line (emacs-like-style)
-set "str_dl-bat_fileMode=- Encoding:big5; Mode:Batch; Language:zh-HK,zh-TW; LineEndings:CRLF -"
 :: ================= Advanced Settings
 set "str_opt6-Expanded======= 高級設置 ======"
 set "str_opt6_opt0=返回主菜單"
@@ -153,6 +153,20 @@ set "str_alias-add_failed=無法添加該別名。"
 set "str_alias-add_loop=因為：別名不能與命令相同。"
 set "str_alias-exist=別名已存在。若需覆蓋原命令，請輸入Y；"
 set "str_alias-edit-manually=請依照 GitHub 主頁說明，手動管理別名。"
+set "str_alias-help=運行此命令以獲取幫助"
+:: ========= Generated Advanced Aliases - "proxy"
+set "str_alsProxy_usage=使用方法"
+set "str_alsProxy_usage2=其中 [command] 可以為"
+set "str_alsProxy_usage3=無效命令"
+set "str_alsProxy_usage_null=無 command，則與 "proxy toggle" 作用相同"
+set "str_alsProxy_usage_toggle=為當前窗口切換Proxy設置"
+set "str_alsProxy_usage_on=為當前窗口啟用Proxy"
+set "str_alsProxy_usage_off=為當前窗口禁用Proxy"
+set "str_alsProxy_usage_status=顯示 %%HTTP_PROXY%% 和 %%HTTPS_PROXY%% 的值"
+set "str_alsProxy_usage_help=列印幫助信息"
+set "str_alsProxy_true==當前窗口Proxy：啟用"
+set "str_alsProxy_false=當前窗口Proxy：禁用"
+set "str_alsProxy_unknown=未找到 "res\deploy.settings" ；或 "res\deploy.settings" 中的Proxy設置不完整。"
 :: ========================= END OF TRANSLATION =========================
 :: Select %_Region_% for sources.txt
 set "_Region_=origin"
