@@ -113,7 +113,7 @@ echo.
 REM :: print the help message
 echo :Proxy_help
 echo setlocal EnableDelayedExpansion
-echo for /f "eol=@ delims=" %%%%i in ^(%%~f0^) do ^(
+echo for /f "usebackq eol=@ delims=" %%%%i in ^("%%~f0"^) do ^(
 echo     set "_proxy_temp=%%%%i"
 echo     echo ^^!_proxy_temp^^! ^| findstr "::" ^>NUL ^&^& ^( set "_proxy_temp=^!_proxy_temp:::=^!" ^)
 echo     if "^!_proxy_temp^!"=="" ^(
