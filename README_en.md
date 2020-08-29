@@ -45,14 +45,15 @@ Run `Deploy.bat` and select `Aliases Management` to add customize aliases.
 
 Take several aliases, which might be commonly used, as examples and references:
 
-| Alias                                    | Function                                                         |
-| :--------------------------------------- | :--------------------------------------------------------------- |
-| open = `explorer .\`                     | Open the current directory, which is `Download\`                 |
-| yb = `youtube-dl -f bestvideo+bestaudio` | Use youtube-dl to download the video of best quality             |
-| yf = `youtube-dl -F`                     | Use youtube-dl to list all available formats of requested videos |
-| ac = `annie -c cookies.txt`              | Use annie to download, with cookies loaded                       |
-| ygc = `you-get -c cookies.txt`           | Use you-get to download, with cookies loaded                     |
-| ...                                      | ...                                                              |
+| Alias                                    | Function                                                           |
+| :--------------------------------------- | :----------------------------------------------------------------- |
+| open = `explorer .\`                     | Open the current directory, which is `Download\`                   |
+| proxy &asymp; `set HTTP(S)_PROXY=...`    | Quickly enable/disable proxy for current CMD window (`proxy help`) |
+| yb = `youtube-dl -f bestvideo+bestaudio` | Use youtube-dl to download the video of best quality               |
+| yf = `youtube-dl -F`                     | Use youtube-dl to list all available formats of requested videos   |
+| ac = `annie -c cookies.txt`              | Use annie to download, with cookies loaded                         |
+| ygc = `you-get -c cookies.txt`           | Use you-get to download, with cookies loaded                       |
+| ...                                      | ...                                                                |
 
 **Notice**: The name of customize alias is preferably a combination of letters, numbers, dashes and/or underscores. It should macth the RegExp `^[\w\-]+$`, and particularly no whitespace or the special punctuations mentioned above. In addition, the alias must NOT be the same as the command, otherwise it will cause an endless loop.
 
