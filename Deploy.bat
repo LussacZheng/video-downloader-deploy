@@ -211,6 +211,7 @@ goto _ReturnToMenu_
 
 :ffmpeg-exists
 echo. & echo FFmpeg %str_already-exist%
+where $path:ffmpeg
 echo.
 set opt2_choice=0
 echo. & echo %str_deploy-although-exist%
