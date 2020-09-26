@@ -192,8 +192,10 @@ rem ================= OPTION 2 =================
 :: Check whether FFmpeg already exists
 ::   where /Q ffmpeg && echo yes || echo no
 ::   OR where /Q $path:ffmpeg && echo yes || echo no
-where /Q $path:ffmpeg && goto ffmpeg-exists
-if exist "%ffBin%\ffmpeg.exe" goto ffmpeg-exists
+set "isExternalFfmpeg=unknown"
+where /Q $path:ffmpeg && set "isExternalFfmpeg=true"
+if exist "%ffBin%\ffmpeg.exe" ( set "isExternalFfmpeg=false")
+if NOT "%isExternalFfmpeg%"=="unknown" goto ffmpeg-exists
 
 :ffmpeg-deploy
 :: if NOT exist usr\ md usr
@@ -211,7 +213,8 @@ goto _ReturnToMenu_
 
 :ffmpeg-exists
 echo. & echo FFmpeg %str_already-exist%
-where $path:ffmpeg
+if "%isExternalFfmpeg%"=="false" ( echo "%ffBin%\ffmpeg.exe" )
+where /Q $path:ffmpeg && where $path:ffmpeg
 echo.
 set opt2_choice=0
 echo. & echo %str_deploy-although-exist%
