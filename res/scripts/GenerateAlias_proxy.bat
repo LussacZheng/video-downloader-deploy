@@ -93,13 +93,13 @@ echo     set "_proxy_state=noargs"
 echo     goto proxy_msg
 echo ^)
 REM :: Usage examples:
-REM ::   proxy use 4321
-REM ::     ==> same as `proxy use http://127.0.0.1:4321`
-REM ::   proxy use http://1.2.3.4:4321
-REM ::     ==> same as `proxy use http://1.2.3.4:4321 http://1.2.3.4:4321`
-REM ::   proxy use http://10.20.30.40:4321 https://40.30.20.10:1234
-REM ::     ==> same as `set http_proxy=http://127.0.0.1:4321
-REM ::                  set https_proxy=http://127.0.0.1:4321`
+REM ::   proxy use 1234
+REM ::       ==> same as `proxy use http://127.0.0.1:1234`
+REM ::   proxy use http://10.20.30.40:1234
+REM ::       ==> same as `proxy use http://10.20.30.40:1234 http://10.20.30.40:1234`
+REM ::   proxy use http://10.20.30.40:1234 https://50.60.70.80:5678
+REM ::       ==> same as `set http_proxy=http://10.20.30.40:1234
+REM ::                    set https_proxy=https://50.60.70.80:5678`
 echo echo %%_proxy_server%% ^| findstr ":" ^>NUL ^&^& ^(
 echo         call :proxy_cache_write "%%_proxy_server%%" "%%~3"
 echo     ^) ^|^| ^(
