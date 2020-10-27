@@ -73,11 +73,16 @@ if NOT "%dl_Count%"=="0" (
     if exist you-get*.tar.gz ( move /Y you-get*.tar.gz res\download\ > NUL )
     REM For "youtube-dl*.tar.gz" downloaded from Lanzou Netdisk, complete the filename.
     REM   "-dl-2020.03.24.tar.gz" -> "youtube-dl-2020.03.24.tar.gz"
+    REM   "_dl-2020.3.24.tar.gz" -> "youtube_dl-2020.3.24.tar.gz"
     if exist -dl*.tar.gz (
         for /f "delims=" %%i in ('dir /b /a-d /o:d -dl*.tar.gz') do ( set "dl_Filename=%%i" )
         move /Y !dl_Filename! youtube!dl_Filename! > NUL
     )
-    if exist youtube-dl*.tar.gz ( move /Y youtube-dl*.tar.gz res\download\ > NUL )
+    if exist _dl*.tar.gz (
+        for /f "delims=" %%i in ('dir /b /a-d /o:d _dl*.tar.gz') do ( set "dl_Filename=%%i" )
+        move /Y !dl_Filename! youtube!dl_Filename! > NUL
+    )
+    if exist youtube*dl*.tar.gz ( move /Y youtube*dl*.tar.gz res\download\ > NUL )
     if exist annie*Windows*.zip ( move /Y annie*Windows*.zip res\download\ > NUL )
     if exist ffmpeg*.zip ( move /Y ffmpeg*.zip res\download\ > NUL )
     echo.
