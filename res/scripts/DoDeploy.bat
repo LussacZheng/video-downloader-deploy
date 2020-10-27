@@ -54,14 +54,25 @@ goto :eof
 
 
 :Setup_youtubedl
-for /f "delims=" %%i in ('dir /b /a:a /o:d youtube-dl*.tar.gz') do ( set "ydZip=%%i" )
+for /f "delims=" %%i in ('dir /b /a:a /o:d youtube*dl*.tar.gz') do ( set "ydZip=%%i" )
 if NOT "%~1"=="" ( set "ydZip=%~1" )
 echo %str_unzipping% %ydZip%...
 7za x %ydZip% -so | 7za x -aoa -si -ttar > NUL
 :: In order to avoid access denied, wait for the decompression to complete.
 ping -n 5 127.0.0.1 > NUL
-set ydDir=youtube-dl
+set ydDir=%ydZip:~0,-7%
 move %ydDir% "%ydBin%" > NUL
+( echo #^^!/usr/bin/env python3
+echo.
+echo import sys, os.path
+echo.
+echo path = os.path.realpath^(os.path.abspath^(__file__^)^)
+echo sys.path.insert^(0, os.path.dirname^(path^)^)
+echo.
+echo import youtube_dl
+echo.
+echo if __name__ == '__main__':
+echo     youtube_dl.main^(^) ) > "%ydBin%\youtube-dl"
 echo Youtube-dl %str_already-deploy%
 goto :eof
 
@@ -85,30 +96,36 @@ goto :eof
 
 
 :Upgrade_youget
+setlocal EnableDelayedExpansion
 echo %str_upgrading% you-get...
 :: %ygCurrentVersion% was set in res\scripts\CheckUpdate.bat :CheckUpdate_youget
 del /Q download\you-get-%ygCurrentVersion%.tar.gz >NUL 2>NUL
+set "ygFinalFilename=you-get-%ygLatestVersion%.tar.gz"
 if exist deploy.settings (
     for /f "tokens=2 delims= " %%i in ('findstr /i "UpgradeOnlyViaGitHub" deploy.settings') do ( set "state_upgradeOnlyViaGitHub=%%i" )
 ) else ( set "state_upgradeOnlyViaGitHub=disable" )
-setlocal EnableDelayedExpansion
 if "%state_upgradeOnlyViaGitHub%"=="enable" (
-    set "ygLatestVersion_Url=https://github.com/soimort/you-get/releases/download/v%ygLatestVersion%/you-get-%ygLatestVersion%.tar.gz"
+    set "ygLatestVersion_Url=https://github.com/soimort/you-get/releases/download/v%ygLatestVersion%/%ygFinalFilename%"
     echo !ygLatestVersion_Url!>> download\to-be-downloaded.txt
     wget %_WgetOptions_% !ygLatestVersion_Url! -P download
 ) else (
-    del /Q sources.txt >NUL 2>NUL
-    wget %_WgetOptions_% %_RemoteRes_%/sources.txt
+    REM flag %state_isSourcesUpToDate% is used to avoid downloading %_RemoteRes_%/sources.txt
+    REM   twice in one upgrading process.
+    if NOT "%state_isSourcesUpToDate%"=="true" (
+        del /Q sources.txt >NUL 2>NUL
+        wget %_WgetOptions_% %_RemoteRes_%/sources.txt
+        set "state_isSourcesUpToDate=true"
+    )
     call scripts\SourcesSelector.bat sources.txt youget %_Region_% %_SystemType_% download\to-be-downloaded.txt
     wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
     REM If the file fails to download because of mirror index not syncing timelier, set %_Region_% as "origin" to fetch from original source.
-    if NOT exist download\you-get-%ygLatestVersion%.tar.gz (
+    if NOT exist download\%ygFinalFilename% (
         call scripts\SourcesSelector.bat sources.txt youget origin %_SystemType_% download\to-be-downloaded.txt
         wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
     )
     REM If %_RemoteRes_%/sources.txt is not updated timely after the new release of you-get, download it from GitHub
-    if NOT exist download\you-get-%ygLatestVersion%.tar.gz (
-        set "ygLatestVersion_Url=https://github.com/soimort/you-get/releases/download/v%ygLatestVersion%/you-get-%ygLatestVersion%.tar.gz"
+    if NOT exist download\%ygFinalFilename% (
+        set "ygLatestVersion_Url=https://github.com/soimort/you-get/releases/download/v%ygLatestVersion%/%ygFinalFilename%"
         ( echo # RemoteRes is not updated timely after the new release of you-get, download it from GitHub:
         echo !ygLatestVersion_Url!) >> download\to-be-downloaded.txt
         wget %_WgetOptions_% !ygLatestVersion_Url! -P download
@@ -116,20 +133,52 @@ if "%state_upgradeOnlyViaGitHub%"=="enable" (
 )
 endlocal
 rd /S /Q "%ygBin%" >NUL 2>NUL
-cd download && call :Setup_youget "you-get-%ygLatestVersion%.tar.gz"
+cd download && call :Setup_youget "%ygFinalFilename%"
 cd .. && echo You-Get %str_already-upgrade%
 goto :eof
 
 
 :Upgrade_youtubedl
+setlocal EnableDelayedExpansion
 echo %str_upgrading% youtube-dl...
 :: %ydCurrentVersion% and %ydLatestVersion% were set in res\scripts\CheckUpdate.bat :CheckUpdate_youtubedl
+set "ydCurrentVersion_trimZero=%ydCurrentVersion:.0=.%"
+:: If "%ydCurrentVersion%"=="2019.08.02", "%ydCurrentVersion_trimZero%" will be "2019.8.2".
+set "ydLatestVersion_trimZero=%ydLatestVersion:.0=.%"
 del /Q download\youtube-dl-%ydCurrentVersion%.tar.gz >NUL 2>NUL
-set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/youtube-dl-%ydLatestVersion%.tar.gz"
-echo %ydLatestVersion_Url%>> download\to-be-downloaded.txt
-wget %_WgetOptions_% %ydLatestVersion_Url% -P download
+del /Q download\youtube_dl-%ydCurrentVersion_trimZero%.tar.gz >NUL 2>NUL
+set "ydFinalFilename=youtube_dl-%ydLatestVersion_trimZero%.tar.gz"
+if exist deploy.settings (
+    for /f "tokens=2 delims= " %%i in ('findstr /i "UpgradeOnlyViaGitHub" deploy.settings') do ( set "state_upgradeOnlyViaGitHub=%%i" )
+) else ( set "state_upgradeOnlyViaGitHub=disable" )
+if "%state_upgradeOnlyViaGitHub%"=="enable" (
+    set "ydFinalFilename=youtube-dl-%ydLatestVersion%.tar.gz"
+    set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/%ydFinalFilename%"
+    echo %ydLatestVersion_Url%>> download\to-be-downloaded.txt
+    wget %_WgetOptions_% %ydLatestVersion_Url% -P download
+) else (
+    if NOT "%state_isSourcesUpToDate%"=="true" (
+        del /Q sources.txt >NUL 2>NUL
+        wget %_WgetOptions_% %_RemoteRes_%/sources.txt
+        set "state_isSourcesUpToDate=true"
+    )
+    call scripts\SourcesSelector.bat sources.txt youtubedl %_Region_% %_SystemType_% download\to-be-downloaded.txt
+    wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
+    if NOT exist download\%ydFinalFilename% (
+        call scripts\SourcesSelector.bat sources.txt youtubedl origin %_SystemType_% download\to-be-downloaded.txt
+        wget %_WgetOptions_% -i download\to-be-downloaded.txt -P download
+    )
+    if NOT exist download\%ydFinalFilename% (
+        set "ydFinalFilename=youtube-dl-%ydLatestVersion%.tar.gz"
+        set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/%ydFinalFilename%"
+        ( echo # RemoteRes is not updated timely after the new release of youtube-dl, download it from GitHub:
+        echo !ydLatestVersion_Url!) >> download\to-be-downloaded.txt
+        wget %_WgetOptions_% !ydLatestVersion_Url! -P download
+    )
+)
+endlocal
 rd /S /Q "%ydBin%" >NUL 2>NUL
-cd download && call :Setup_youtubedl "youtube-dl-%ydLatestVersion%.tar.gz"
+cd download && call :Setup_youtubedl "%ydFinalFilename%"
 cd .. && echo Youtube-dl %str_already-upgrade%
 goto :eof
 

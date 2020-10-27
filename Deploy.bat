@@ -1,15 +1,15 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:chs,cht,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.6.2
-:: Last updated: 2020-09-26
+:: Version: 1.7.0-beta
+:: Last updated: 2020-10-27
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 :: >>> Attention! NEVER use `::` to comment in `( )` code block, use `REM` instead!!!
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.6.2"
-set "lastUpdated=2020-09-26"
+set "_Version_=1.7.0-beta"
+set "lastUpdated=2020-10-27"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -241,6 +241,9 @@ call scripts\Download.bat dependency
 call :StopIfDisconnected
 call scripts\Getter.bat DeployMode
 set "whetherToLog=false"
+:: flag %state_isSourcesUpToDate% is used in
+::   :Upgrade_youget & :Upgrade_youtubedl of `res\scripts\DoDeploy.bat`
+set "state_isSourcesUpToDate=false"
 echo %str_checking-update%...
 if "%DeployMode%"=="portable" goto Upgrade-portable
 if "%DeployMode%"=="quickstart" goto Upgrade-quickstart
