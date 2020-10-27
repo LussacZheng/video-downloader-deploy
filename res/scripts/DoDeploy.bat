@@ -131,7 +131,9 @@ if "%state_upgradeOnlyViaGitHub%"=="enable" (
         wget %_WgetOptions_% !ygLatestVersion_Url! -P download
     )
 )
-endlocal
+REM Endlocal will clean the local environment variables,
+REM   so you should bring out the required variables.
+endlocal & set "ygFinalFilename=%ygFinalFilename%" & set "state_isSourcesUpToDate=%state_isSourcesUpToDate%"
 rd /S /Q "%ygBin%" >NUL 2>NUL
 cd download && call :Setup_youget "%ygFinalFilename%"
 cd .. && echo You-Get %str_already-upgrade%
@@ -176,7 +178,7 @@ if "%state_upgradeOnlyViaGitHub%"=="enable" (
         wget %_WgetOptions_% !ydLatestVersion_Url! -P download
     )
 )
-endlocal
+endlocal & set "ydFinalFilename=%ydFinalFilename%" & set "state_isSourcesUpToDate=%state_isSourcesUpToDate%"
 rd /S /Q "%ydBin%" >NUL 2>NUL
 cd download && call :Setup_youtubedl "%ydFinalFilename%"
 cd .. && echo Youtube-dl %str_already-upgrade%
