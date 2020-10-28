@@ -1,14 +1,14 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:chs,cht,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.7.0-beta
+:: Version: 1.7.0-beta2
 :: Last updated: 2020-10-27
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 :: >>> Attention! NEVER use `::` to comment in `( )` code block, use `REM` instead!!!
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.7.0-beta"
+set "_Version_=1.7.0-beta2"
 set "lastUpdated=2020-10-27"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
@@ -62,7 +62,7 @@ echo ======%str_titleExpanded%=======
 echo ====================================================
 echo ===================  by Lussac  ====================
 echo ====================================================
-echo ==========  version: %_Version_% (%lastUpdated%)  ===========
+echo =======  version: %_Version_% (%lastUpdated%)  ========
 echo ====================================================
 echo ====================================================
 echo.
@@ -270,10 +270,15 @@ if "%_isYgLatestVersion%"=="1" if "%_isYdLatestVersion%"=="1" if "%_isAnLatestVe
     echo annie %str_is-latestVersion%: v%anCurrentVersion%
     goto upgrade_done
 )
+:: When certain repository is unavailable due to DMCA takedown or network error,
+::   and others are all of latest version, skip upgrading it and not to log.
+if "%ygUpgradeLock%"=="true" if "%ydUpgradeLock%"=="true" if "%anUpgradeLock%"=="true" (
+    goto upgrade_done
+)
 set "whetherToLog=true"
-if "%_isYgLatestVersion%"=="0" call scripts\DoDeploy.bat Upgrade youget
-if "%_isYdLatestVersion%"=="0" call scripts\DoDeploy.bat Upgrade youtubedl
-if "%_isAnLatestVersion%"=="0" call scripts\DoDeploy.bat Upgrade annie
+if "%_isYgLatestVersion%"=="0" if "%ygUpgradeLock%"=="false" call scripts\DoDeploy.bat Upgrade youget
+if "%_isYdLatestVersion%"=="0" if "%ydUpgradeLock%"=="false" call scripts\DoDeploy.bat Upgrade youtubedl
+if "%_isAnLatestVersion%"=="0" if "%anUpgradeLock%"=="false" call scripts\DoDeploy.bat Upgrade annie
 goto upgrade_done
 
 
@@ -281,7 +286,7 @@ goto upgrade_done
 call scripts\CheckUpdate.bat youget
 if "%_isYgLatestVersion%"=="1" (
     echo you-get %str_is-latestVersion%: v%ygCurrentVersion%
-) else (
+) else if "%ygUpgradeLock%"=="false" (
     set "whetherToLog=true"
     call scripts\DoDeploy.bat Upgrade youget
 )
@@ -292,7 +297,7 @@ goto upgrade_done
 call scripts\CheckUpdate.bat annie
 if "%_isAnLatestVersion%"=="1" (
     echo annie %str_is-latestVersion%: v%anCurrentVersion%
-) else (
+) else if "%anUpgradeLock%"=="false" (
     set "whetherToLog=true"
     call scripts\DoDeploy.bat Upgrade annie
 )
