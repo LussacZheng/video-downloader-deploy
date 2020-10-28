@@ -26,7 +26,7 @@ goto :eof
 :CheckUpdate_youget
 for /f "tokens=2 delims='" %%a in ('type "%ygBin%\src\you_get\version.py" ^| find "version"') do ( set "ygCurrentVersion=%%a" )
 wget %_WgetOptions_% -np https://github.com/soimort/you-get/releases/latest -O ygLatestRelease.txt && (
-        set "ygUpgradeLock=flase"
+        set "ygUpgradeLock=false"
     ) || (
         set "ygUpgradeLock=true"
         echo you-get: %str_upgrade-info-unavailable%
@@ -53,7 +53,7 @@ goto :eof
 :CheckUpdate_youtubedl
 for /f "tokens=2 delims='" %%a in ('type "%ydBin%\youtube_dl\version.py" ^| find "version"') do ( set "ydCurrentVersion=%%a" )
 wget %_WgetOptions_% -np https://github.com/ytdl-org/youtube-dl/releases/latest -O ydLatestRelease.txt && (
-        set "ydUpgradeLock=flase"
+        set "ydUpgradeLock=false"
     ) || (
         set "ydUpgradeLock=true"
         echo youtube-dl: %str_upgrade-info-unavailable%
@@ -73,7 +73,7 @@ goto :eof
 for /f "tokens=3 delims= " %%a in ('"%anBin%\annie.exe" -v') do ( set "anCurrentVersion=%%a" )
 set "anCurrentVersion=%anCurrentVersion:,=%"
 wget %_WgetOptions_% -np https://github.com/iawia002/annie/releases/latest -O anLatestRelease.txt && (
-        set "anUpgradeLock=flase"
+        set "anUpgradeLock=false"
     ) || (
         set "anUpgradeLock=true"
         echo annie: %str_upgrade-info-unavailable%
