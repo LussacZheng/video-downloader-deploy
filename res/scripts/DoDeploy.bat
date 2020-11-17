@@ -60,7 +60,14 @@ echo %str_unzipping% %ydZip%...
 7za x %ydZip% -so | 7za x -aoa -si -ttar > NUL
 :: In order to avoid access denied, wait for the decompression to complete.
 ping -n 5 127.0.0.1 > NUL
-set ydDir=%ydZip:~0,-7%
+REM There are two kinds of package:
+REM   `youtube_dl-2020.9.20.tar.gz` with `youtube_dl-2020.9.20` inside;
+REM   `youtube-dl-2020.09.20.tar.gz` with `youtube-dl` inside.
+if NOT exist youtube-dl\ (
+    set "ydDir=%ydZip:~0,-7%"
+) else (
+    set "ydDir=youtube-dl"
+)
 move %ydDir% "%ydBin%" > NUL
 ( echo #^^!/usr/bin/env python3
 echo.
@@ -155,9 +162,9 @@ if exist deploy.settings (
 ) else ( set "state_upgradeOnlyViaGitHub=disable" )
 if "%state_upgradeOnlyViaGitHub%"=="enable" (
     set "ydFinalFilename=youtube-dl-%ydLatestVersion%.tar.gz"
-    set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/%ydFinalFilename%"
-    echo %ydLatestVersion_Url%>> download\to-be-downloaded.txt
-    wget %_WgetOptions_% %ydLatestVersion_Url% -P download
+    set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/!ydFinalFilename!"
+    echo !ydLatestVersion_Url!>> download\to-be-downloaded.txt
+    wget %_WgetOptions_% !ydLatestVersion_Url! -P download
 ) else (
     if NOT "%state_isSourcesUpToDate%"=="true" (
         del /Q sources.txt >NUL 2>NUL
@@ -172,7 +179,7 @@ if "%state_upgradeOnlyViaGitHub%"=="enable" (
     )
     if NOT exist download\%ydFinalFilename% (
         set "ydFinalFilename=youtube-dl-%ydLatestVersion%.tar.gz"
-        set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/%ydFinalFilename%"
+        set "ydLatestVersion_Url=https://github.com/ytdl-org/youtube-dl/releases/download/%ydLatestVersion%/!ydFinalFilename!"
         ( echo # RemoteRes is not updated timely after the new release of youtube-dl, download it from GitHub:
         echo !ydLatestVersion_Url!) >> download\to-be-downloaded.txt
         wget %_WgetOptions_% !ydLatestVersion_Url! -P download
