@@ -1,13 +1,13 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2020-11-18
+:: Last updated: 2020-11-22
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 @echo off
 setlocal EnableDelayedExpansion
-:: Read the comment at the 7th line of :WriteCommon (appr. Line#269) when EnableDelayedExpansion.
+:: Read the comment at the 7th line of :WriteCommon (appr. Line#307) when EnableDelayedExpansion.
 
 
 :: To set a certain version for Python instead of latest version, call this batch with additional options. Regex: ^3\.\d+(\.\d+)?$
@@ -146,9 +146,10 @@ echo.
 
 
 :GetYoutubedlLatestVersion
-REM @param  %ydLatestVersion%,  %ydUrl%,  %ydBLAKE2%,  %ydLatestVersion_trimZero%
-REM Get %ydLatestVersion% from https://github.com/ytdl-org/youtube-dl/releases/latest
-REM Get %ydUrl% from https://pypi.org/project/youtube_dl/
+REM @param [1] %ydLatestVersion%, %ydLatestVersion_trimZero%,  %ydLatestReleasedTime%
+REM @param [2] %ydUrl%,  %ydBLAKE2%
+REM Get [1] from https://github.com/ytdl-org/youtube-dl/releases/latest
+REM Get [2] from https://pypi.org/project/youtube_dl/
 
 :: The output of 'findstr /n /i "<title>" ydLatestRelease.txt' should be like:
 ::     31:  <title>Release youtube-dl 2019.08.02 · ytdl-org/youtube-dl · GitHub</title>
@@ -156,8 +157,13 @@ for /f "tokens=4 delims= " %%a in ('findstr /n /i "<title>" ydLatestRelease.txt'
 echo ydLatestVersion: %ydLatestVersion%
 
 :: Get the version number (zero trimmed)
-:: If "%ydLatestVersion%"=="2019.08.02", "%ydLatestVersion_trimZero%" will be "2019.8.2".
+:: If "%ydLatestVersion%" == "2020.11.01.1",
+::    %ydLatestVersion_trimZero% will be "2020.11.1.1";
+::    %ydLatestReleasedTime% will be "2020-11-01".
 set "ydLatestVersion_trimZero=%ydLatestVersion:.0=.%"
+set "ydLatestReleasedTime=%ydLatestVersion:~0,10%"
+set "ydLatestReleasedTime=%ydLatestReleasedTime:.=-%"
+echo ydLatestReleasedTime: %ydLatestReleasedTime%
 
 :: The output of 'findstr /n /i "files.pythonhosted.org" ydLatestRelease2.txt' should be like:
 ::     27521:  <a href="https://files.pythonhosted.org/packages/81/22/003c233640929d4ced90a0ff5565e36b013844e7bfeea1eec3eba91d93e2/youtube_dl-2019.8.2-py2.py3-none-any.whl">
@@ -383,7 +389,7 @@ goto :eof
 ( echo [youtubedl][portable]
 echo ## Release log - YoutubeDL
 echo ## https://github.com/ytdl-org/youtube-dl/releases/latest   or   https://pypi.org/project/youtube_dl/#files
-echo ## Last released: %ydLatestVersion%
+echo ## Last released: %ydLatestReleasedTime%
 echo.
 echo ## youtube_dl.tar.gz , %ydLatestVersion%
 echo Mirrors{
