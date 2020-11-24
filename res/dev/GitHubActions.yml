@@ -20,14 +20,16 @@ jobs:
     # py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
     # Scripts rearranged from https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/dev/AutoGenerateLatestSourcesLists.bat
     - name: Download all the webpages
+      # https://stackoverflow.com/questions/20890445/yaml-comments-in-multi-line-strings
       run: |
         echo py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip > %OUTPUT%
         echo. >> %OUTPUT%
         curl -s https://www.python.org/downloads/windows/ >> pyLatestRelease.txt
         curl -s https://pypi.org/project/you-get/ >> ygLatestRelease.txt
         curl -s -L https://github.com/ytdl-org/youtube-dl/releases/latest >> ydLatestRelease.txt
+        curl -s https://pypi.org/project/youtube_dl/ >> ydLatestRelease2.txt
         curl -s -L https://github.com/iawia002/annie/releases/latest >> anLatestRelease.txt
-        curl -s https://ffmpeg.zeranoe.com/builds/win64/static/ >> ffLatestRelease.txt
+        @REM curl -s https://ffmpeg.zeranoe.com/builds/win64/static/ >> ffLatestRelease.txt
         curl -s https://pypi.org/project/pip/ >> pipLatestRelease.txt
       shell: cmd
 
@@ -67,6 +69,18 @@ jobs:
       run: |
         for /f "tokens=4 delims= " %%a in ('findstr /n /i "<title>" ydLatestRelease.txt') do ( set "ydLatestVersion=%%a" )
         echo ydLatestVersion: %ydLatestVersion% >> %OUTPUT%
+        set "ydLatestVersion_trimZero=%ydLatestVersion:.0=.%"
+        echo ydLatestVersion_trimZero: %ydLatestVersion_trimZero% >> %OUTPUT%
+        set "ydLatestReleasedTime=%ydLatestVersion:~0,10%"
+        set "ydLatestReleasedTime=%ydLatestReleasedTime:.=-%"
+        echo ydLatestReleasedTime: %ydLatestReleasedTime% >> %OUTPUT%
+        for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" ydLatestRelease2.txt') do ( set "ydUrl=%%a" )
+        set "ydUrl=%ydUrl:"=%"
+        for /f "tokens=4-6 delims=/" %%x in ("%ydUrl%") do (
+            set "ydUrl_BLAKE2_1=%%x" && set "ydUrl_BLAKE2_2=%%y" && set "ydUrl_BLAKE2_3=%%z"
+        )
+        set "ydBLAKE2=%ydUrl_BLAKE2_1%/%ydUrl_BLAKE2_2%/%ydUrl_BLAKE2_3%"
+        echo ydBLAKE2-256: %ydBLAKE2% >> %OUTPUT%
         echo. >> %OUTPUT%
       shell: cmd
       continue-on-error: true
@@ -84,17 +98,18 @@ jobs:
 
     - name: Get the latest version of FFmpeg
       run: |
-        for /f "delims=:" %%a in ('findstr /n /i "latest" ffLatestRelease.txt') do ( set "lineNum=%%a" )
-        set /a lineNum-=2
-        for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :next )
-        :next
-        for /f "tokens=3,9-11 delims=- " %%c in (%ffInfo%) do (
-            set "ffLatestVersion=%%c"
-            set "ffLatestReleasedTime_day=%%d" && set "ffLatestReleasedTime_month=%%e" && set "ffLatestReleasedTime_year=%%f"
-        )
-        echo ffLatestVersion: %ffLatestVersion% >> %OUTPUT%
-        set "ffLatestReleasedTime=%ffLatestReleasedTime_year%-%ffLatestReleasedTime_month%-%ffLatestReleasedTime_day%"
-        echo ffLatestReleasedTime: %ffLatestReleasedTime% >> %OUTPUT%
+        echo  - The update-checking of FFmpeg is temporarily disabled. >> %OUTPUT%
+        @REM for /f "delims=:" %%a in ('findstr /n /i "latest" ffLatestRelease.txt') do ( set "lineNum=%%a" )
+        @REM set /a lineNum-=2
+        @REM for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :next )
+        @REM :next
+        @REM for /f "tokens=3,9-11 delims=- " %%c in (%ffInfo%) do (
+        @REM     set "ffLatestVersion=%%c"
+        @REM     set "ffLatestReleasedTime_day=%%d" && set "ffLatestReleasedTime_month=%%e" && set "ffLatestReleasedTime_year=%%f"
+        @REM )
+        @REM echo ffLatestVersion: %ffLatestVersion% >> %OUTPUT%
+        @REM set "ffLatestReleasedTime=%ffLatestReleasedTime_year%-%ffLatestReleasedTime_month%-%ffLatestReleasedTime_day%"
+        @REM echo ffLatestReleasedTime: %ffLatestReleasedTime% >> %OUTPUT%
         echo. >> %OUTPUT%
       shell: cmd
       continue-on-error: true
@@ -124,7 +139,7 @@ jobs:
         del /Q ygLatestRelease.txt >NUL 2>NUL
         del /Q ydLatestRelease.txt >NUL 2>NUL
         del /Q anLatestRelease.txt >NUL 2>NUL
-        del /Q ffLatestRelease.txt >NUL 2>NUL
+        @REM del /Q ffLatestRelease.txt >NUL 2>NUL
         del /Q pipLatestRelease.txt >NUL 2>NUL
         del %OUTPUT% >NUL 2>NUL
       shell: cmd
