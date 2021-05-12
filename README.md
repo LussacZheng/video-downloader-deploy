@@ -15,7 +15,7 @@
 
 ## 使用方法
 
-下载 [一键配置脚本](https://github.com/LussacZheng/video-downloader-deploy/archive/master.zip) （国内用户可以从 [蓝奏网盘](https://www.lanzous.com/b926232/) 下载）。解压并运行 `Deploy.bat`。
+下载 [一键配置脚本](https://github.com/LussacZheng/video-downloader-deploy/archive/master.zip) （国内用户可以从 [蓝奏网盘](https://lussac.lanzoui.com/b05h5pfc) 下载）。解压并运行 `Deploy.bat`。
 
 演示动画 ( 2 min 52 s ) ：  
 ![demo.gif](https://s2.ax1x.com/2019/08/17/muTbIs.gif)
