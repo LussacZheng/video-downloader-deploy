@@ -70,8 +70,8 @@ goto :eof
 
 
 :CheckUpdate_annie
-for /f "tokens=3 delims= " %%a in ('"%anBin%\annie.exe" -v') do ( set "anCurrentVersion=%%a" )
-set "anCurrentVersion=%anCurrentVersion:,=%"
+for /f "usebackq tokens=3 delims=, " %%a in (`"%anBin%\annie.exe" -v`) do ( set "anCurrentVersion=%%a" )
+set "anCurrentVersion=%anCurrentVersion:v=%"
 wget %_WgetOptions_% -np https://github.com/iawia002/annie/releases/latest -O anLatestRelease.txt && (
         set "anUpgradeLock=false"
     ) || (
