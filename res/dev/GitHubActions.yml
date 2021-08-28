@@ -88,6 +88,9 @@ jobs:
     - name: Get the latest version of annie
       run: |
         for /f "tokens=3 delims= " %%a in ('findstr /n /i "<title>" anLatestRelease.txt') do ( set "anLatestVersion=%%a" )
+        set "anLatestVersion_Tag=%anLatestVersion%"
+        set "anLatestVersion=%anLatestVersion:v=%"
+        echo anLatestVersion_Tag: %anLatestVersion_Tag% >> %OUTPUT%
         echo anLatestVersion: %anLatestVersion% >> %OUTPUT%
         for /f "tokens=3 delims==:" %%b in ('findstr /n /i "relative-time" anLatestRelease.txt') do ( set "anLatestReleasedTime=%%b" )
         set "anLatestReleasedTime=%anLatestReleasedTime:~1,10%"

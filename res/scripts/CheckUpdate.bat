@@ -80,7 +80,10 @@ wget %_WgetOptions_% -np https://github.com/iawia002/annie/releases/latest -O an
     )
 :: The output of 'findstr /n /i "<title>" anLatestRelease.txt' should be like:
 ::     31:  <title>Release 0.9.4 · iawia002/annie · GitHub</title>
+::  or 78:  <title>Release v0.11.0 · iawia002/annie</title>
 for /f "tokens=3 delims= " %%i in ('findstr /n /i "<title>" anLatestRelease.txt') do ( set "anLatestVersion=%%i" )
+set "anLatestVersion_Tag=%anLatestVersion%"
+set "anLatestVersion=%anLatestVersion:v=%"
 del /Q anLatestRelease.txt >NUL 2>NUL
 if "%anLatestVersion%"=="" ( set "anUpgradeLock=true" & set "anLatestVersion=_UNKNOWN_" )
 if "%anCurrentVersion%"=="%anLatestVersion%" (

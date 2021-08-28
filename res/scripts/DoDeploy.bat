@@ -194,9 +194,10 @@ goto :eof
 
 :Upgrade_annie
 echo %str_upgrading% annie...
-:: %anCurrentVersion% and %anLatestVersion% were set in res\scripts\CheckUpdate.bat :CheckUpdate_annie
+:: %anCurrentVersion% , %anLatestVersion% and %anLatestVersion_Tag%
+::   were set in res\scripts\CheckUpdate.bat :CheckUpdate_annie
 del /Q download\annie_%anCurrentVersion%_Windows*.zip >NUL 2>NUL
-set "anLatestVersion_Url=https://github.com/iawia002/annie/releases/download/%anLatestVersion%/annie_%anLatestVersion%_Windows_%_SystemType_%-bit.zip"
+set "anLatestVersion_Url=https://github.com/iawia002/annie/releases/download/%anLatestVersion_Tag%/annie_%anLatestVersion%_Windows_%_SystemType_%-bit.zip"
 echo %anLatestVersion_Url%>> download\to-be-downloaded.txt
 wget %_WgetOptions_% %anLatestVersion_Url% -P download
 del /Q "%anBin%\annie.exe" >NUL 2>NUL

@@ -186,7 +186,10 @@ REM @param  %anLatestVersion%,  %anLatestReleasedTime%
 
 :: The output of 'findstr /n /i "<title>" anLatestRelease.txt' should be like:
 ::     31:  <title>Release 0.9.4 · iawia002/annie · GitHub</title>
+::  or 78:  <title>Release v0.11.0 · iawia002/annie</title>
 for /f "tokens=3 delims= " %%a in ('findstr /n /i "<title>" anLatestRelease.txt') do ( set "anLatestVersion=%%a" )
+set "anLatestVersion_Tag=%anLatestVersion%"
+set "anLatestVersion=%anLatestVersion:v=%"
 echo anLatestVersion: %anLatestVersion%
 
 :: The output of 'findstr /n /i "relative-time" anLatestRelease.txt' should be like:
@@ -418,9 +421,9 @@ echo.
 echo ## annie_Windows.zip , v%anLatestVersion%
 echo SystemType{
 echo     [64]
-echo     https://github.com/iawia002/annie/releases/download/%anLatestVersion%/annie_%anLatestVersion%_Windows_64-bit.zip
+echo     https://github.com/iawia002/annie/releases/download/%anLatestVersion_Tag%/annie_%anLatestVersion%_Windows_64-bit.zip
 echo     [32]
-echo     @ https://github.com/iawia002/annie/releases/download/%anLatestVersion%/annie_%anLatestVersion%_Windows_32-bit.zip
+echo     @ https://github.com/iawia002/annie/releases/download/%anLatestVersion_Tag%/annie_%anLatestVersion%_Windows_32-bit.zip
 echo }
 echo [/portable][/withpip]
 echo.
