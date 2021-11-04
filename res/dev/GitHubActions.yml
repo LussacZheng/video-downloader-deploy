@@ -92,7 +92,7 @@ jobs:
         set "anLatestVersion=%anLatestVersion:v=%"
         echo anLatestVersion_Tag: %anLatestVersion_Tag% >> %OUTPUT%
         echo anLatestVersion: %anLatestVersion% >> %OUTPUT%
-        for /f "tokens=3 delims==:" %%b in ('findstr /n /i "relative-time" anLatestRelease.txt') do ( set "anLatestReleasedTime=%%b" )
+        for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" anLatestRelease.txt') do ( set "anLatestReleasedTime=%%b" )
         set "anLatestReleasedTime=%anLatestReleasedTime:~1,10%"
         echo anLatestReleasedTime: %anLatestReleasedTime% >> %OUTPUT%
         echo. >> %OUTPUT%

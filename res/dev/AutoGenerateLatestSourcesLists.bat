@@ -193,9 +193,9 @@ set "anLatestVersion=%anLatestVersion:v=%"
 echo anLatestVersion: %anLatestVersion%
 
 :: The output of 'findstr /n /i "relative-time" anLatestRelease.txt' should be like:
-::     700:    <relative-time datetime="2019-08-13T14:18:48Z">Aug 13, 2019</relative-time>
-for /f "tokens=3 delims==:" %%b in ('findstr /n /i "relative-time" anLatestRelease.txt') do ( set "anLatestReleasedTime=%%b" )
-:: Now %anLatestReleasedTime% is like: "2019-08-13T14
+::     995:    <local-time datetime="2021-08-28T06:38:24Z" month="short" day="2-digit" year="numeric" class="no-wrap"></local-time>
+for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" anLatestRelease.txt') do ( set "anLatestReleasedTime=%%b" )
+:: Now %anLatestReleasedTime% is like: `"2021-08-28T06`
 set "anLatestReleasedTime=%anLatestReleasedTime:~1,10%"
 echo anLatestReleasedTime: %anLatestReleasedTime%
 echo.
