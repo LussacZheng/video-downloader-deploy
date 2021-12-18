@@ -48,7 +48,7 @@ jobs:
 
     - name: Get the latest version of you-get
       run: |
-        for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt') do ( set "ygUrl=%%a" )
+        for /f "tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org.*tar.gz" ygLatestRelease.txt') do ( set "ygUrl=%%a" )
         set "ygUrl=%ygUrl:"=%"
         for /f "tokens=3 delims=-" %%b in ("%ygUrl%") do ( set "ygLatestVersion=%%b")
         set ygLatestVersion=%ygLatestVersion:.tar.gz=%
@@ -74,7 +74,7 @@ jobs:
         set "ydLatestReleasedTime=%ydLatestVersion:~0,10%"
         set "ydLatestReleasedTime=%ydLatestReleasedTime:.=-%"
         echo ydLatestReleasedTime: %ydLatestReleasedTime% >> %OUTPUT%
-        for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" ydLatestRelease2.txt') do ( set "ydUrl=%%a" )
+        for /f "tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org.*tar.gz" ydLatestRelease2.txt') do ( set "ydUrl=%%a" )
         set "ydUrl=%ydUrl:"=%"
         for /f "tokens=4-6 delims=/" %%x in ("%ydUrl%") do (
             set "ydUrl_BLAKE2_1=%%x" && set "ydUrl_BLAKE2_2=%%y" && set "ydUrl_BLAKE2_3=%%z"
@@ -119,7 +119,7 @@ jobs:
 
     - name: Get the latest version of pip
       run: |
-        for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" pipLatestRelease.txt') do ( set "pipUrl=%%a" )
+        for /f "tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org.*tar.gz" pipLatestRelease.txt') do ( set "pipUrl=%%a" )
         set "pipUrl=%pipUrl:"=%"
         for /f "tokens=2 delims=-" %%b in ("%pipUrl%") do ( set "pipLatestVersion=%%b")
         set pipLatestVersion=%pipLatestVersion:.tar.gz=%

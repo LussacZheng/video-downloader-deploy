@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2020-11-22
+:: Last updated: 2021-12-18
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
@@ -116,10 +116,9 @@ for /f "tokens=4-8 delims=< " %%a in ('findstr /n /i /c:"Python %pySpecificVersi
 REM @param  %ygUrl%,  %ygLatestVersion%,  %ygLatestReleasedTime%,  %ygBLAKE2%
 REM Get %ygUrl% from https://pypi.org/project/you-get/
 
-:: The output of 'findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt' should be like:
-::     4865:   <a href="https://files.pythonhosted.org/packages/20/35/4979bb3315952a9cb20f2585455bec7ba113db5647c5739dffbc542e8761/you_get-0.4.1328-py3-none-any.whl">
-::     4886:   <a href="https://files.pythonhosted.org/packages/fd/a5/c896dccb53f44f54c5c8bcfbc7b8d953289064bcfbf17cccb68136fde3bf/you-get-0.4.1328.tar.gz">
-for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" ygLatestRelease.txt') do ( set "ygUrl=%%a" )
+:: The output of 'findstr /n /i "files.pythonhosted.org.*tar.gz" ygLatestRelease.txt' should be like:
+::     5899:  <a href="https://files.pythonhosted.org/packages/f1/e9/3b6f38f800602f9724b3e5b1bf0350e397a0092a3f1fa698e0aeb173122f/you-get-0.4.1555.tar.gz">
+for /f "tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org.*tar.gz" ygLatestRelease.txt') do ( set "ygUrl=%%a" )
 REM for /f "tokens=2 delims=>=" %%a in ('findstr /n /i "you-get-" ygLatestRelease.txt') do ( set "ygUrl=%%a" && goto theNext )
 set "ygUrl=%ygUrl:"=%"
 :: Now %ygUrl% is like: https://files.pythonhosted.org/packages/fd/a5/c896dccb53f44f54c5c8bcfbc7b8d953289064bcfbf17cccb68136fde3bf/you-get-0.4.1328.tar.gz
@@ -165,10 +164,9 @@ set "ydLatestReleasedTime=%ydLatestVersion:~0,10%"
 set "ydLatestReleasedTime=%ydLatestReleasedTime:.=-%"
 echo ydLatestReleasedTime: %ydLatestReleasedTime%
 
-:: The output of 'findstr /n /i "files.pythonhosted.org" ydLatestRelease2.txt' should be like:
-::     27521:  <a href="https://files.pythonhosted.org/packages/81/22/003c233640929d4ced90a0ff5565e36b013844e7bfeea1eec3eba91d93e2/youtube_dl-2019.8.2-py2.py3-none-any.whl">
-::     27553:  <a href="https://files.pythonhosted.org/packages/5d/25/862367e9ea163d43d384b80467dcdf0a79b993989b5baf976feaf5ca1d11/youtube_dl-2019.8.2.tar.gz">
-for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" ydLatestRelease2.txt') do ( set "ydUrl=%%a" )
+:: The output of 'findstr /n /i "files.pythonhosted.org.*tar.gz" ydLatestRelease2.txt' should be like:
+::     28578:  <a href="https://files.pythonhosted.org/packages/01/4f/ab0d0806f4d818168d0ec833df14078c9d1ddddb5c42fa7bfb6f15ecbfa7/youtube_dl-2021.12.17.tar.gz">
+for /f "tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org.*tar.gz" ydLatestRelease2.txt') do ( set "ydUrl=%%a" )
 set "ydUrl=%ydUrl:"=%"
 :: Now %ydUrl% is like: https://files.pythonhosted.org/packages/5d/25/862367e9ea163d43d384b80467dcdf0a79b993989b5baf976feaf5ca1d11/youtube_dl-2019.8.2.tar.gz
 
@@ -229,10 +227,9 @@ echo.
 REM @param  %pipUrl%,  %pipLatestVersion%,  %pipLatestReleasedTime%
 REM Get %pipUrl% from https://pypi.org/project/pip/
 
-:: The output of 'findstr /n /i "files.pythonhosted.org" pipLatestRelease.txt' should be like:
-::     3048:   <a href="https://files.pythonhosted.org/packages/30/db/9e38760b32e3e7f40cce46dd5fb107b8c73840df38f0046d8e6514e675a1/pip-19.2.3-py2.py3-none-any.whl">
-::     3080:   <a href="https://files.pythonhosted.org/packages/00/9e/4c83a0950d8bdec0b4ca72afd2f9cea92d08eb7c1a768363f2ea458d08b4/pip-19.2.3.tar.gz">
-for /f "skip=1 tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org" pipLatestRelease.txt') do ( set "pipUrl=%%a" )
+:: The output of 'findstr /n /i "files.pythonhosted.org.*tar.gz" pipLatestRelease.txt' should be like:
+::     4362:  <a href="https://files.pythonhosted.org/packages/da/f6/c83229dcc3635cdeb51874184241a9508ada15d8baa337a41093fab58011/pip-21.3.1.tar.gz">
+for /f "tokens=2 delims=>=" %%a in ('findstr /n /i "files.pythonhosted.org.*tar.gz" pipLatestRelease.txt') do ( set "pipUrl=%%a" )
 set "pipUrl=%pipUrl:"=%"
 :: Now %pipUrl% is like: https://files.pythonhosted.org/packages/00/9e/4c83a0950d8bdec0b4ca72afd2f9cea92d08eb7c1a768363f2ea458d08b4/pip-19.2.3.tar.gz
 
