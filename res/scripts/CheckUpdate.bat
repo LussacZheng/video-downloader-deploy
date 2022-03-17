@@ -73,7 +73,9 @@ goto :eof
 REM set "_lxBin=%lxBin:(=^(%"
 REM set "_lxBin=%_lxBin:)=^)%"
 REM for /f "tokens=3 delims= " %%a in ('"%_lxBin%\lux.exe" -v') do ( set "lxCurrentVersion=%%a" )
-for /f "usebackq tokens=3 delims=, " %%a in (`"%lxBin%\lux.exe" -v`) do ( set "lxCurrentVersion=%%a" )
+set "lxBinFile=lux.exe"
+if NOT exist "%lxBin%\lux.exe" if exist "%lxBin%\annie.exe" ( set "lxBinFile=annie.exe" )
+for /f "usebackq tokens=3 delims=, " %%a in (`"%lxBin%\%lxBinFile%" -v`) do ( set "lxCurrentVersion=%%a" )
 set "lxCurrentVersion=%lxCurrentVersion:v=%"
 wget %_WgetOptions_% -np https://github.com/iawia002/lux/releases/latest -O lxLatestRelease.txt && (
         set "lxUpgradeLock=false"

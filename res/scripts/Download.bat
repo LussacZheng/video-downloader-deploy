@@ -84,6 +84,7 @@ if NOT "%dl_Count%"=="0" (
     )
     if exist youtube*dl*.tar.gz ( move /Y youtube*dl*.tar.gz res\download\ > NUL )
     if exist lux*Windows*.zip ( move /Y lux*Windows*.zip res\download\ > NUL )
+    if exist annie*Windows*.zip ( move /Y annie*Windows*.zip res\download\ > NUL )
     if exist ffmpeg*.zip ( move /Y ffmpeg*.zip res\download\ > NUL )
     echo.
 )
