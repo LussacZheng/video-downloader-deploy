@@ -17,13 +17,13 @@ goto :eof
 rem ================= Log Modes =================
 
 
-:: py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
+:: py=python, yg=you-get, yd=youtube-dl, lx=lux, ff=ffmpeg, pip=pip
 :Log_Init-portable
 call :Log_init
 call :Log_py
 call :Log_yg
 call :Log_yd
-call :Log_an
+call :Log_lx
 call :Log_common
 goto :eof
 
@@ -42,7 +42,7 @@ call :GetPackagesInfo
 ( echo pipVer: %log_pipVer%
 echo ygVer: %log_ygVer%
 echo ydVer: %log_ydVer%) >> %log_File%
-call :Log_an
+call :Log_lx
 call :Log_common
 goto :eof
 
@@ -54,12 +54,12 @@ call :Log_common
 goto :eof
 
 
-:: %ygLatestVersion%, %ydLatestVersion%, %anLatestVersion% were set in res\scripts\CheckUpdate.bat :CheckUpdate_*
+:: %ygLatestVersion%, %ydLatestVersion%, %lxLatestVersion% were set in res\scripts\CheckUpdate.bat :CheckUpdate_*
 :Log_Upgrade-portable
 call :Log_time
 ( echo ygVer: %ygLatestVersion%
 echo ydVer: %ydLatestVersion%
-echo anVer: %anLatestVersion%) >> %log_File%
+echo lxVer: %lxLatestVersion%) >> %log_File%
 call :Log_common
 goto :eof
 
@@ -77,7 +77,7 @@ call :GetPackagesInfo
 ( echo pipVer: %log_pipVer%
 echo ygVer: %log_ygVer%
 echo ydVer: %log_ydVer%
-echo anVer: %anLatestVersion%) >> %log_File%
+echo lxVer: %lxLatestVersion%) >> %log_File%
 call :Log_common
 goto :eof
 
@@ -103,7 +103,7 @@ goto :eof
 
 :Log_init
 ( echo # NEVER EDIT THIS FILE.
-echo # py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
+echo # py=python, yg=you-get, yd=youtube-dl, lx=lux, ff=ffmpeg, pip=pip
 echo.
 echo Initialized: true
 echo DeployMode: %log_DeployMode%
@@ -141,9 +141,9 @@ goto :eof
 echo ydBin: "%ydBin%") >> %log_File%
 goto :eof
 
-:Log_an
-( echo anZip: %anZip%
-echo anBin: "%anBin%") >> %log_File%
+:Log_lx
+( echo lxZip: %lxZip%
+echo lxBin: "%lxBin%") >> %log_File%
 goto :eof
 
 :Log_ff

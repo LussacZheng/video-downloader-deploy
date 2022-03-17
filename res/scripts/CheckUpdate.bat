@@ -41,10 +41,10 @@ if "%ygCurrentVersion%"=="%ygLatestVersion%" (
 ) else ( set "_isYgLatestVersion=0" )
 goto :eof
 
-:: (python -V) > test.txt              ---> OK
-:: (you-get -V) > test.txt             ---> NO output
+:: (python -V) > test.txt              ---> OK        (stdout)
+:: (you-get -V) > test.txt             ---> NO output (stderr)
 :: (youtube-dl --version) > test.txt   ---> OK
-:: (annie -v) > test.txt               ---> OK
+:: (lux -v) > test.txt                 ---> OK
 
 :: When there is even no ygBin, return 0. So that it will directly download the latest version.
 :: if NOT exist "%ygBin%\src\you_get\version.py" set "_isYgLatestVersion=0"
@@ -69,26 +69,28 @@ if "%ydCurrentVersion%"=="%ydLatestVersion%" (
 goto :eof
 
 
-:CheckUpdate_annie
-for /f "usebackq tokens=3 delims=, " %%a in (`"%anBin%\annie.exe" -v`) do ( set "anCurrentVersion=%%a" )
-set "anCurrentVersion=%anCurrentVersion:v=%"
-wget %_WgetOptions_% -np https://github.com/iawia002/annie/releases/latest -O anLatestRelease.txt && (
-        set "anUpgradeLock=false"
+:CheckUpdate_lux
+REM set "_lxBin=%lxBin:(=^(%"
+REM set "_lxBin=%_lxBin:)=^)%"
+REM for /f "tokens=3 delims= " %%a in ('"%_lxBin%\lux.exe" -v') do ( set "lxCurrentVersion=%%a" )
+for /f "usebackq tokens=3 delims=, " %%a in (`"%lxBin%\lux.exe" -v`) do ( set "lxCurrentVersion=%%a" )
+set "lxCurrentVersion=%lxCurrentVersion:v=%"
+wget %_WgetOptions_% -np https://github.com/iawia002/lux/releases/latest -O lxLatestRelease.txt && (
+        set "lxUpgradeLock=false"
     ) || (
-        set "anUpgradeLock=true"
-        echo annie: %str_upgrade-info-unavailable%
+        set "lxUpgradeLock=true"
+        echo lux: %str_upgrade-info-unavailable%
     )
-:: The output of 'findstr /n /i "<title>" anLatestRelease.txt' should be like:
-::     31:  <title>Release 0.9.4 · iawia002/annie · GitHub</title>
-::  or 78:  <title>Release v0.11.0 · iawia002/annie</title>
-for /f "tokens=3 delims= " %%i in ('findstr /n /i "<title>" anLatestRelease.txt') do ( set "anLatestVersion=%%i" )
-set "anLatestVersion_Tag=%anLatestVersion%"
-set "anLatestVersion=%anLatestVersion:v=%"
-del /Q anLatestRelease.txt >NUL 2>NUL
-if "%anLatestVersion%"=="" ( set "anUpgradeLock=true" & set "anLatestVersion=_UNKNOWN_" )
-if "%anCurrentVersion%"=="%anLatestVersion%" (
-    set "_isAnLatestVersion=1" & set "anUpgradeLock=true"
-) else ( set "_isAnLatestVersion=0" )
+:: The output of 'findstr /n /i "<title>" lxLatestRelease.txt' should be like:
+::     57:  <title>Release v0.14.0 · iawia002/lux · GitHub</title>
+for /f "tokens=3 delims= " %%i in ('findstr /n /i "<title>" lxLatestRelease.txt') do ( set "lxLatestVersion=%%i" )
+set "lxLatestVersion_Tag=%lxLatestVersion%"
+set "lxLatestVersion=%lxLatestVersion:v=%"
+del /Q lxLatestRelease.txt >NUL 2>NUL
+if "%lxLatestVersion%"=="" ( set "lxUpgradeLock=true" & set "lxLatestVersion=_UNKNOWN_" )
+if "%lxCurrentVersion%"=="%lxLatestVersion%" (
+    set "_isLxLatestVersion=1" & set "lxUpgradeLock=true"
+) else ( set "_isLxLatestVersion=0" )
 goto :eof
 
 

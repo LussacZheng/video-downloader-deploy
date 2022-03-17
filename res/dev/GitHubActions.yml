@@ -17,18 +17,18 @@ jobs:
       OUTPUT: output.txt
 
     steps:
-    # py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
+    # py=python, yg=you-get, yd=youtube-dl, lx=lux, ff=ffmpeg, pip=pip
     # Scripts rearranged from https://github.com/LussacZheng/video-downloader-deploy/blob/master/res/dev/AutoGenerateLatestSourcesLists.bat
     - name: Download all the webpages
       # https://stackoverflow.com/questions/20890445/yaml-comments-in-multi-line-strings
       run: |
-        echo py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip > %OUTPUT%
+        echo py=python, yg=you-get, yd=youtube-dl, lx=lux, ff=ffmpeg, pip=pip > %OUTPUT%
         echo. >> %OUTPUT%
         curl -s https://www.python.org/downloads/windows/ >> pyLatestRelease.txt
         curl -s https://pypi.org/project/you-get/ >> ygLatestRelease.txt
         curl -s -L https://github.com/ytdl-org/youtube-dl/releases/latest >> ydLatestRelease.txt
         curl -s https://pypi.org/project/youtube_dl/ >> ydLatestRelease2.txt
-        curl -s -L https://github.com/iawia002/annie/releases/latest >> anLatestRelease.txt
+        curl -s -L https://github.com/iawia002/lux/releases/latest >> lxLatestRelease.txt
         @REM curl -s https://ffmpeg.zeranoe.com/builds/win64/static/ >> ffLatestRelease.txt
         curl -s https://pypi.org/project/pip/ >> pipLatestRelease.txt
       shell: cmd
@@ -85,16 +85,16 @@ jobs:
       shell: cmd
       continue-on-error: true
 
-    - name: Get the latest version of annie
+    - name: Get the latest version of lux
       run: |
-        for /f "tokens=3 delims= " %%a in ('findstr /n /i "<title>" anLatestRelease.txt') do ( set "anLatestVersion=%%a" )
-        set "anLatestVersion_Tag=%anLatestVersion%"
-        set "anLatestVersion=%anLatestVersion:v=%"
-        echo anLatestVersion_Tag: %anLatestVersion_Tag% >> %OUTPUT%
-        echo anLatestVersion: %anLatestVersion% >> %OUTPUT%
-        for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" anLatestRelease.txt') do ( set "anLatestReleasedTime=%%b" )
-        set "anLatestReleasedTime=%anLatestReleasedTime:~1,10%"
-        echo anLatestReleasedTime: %anLatestReleasedTime% >> %OUTPUT%
+        for /f "tokens=3 delims= " %%a in ('findstr /n /i "<title>" lxLatestRelease.txt') do ( set "lxLatestVersion=%%a" )
+        set "lxLatestVersion_Tag=%lxLatestVersion%"
+        set "lxLatestVersion=%lxLatestVersion:v=%"
+        echo lxLatestVersion_Tag: %lxLatestVersion_Tag% >> %OUTPUT%
+        echo lxLatestVersion: %lxLatestVersion% >> %OUTPUT%
+        for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" lxLatestRelease.txt') do ( set "lxLatestReleasedTime=%%b" )
+        set "lxLatestReleasedTime=%lxLatestReleasedTime:~1,10%"
+        echo lxLatestReleasedTime: %lxLatestReleasedTime% >> %OUTPUT%
         echo. >> %OUTPUT%
       shell: cmd
       continue-on-error: true
@@ -141,7 +141,7 @@ jobs:
         del /Q pyLatestRelease.txt >NUL 2>NUL
         del /Q ygLatestRelease.txt >NUL 2>NUL
         del /Q ydLatestRelease.txt >NUL 2>NUL
-        del /Q anLatestRelease.txt >NUL 2>NUL
+        del /Q lxLatestRelease.txt >NUL 2>NUL
         @REM del /Q ffLatestRelease.txt >NUL 2>NUL
         del /Q pipLatestRelease.txt >NUL 2>NUL
         del %OUTPUT% >NUL 2>NUL

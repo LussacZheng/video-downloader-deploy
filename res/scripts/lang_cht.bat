@@ -55,7 +55,7 @@ set "str_already-exist=已存在。"
 :: ================= Download Batch
 :: ========= Download Batch - Guides
 set "str_dl-guide1=下載影片的命令為："
-set "str_dl-guide2=you-get/youtube-dl/annie + 影片網址"
+set "str_dl-guide2=you-get/youtube-dl/lux + 影片網址"
 set "str_dl-guide3=例如："
 set "str_dl-guide4=默認下載最高清晰度。下載文件默認保存在 Download 目錄。"
 set "str_dl-guide5=如果你想選擇清晰度、更改默認路徑，或想了解三種工具的其他用法，請 Google 或參考官方說明："
@@ -111,8 +111,7 @@ set "str_proxyHint-enabled=Proxy參數的命令示例：顯示"
 set "str_proxyHint-disabled=Proxy參數的命令示例：隱藏 ^(默認^)"
 :: :: used in "dl-bat"
 set "str_proxyHint-option=Proxy參數示例："
-set "str_proxyHint_annie1=自 annie v0.9.8 起，其不再支持通過 -x 或 -s 參數設置Proxy。"
-set "str_proxyHint_annie2=可通過環境變數 %%%%HTTP_PROXY%%%% 來設置Proxy，或啟用 [3]全局Proxy。"
+set "str_proxyHint_lux=lux 可通過環境變數 %%%%HTTP_PROXY%%%% 來設置Proxy，或啟用 [3]全局Proxy。"
 :: ========= Advanced Settings - Option 5
 set "str_ffmpeg-enabled=FFmpeg：啟用 ^(默認^)"
 set "str_ffmpeg-disabled=FFmpeg：禁用"

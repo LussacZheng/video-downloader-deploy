@@ -10,10 +10,10 @@
 
 ## AutoGenerateLatestSourcesLists
 
-自动生成含有 `python-embed.zip` , `you-get.tar.gz` , `youtube-dl.tar.gz` , `annie_Windows.zip` , `ffmpeg-static.zip` 的最新版本下载链接的 `sources.txt` 。可供 主程序 使用。
+自动生成含有 `python-embed.zip` , `you-get.tar.gz` , `youtube-dl.tar.gz` , `lux_Windows.zip` , `ffmpeg-static.zip` 的最新版本下载链接的 `sources.txt` 。可供 主程序 使用。
 
 ### 原理
-自动解析 [Python](https://www.python.org/downloads/windows/), [You-Get](https://pypi.org/project/you-get/), [Youtube-dl](https://github.com/ytdl-org/youtube-dl/releases/latest) , [Annie](https://github.com/iawia002/annie/releases/latest) , [FFmpeg](https://ffmpeg.zeranoe.com/builds/win64/static/) , [Pip](https://pypi.org/project/pip/) 项目发布页等相关网页，获得其最新版本的下载链接。
+自动解析 [Python](https://www.python.org/downloads/windows/), [You-Get](https://pypi.org/project/you-get/), [Youtube-dl](https://github.com/ytdl-org/youtube-dl/releases/latest) , [Lux](https://github.com/iawia002/lux/releases/latest) , [FFmpeg](https://ffmpeg.zeranoe.com/builds/win64/static/) , [Pip](https://pypi.org/project/pip/) 项目发布页等相关网页，获得其最新版本的下载链接。
 
 ### 使用
 确保 `AutoGenerateLatestSourcesLists.bat` 当前所在目录或上级目录存在 `wget.exe` ，直接运行脚本即可。若正常运行，则会在当前目录生成 `sources.txt` ，移动并覆盖 `res\` 目录下的同名文件即可。

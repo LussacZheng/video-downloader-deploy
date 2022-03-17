@@ -84,12 +84,12 @@ echo Youtube-dl %str_already-deploy%
 goto :eof
 
 
-:Setup_annie
-for /f "delims=" %%i in ('dir /b /a:a /o:d annie*Windows*.zip') do ( set "anZip=%%i" )
-if NOT "%~1"=="" ( set "anZip=%~1" )
-echo %str_unzipping% %anZip%...
-7za x %anZip% -o"%anBin%" > NUL
-echo Annie %str_already-deploy%
+:Setup_lux
+for /f "delims=" %%i in ('dir /b /a:a /o:d lux*Windows*.zip') do ( set "lxZip=%%i" )
+if NOT "%~1"=="" ( set "lxZip=%~1" )
+echo %str_unzipping% %lxZip%...
+7za x %lxZip% -o"%lxBin%" > NUL
+echo Lux %str_already-deploy%
 goto :eof
 
 
@@ -192,17 +192,17 @@ cd .. && echo Youtube-dl %str_already-upgrade%
 goto :eof
 
 
-:Upgrade_annie
-echo %str_upgrading% annie...
-:: %anCurrentVersion% , %anLatestVersion% and %anLatestVersion_Tag%
-::   were set in res\scripts\CheckUpdate.bat :CheckUpdate_annie
-del /Q download\annie_%anCurrentVersion%_Windows*.zip >NUL 2>NUL
-set "anLatestVersion_Url=https://github.com/iawia002/annie/releases/download/%anLatestVersion_Tag%/annie_%anLatestVersion%_Windows_%_SystemType_%-bit.zip"
-echo %anLatestVersion_Url%>> download\to-be-downloaded.txt
-wget %_WgetOptions_% %anLatestVersion_Url% -P download
-del /Q "%anBin%\annie.exe" >NUL 2>NUL
-cd download && call :Setup_annie "annie_%anLatestVersion%_Windows_%_SystemType_%-bit.zip"
-cd .. && echo Annie %str_already-upgrade%
+:Upgrade_lux
+echo %str_upgrading% lux...
+:: %lxCurrentVersion% , %lxLatestVersion% and %lxLatestVersion_Tag%
+::   were set in res\scripts\CheckUpdate.bat :CheckUpdate_lux
+del /Q download\lux_%lxCurrentVersion%_Windows*.zip >NUL 2>NUL
+set "lxLatestVersion_Url=https://github.com/iawia002/lux/releases/download/%lxLatestVersion_Tag%/lux_%lxLatestVersion%_Windows_%_SystemType_%-bit.zip"
+echo %lxLatestVersion_Url%>> download\to-be-downloaded.txt
+wget %_WgetOptions_% %lxLatestVersion_Url% -P download
+del /Q "%lxBin%\lux.exe" >NUL 2>NUL
+cd download && call :Setup_lux "lux_%lxLatestVersion%_Windows_%_SystemType_%-bit.zip"
+cd .. && echo Lux %str_already-upgrade%
 goto :eof
 
 

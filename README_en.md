@@ -7,11 +7,11 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy?logo=github)
 ![version](https://img.shields.io/github/package-json/v/LussacZheng/video-downloader-deploy_info?color=important)
 
-A One-Click batch script for the deployment and quickstart of **[You-Get][you-get] , [Youtube-dl][youtube-dl] , [Annie][annie] , and [FFmpeg][ffmpeg]** .
+A One-Click batch script for the deployment and quickstart of **[You-Get][you-get] , [Youtube-dl][youtube-dl] , [Lux][lux] , and [FFmpeg][ffmpeg]** .
 
 - No need to install Python, one-click to deploy a portable version of you-get, youtube-dl.
 - This portable deployment is based on the embeddable version of Python.
-- Besides one-click deployment, the upgrades of you-get, youtube-dl, annie in the future can also be carried out with one-click.
+- Besides one-click deployment, the upgrades of you-get, youtube-dl, lux in the future can also be carried out with one-click.
 
 ## Getting Started
 
@@ -21,7 +21,7 @@ Demo.gif ( 2 min 52 s ) :
 ![demo.gif](https://s2.ax1x.com/2019/08/17/muTbIs.gif)
 
 *This demo was recorded in Simplified Chinese. If your system language is not Chinese, this batch will automatically display in English.*  
-*Please [created an issue](https://github.com/LussacZheng/video-downloader-deploy/issues) if you want to help improve the translation quality or add more supported languages.*
+*Please [create a new issue](https://github.com/LussacZheng/video-downloader-deploy/issues) if you want to help improve the translation quality or add more supported languages.*
 
 ### Note
 
@@ -33,7 +33,7 @@ Demo.gif ( 2 min 52 s ) :
 
 ### FFmpeg
 
-> It has no effect on downloading video if without FFmpeg, which only affects the merging of multiple parts video.
+> The absence of FFmpeg will affect the merging of multiple-parts videos, but has nothing to do with the downloading of videos.
 
 This portable version does NOT deploy FFmpeg by default. To deploy FFmpeg, re-run `Deploy.bat` and select `Deploy FFmpeg`.
 
@@ -51,11 +51,11 @@ Take several aliases, which might be commonly used, as examples and references:
 | proxy &asymp; `set HTTP(S)_PROXY=...`    | Quickly enable/disable proxy for current CMD window (`proxy help`) |
 | yb = `youtube-dl -f bestvideo+bestaudio` | Use youtube-dl to download the video of best quality               |
 | yf = `youtube-dl -F`                     | Use youtube-dl to list all available formats of requested videos   |
-| ac = `annie -c cookies.txt`              | Use annie to download, with cookies loaded                         |
+| lc = `lux -c cookies.txt`              | Use lux to download, with cookies loaded                         |
 | ygc = `you-get -c cookies.txt`           | Use you-get to download, with cookies loaded                       |
 | ...                                      | ...                                                                |
 
-**Notice**: The name of customize alias is preferably a combination of letters, numbers, dashes and/or underscores. It should macth the RegExp `^[\w\-]+$`, and particularly no whitespace or the special punctuations mentioned above. In addition, the alias must NOT be the same as the command, otherwise it will cause an endless loop.
+**Notice**: The name of customize alias is preferably a combination of letters, numbers, dashes and/or underscores. It should match the RegExp `^[\w\-]+$`, and particularly no whitespace or the special punctuations mentioned above. In addition, the alias must NOT be the same as the command, otherwise it will cause an endless loop.
 
 ---
 
@@ -110,7 +110,7 @@ git pull
 | :----------------------------: | :-------------------------------------: |
 |       [you-get][you-get]       |     [MIT License][you-get license]      |
 |    [youtube-dl][youtube-dl]    |   [The Unlicense][youtube-dl license]   |
-|         [annie][annie]         |      [MIT License][annie license]       |
+|         [lux][lux]         |      [MIT License][lux license]       |
 | [FFmpeg Builds][ffmpeg builds] |    [GPL 3.0][ffmpeg builds license]     |
 |        [Python][python]        | [PSF LICENSE AGREEMENT][python license] |
 
@@ -124,8 +124,8 @@ Check [Wiki](https://github.com/LussacZheng/video-downloader-deploy/wiki) for mo
 [you-get license]: https://github.com/soimort/you-get/blob/develop/LICENSE.txt
 [youtube-dl]: https://github.com/ytdl-org/youtube-dl
 [youtube-dl license]: https://github.com/ytdl-org/youtube-dl/blob/master/LICENSE
-[annie]: https://github.com/iawia002/annie
-[annie license]: https://github.com/iawia002/annie/blob/master/LICENSE
+[lux]: https://github.com/iawia002/lux
+[lux license]: https://github.com/iawia002/lux/blob/master/LICENSE
 [ffmpeg]: https://ffmpeg.org
 [ffmpeg builds]: https://ffmpeg.zeranoe.com/builds/
 [ffmpeg builds license]: http://www.gnu.org/licenses/gpl-3.0.html

@@ -55,7 +55,7 @@ set "str_already-exist=already exists."
 :: ================= Download Batch
 :: ========= Download Batch - Guides
 set "str_dl-guide1=The command to download a video is:"
-set "str_dl-guide2=you-get/youtube-dl/annie + [video URL]"
+set "str_dl-guide2=you-get/youtube-dl/lux + [video URL]"
 set "str_dl-guide3=For example:"
 set "str_dl-guide4=By default, you will get the video of highest quality. And the files downloaded will be saved in "Download"."
 set "str_dl-guide5=If you want to choose the quality of video, change the directory saved in, or learn more usage of these tools, please Google it or refer to the Official Instructions:"
@@ -111,8 +111,7 @@ set "str_proxyHint-enabled=Examples of proxy options: Displayed"
 set "str_proxyHint-disabled=Examples of proxy options: Hidden ^(DEFAULT^)"
 :: :: used in "dl-bat"
 set "str_proxyHint-option=Proxy options examples:"
-set "str_proxyHint_annie1=Since annie v0.9.8, it is no longer supported to set the proxy with the -x or -s option."
-set "str_proxyHint_annie2=Set the HTTP/SOCKS5 proxy using environment variables %%%%HTTP_PROXY%%%%, or enable [3]GlobalProxy."
+set "str_proxyHint_lux=As for lux, set the HTTP/SOCKS5 proxy using environment variables %%%%HTTP_PROXY%%%%, or enable [3]GlobalProxy."
 :: ========= Advanced Settings - Option 5
 set "str_ffmpeg-enabled=FFmpeg: enabled ^(DEFAULT^)"
 set "str_ffmpeg-disabled=FFmpeg: disabled"

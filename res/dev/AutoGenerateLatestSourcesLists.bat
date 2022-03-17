@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2021-12-18
+:: Last updated: 2022-03-17
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
@@ -45,14 +45,14 @@ echo If the download process is interrupted, close this window and re-run.
 echo Downloading web pages...
 echo Please be patient while waiting for the download...
 echo. & echo.
-echo py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
+echo py=python, yg=you-get, yd=youtube-dl, lx=lux, ff=ffmpeg, pip=pip
 echo.
 set "_WgetOptions_=-q --show-progress --progress=bar:force:noscroll --no-check-certificate -np"
 wget %_WgetOptions_% https://www.python.org/downloads/windows/ -O pyLatestRelease.txt
 wget %_WgetOptions_% https://pypi.org/project/you-get/ -O ygLatestRelease.txt
 wget %_WgetOptions_% https://github.com/ytdl-org/youtube-dl/releases/latest -O ydLatestRelease.txt
 wget %_WgetOptions_% https://pypi.org/project/youtube_dl/ -O ydLatestRelease2.txt
-wget %_WgetOptions_% https://github.com/iawia002/annie/releases/latest -O anLatestRelease.txt
+wget %_WgetOptions_% https://github.com/iawia002/lux/releases/latest -O lxLatestRelease.txt
 
 echo. & echo  - The update-checking of FFmpeg is temporarily disabled.
         echo    Check here manually: http://ffmpeg.org/download.html#build-windows & echo.
@@ -179,23 +179,22 @@ echo ydBLAKE2-256: %ydBLAKE2%
 echo.
 
 
-:GetAnnieLatestVersion
-REM @param  %anLatestVersion%,  %anLatestReleasedTime%
+:GetLuxLatestVersion
+REM @param  %lxLatestVersion%,  %lxLatestReleasedTime%
 
-:: The output of 'findstr /n /i "<title>" anLatestRelease.txt' should be like:
-::     31:  <title>Release 0.9.4 · iawia002/annie · GitHub</title>
-::  or 78:  <title>Release v0.11.0 · iawia002/annie</title>
-for /f "tokens=3 delims= " %%a in ('findstr /n /i "<title>" anLatestRelease.txt') do ( set "anLatestVersion=%%a" )
-set "anLatestVersion_Tag=%anLatestVersion%"
-set "anLatestVersion=%anLatestVersion:v=%"
-echo anLatestVersion: %anLatestVersion%
+:: The output of 'findstr /n /i "<title>" lxLatestRelease.txt' should be like:
+::     57:  <title>Release v0.14.0 · iawia002/lux · GitHub</title>
+for /f "tokens=3 delims= " %%a in ('findstr /n /i "<title>" lxLatestRelease.txt') do ( set "lxLatestVersion=%%a" )
+set "lxLatestVersion_Tag=%lxLatestVersion%"
+set "lxLatestVersion=%lxLatestVersion:v=%"
+echo lxLatestVersion: %lxLatestVersion%
 
-:: The output of 'findstr /n /i "relative-time" anLatestRelease.txt' should be like:
-::     995:    <local-time datetime="2021-08-28T06:38:24Z" month="short" day="2-digit" year="numeric" class="no-wrap"></local-time>
-for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" anLatestRelease.txt') do ( set "anLatestReleasedTime=%%b" )
-:: Now %anLatestReleasedTime% is like: `"2021-08-28T06`
-set "anLatestReleasedTime=%anLatestReleasedTime:~1,10%"
-echo anLatestReleasedTime: %anLatestReleasedTime%
+:: The output of 'findstr /n /i "datetime" lxLatestRelease.txt' should be like:
+::     999: <relative-time datetime="2022-03-14T02:14:06Z" class="no-wrap"></relative-time>
+for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" lxLatestRelease.txt') do ( set "lxLatestReleasedTime=%%b" )
+:: Now %lxLatestReleasedTime% is like: `"2021-08-28T06`
+set "lxLatestReleasedTime=%lxLatestReleasedTime:~1,10%"
+echo lxLatestReleasedTime: %lxLatestReleasedTime%
 echo.
 
 
@@ -252,7 +251,7 @@ del /Q pyLatestRelease.txt >NUL 2>NUL
 del /Q ygLatestRelease.txt >NUL 2>NUL
 del /Q ydLatestRelease.txt >NUL 2>NUL
 del /Q ydLatestRelease2.txt >NUL 2>NUL
-del /Q anLatestRelease.txt >NUL 2>NUL
+del /Q lxLatestRelease.txt >NUL 2>NUL
 del /Q ffLatestRelease.txt >NUL 2>NUL
 del /Q pipLatestRelease.txt >NUL 2>NUL
 if exist .wget-hsts del .wget-hsts
@@ -268,7 +267,7 @@ call :WriteCommon
 call :WritePython
 call :WriteYouget
 call :WriteYoutubedl
-call :WriteAnnie
+call :WriteLux
 call :WritePip
 call :WriteFfmpeg
 echo "%filePath%" has been generated.
@@ -409,18 +408,18 @@ echo.) >> %filePath%
 goto :eof
 
 
-:WriteAnnie
+:WriteLux
 ( echo [portable][withpip]
-echo ## Release log - Annie
-echo ## https://github.com/iawia002/annie/releases/latest
-echo ## Last released: %anLatestReleasedTime%
+echo ## Release log - Lux
+echo ## https://github.com/iawia002/lux/releases/latest
+echo ## Last released: %lxLatestReleasedTime%
 echo.
-echo ## annie_Windows.zip , v%anLatestVersion%
+echo ## lux_Windows.zip , v%lxLatestVersion%
 echo SystemType{
 echo     [64]
-echo     https://github.com/iawia002/annie/releases/download/%anLatestVersion_Tag%/annie_%anLatestVersion%_Windows_64-bit.zip
+echo     https://github.com/iawia002/lux/releases/download/%lxLatestVersion_Tag%/lux_%lxLatestVersion%_Windows_64-bit.zip
 echo     [32]
-echo     @ https://github.com/iawia002/annie/releases/download/%anLatestVersion_Tag%/annie_%anLatestVersion%_Windows_32-bit.zip
+echo     @ https://github.com/iawia002/lux/releases/download/%lxLatestVersion_Tag%/lux_%lxLatestVersion%_Windows_32-bit.zip
 echo }
 echo [/portable][/withpip]
 echo.

@@ -55,7 +55,7 @@ set "str_already-exist=已存在。"
 :: ================= Download Batch
 :: ========= Download Batch - Guides
 set "str_dl-guide1=下载视频的命令为："
-set "str_dl-guide2=you-get/youtube-dl/annie + 视频网址"
+set "str_dl-guide2=you-get/youtube-dl/lux + 视频网址"
 set "str_dl-guide3=例如："
 set "str_dl-guide4=默认下载最高清晰度。下载文件默认保存在 Download 目录。"
 set "str_dl-guide5=如果你想选择清晰度、更改默认路径，或想了解三种工具的其他用法，请百度或参考官方说明："
@@ -111,8 +111,7 @@ set "str_proxyHint-enabled=代理参数的命令示例：显示"
 set "str_proxyHint-disabled=代理参数的命令示例：隐藏 ^(默认^)"
 :: :: used in "dl-bat"
 set "str_proxyHint-option=代理参数示例："
-set "str_proxyHint_annie1=自 annie v0.9.8 起，其不再支持通过 -x 或 -s 参数设置代理。"
-set "str_proxyHint_annie2=可通过环境变量 %%%%HTTP_PROXY%%%% 来设置代理，或启用 [3]全局代理。"
+set "str_proxyHint_lux=lux 可通过环境变量 %%%%HTTP_PROXY%%%% 来设置代理，或启用 [3]全局代理。"
 :: ========= Advanced Settings - Option 5
 set "str_ffmpeg-enabled=FFmpeg：启用 ^(默认^)"
 set "str_ffmpeg-disabled=FFmpeg：禁用"

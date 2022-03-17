@@ -61,9 +61,9 @@ REM :: Set the environment variables %PATH%
 echo set "_pyBin=%%_root%%\usr\python-embed"
 echo set "_ygBin=%%_root%%\usr\you-get"
 echo set "_ydBin=%%_root%%\usr\youtube-dl"
-echo set "_anBin=%%_root%%\usr"
+echo set "_lxBin=%%_root%%\usr"
 echo if "%%_state_ffmpeg%%"=="enable" ^( set "_ffBin=%%_root%%\usr\ffmpeg\bin;" ^)
-echo set "PATH=%%_root%%\usr\alias;%%_root%%\usr\command;%%_pyBin%%;%%_pyBin%%\Scripts;%%_anBin%%;%%_ffBin%%%%PATH%%"
+echo set "PATH=%%_root%%\usr\alias;%%_root%%\usr\command;%%_pyBin%%;%%_pyBin%%\Scripts;%%_lxBin%%;%%_ffBin%%%%PATH%%"
 echo.
 
 echo if NOT exist usr\command md usr\command
@@ -84,14 +84,14 @@ echo echo     %str_dl-guide2%
 echo echo   %str_dl-guide3%
 echo echo     you-get https://v.youku.com/v_show/id_aBCdefGh.html
 echo echo     youtube-dl https://www.youtube.com/watch?v=aBCdefGh
-echo echo     annie https://www.bilibili.com/video/av12345678
+echo echo     lux https://www.bilibili.com/video/av12345678
 echo echo.
 echo echo * %str_dl-guide4%
 echo echo.
 echo echo * %str_dl-guide5%
 echo echo     you-get:    https://github.com/soimort/you-get/wiki/%str_dl-guide_wiki%
 echo echo     youtube-dl: https://github.com/ytdl-org/youtube-dl/blob/master/README.md
-echo echo     annie:      https://github.com/iawia002/annie/blob/master/README.md
+echo echo     lux:        https://github.com/iawia002/lux/blob/master/README.md
 echo echo. ^& echo ----- ^& echo.
 
 echo echo * %str_opt6%
@@ -114,10 +114,9 @@ REM :: Show the ProxyHint if enabled
 echo if "%%_state_proxyHint%%"=="enable" ^(
 echo     echo [4] %str_proxyHint-option%
 echo     echo       you-get -x 127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w
-echo     echo       youtube-dl --proxy socks5://127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w
-echo     echo       * %str_proxyHint_annie1%
-echo     echo         %str_proxyHint_annie2%
-echo     echo       set "HTTP_PROXY=socks5://127.0.0.1:1080" ^^^& annie https://www.youtube.com/watch?v=Ie5qE1EHm_w
+echo     echo       youtube-dl --proxy http://127.0.0.1:1080 https://www.youtube.com/watch?v=Ie5qE1EHm_w
+echo     echo       * %str_proxyHint_lux%
+echo     echo       set "HTTP_PROXY=http://127.0.0.1:1080" ^^^& lux https://www.youtube.com/watch?v=Ie5qE1EHm_w
 echo     echo.
 echo ^)
 

@@ -71,9 +71,9 @@ goto :eof
 set "opt3_info="
 if exist res\deploy.log (
     pushd res && call :Get_DeployMode && popd
-    if "!DeployMode!"=="portable" set "opt3_info=(you-get,youtube-dl,annie)"
+    if "!DeployMode!"=="portable" set "opt3_info=(you-get,youtube-dl,lux)"
     if "!DeployMode!"=="quickstart" set "opt3_info=(you-get)"
-    if "!DeployMode!"=="withpip" set "opt3_info=(you-get,youtube-dl,annie)"
+    if "!DeployMode!"=="withpip" set "opt3_info=(you-get,youtube-dl,lux)"
 )
 goto :eof
 

@@ -1,15 +1,15 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:chs,cht,en; LineEndings:CRLF -
-:: Video Downloaders (You-Get, Youtube-dl, Annie) One-Click Deployment Batch (Windows)
+:: Video Downloaders (You-Get, Youtube-dl, Lux) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.7.0-beta4
-:: Last updated: 2021-08-28
+:: Version: 1.8.0
+:: Last updated: 2022-03-17
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 :: >>> Attention! NEVER use `::` to comment in `( )` code block, use `REM` instead!!!
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.7.0-beta4"
-set "lastUpdated=2021-08-28"
+set "_Version_=1.8.0"
+set "lastUpdated=2022-03-17"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -38,11 +38,11 @@ call res\scripts\Getter.bat InfoOpt4
 
 :: Start of Deployment
 title %str_title%  -- by Lussac
-:: py=python, yg=you-get, yd=youtube-dl, an=annie, ff=ffmpeg, pip=pip
+:: py=python, yg=you-get, yd=youtube-dl, lx=lux, ff=ffmpeg, pip=pip
 set "pyBin=%root%\usr\python-embed"
 set "ygBin=%root%\usr\you-get"
 set "ydBin=%root%\usr\youtube-dl"
-set "anBin=%root%\usr"
+set "lxBin=%root%\usr"
 set "ffBin=%root%\usr\ffmpeg\bin"
 
 
@@ -62,19 +62,19 @@ echo ======%str_titleExpanded%=======
 echo ====================================================
 echo ===================  by Lussac  ====================
 echo ====================================================
-echo =======  version: %_Version_% (%lastUpdated%)  ========
+echo ==========  version: %_Version_% (%lastUpdated%)  ===========
 echo ====================================================
 echo ====================================================
 echo.
 echo. & echo  [1?] %str_opt1%
         echo    ^|
-        echo    ^|-- [11] %str_portable%: you-get + youtube-dl + annie
+        echo    ^|-- [11] %str_portable%: you-get + youtube-dl + lux
         echo    ^|        ( %str_opt11% )
         echo    ^|
         echo    ^|-- [12] %str_quickstart%: you-get
         echo    ^|        ( %str_opt12% )
         echo    ^|
-        echo    ^|-- [13] %str_withpip%: you-get + youtube-dl + annie
+        echo    ^|-- [13] %str_withpip%: you-get + youtube-dl + lux
         echo             ( %str_opt13% )
 echo. & echo  [2] %str_opt2%
 echo. & echo  [3] %str_opt3% %opt3_info%
@@ -120,7 +120,7 @@ cd res && call scripts\Download.bat main
 if NOT exist "%pyBin%" call scripts\DoDeploy.bat Setup python
 if NOT exist "%ygBin%" call scripts\DoDeploy.bat Setup youget
 if NOT exist "%ydBin%" call scripts\DoDeploy.bat Setup youtubedl
-if NOT exist "%anBin%\annie.exe" call scripts\DoDeploy.bat Setup annie
+if NOT exist "%lxBin%\lux.exe" call scripts\DoDeploy.bat Setup lux
 goto InitLog
 
 
@@ -149,7 +149,7 @@ if exist scripts\get-pip.py (
 )
 call scripts\Download.bat main
 if NOT exist "%pyBin%" call scripts\DoDeploy.bat Setup python
-if NOT exist "%anBin%\annie.exe" call scripts\DoDeploy.bat Setup annie
+if NOT exist "%lxBin%\lux.exe" call scripts\DoDeploy.bat Setup lux
 
 :edit-python_pth
 pushd "%pyBin%"
@@ -259,26 +259,26 @@ goto upgrade_Manually
 
 
 :Upgrade-portable
-:: Get %_isYgLatestVersion% , %_isYdLatestVersion% , %_isAnLatestVersion%
+:: Get %_isYgLatestVersion% , %_isYdLatestVersion% , %_isLxLatestVersion%
 :: from "scripts\CheckUpdate.bat". 0: false; 1: true.
 call scripts\CheckUpdate.bat youget
 call scripts\CheckUpdate.bat youtubedl
-call scripts\CheckUpdate.bat annie
-if "%_isYgLatestVersion%"=="1" if "%_isYdLatestVersion%"=="1" if "%_isAnLatestVersion%"=="1" (
+call scripts\CheckUpdate.bat lux
+if "%_isYgLatestVersion%"=="1" if "%_isYdLatestVersion%"=="1" if "%_isLxLatestVersion%"=="1" (
     echo you-get %str_is-latestVersion%: v%ygCurrentVersion%
     echo youtube-dl %str_is-latestVersion%: %ydCurrentVersion%
-    echo annie %str_is-latestVersion%: v%anCurrentVersion%
+    echo lux %str_is-latestVersion%: v%lxCurrentVersion%
     goto upgrade_done
 )
 :: When certain repository is unavailable due to DMCA takedown or network error,
 ::   and others are all of latest version, skip upgrading it and not to log.
-if "%ygUpgradeLock%"=="true" if "%ydUpgradeLock%"=="true" if "%anUpgradeLock%"=="true" (
+if "%ygUpgradeLock%"=="true" if "%ydUpgradeLock%"=="true" if "%lxUpgradeLock%"=="true" (
     goto upgrade_done
 )
 set "whetherToLog=true"
 if "%_isYgLatestVersion%"=="0" if "%ygUpgradeLock%"=="false" call scripts\DoDeploy.bat Upgrade youget
 if "%_isYdLatestVersion%"=="0" if "%ydUpgradeLock%"=="false" call scripts\DoDeploy.bat Upgrade youtubedl
-if "%_isAnLatestVersion%"=="0" if "%anUpgradeLock%"=="false" call scripts\DoDeploy.bat Upgrade annie
+if "%_isLxLatestVersion%"=="0" if "%lxUpgradeLock%"=="false" call scripts\DoDeploy.bat Upgrade lux
 goto upgrade_done
 
 
@@ -294,12 +294,12 @@ goto upgrade_done
 
 
 :Upgrade-withpip
-call scripts\CheckUpdate.bat annie
-if "%_isAnLatestVersion%"=="1" (
-    echo annie %str_is-latestVersion%: v%anCurrentVersion%
-) else if "%anUpgradeLock%"=="false" (
+call scripts\CheckUpdate.bat lux
+if "%_isLxLatestVersion%"=="1" (
+    echo lux %str_is-latestVersion%: v%lxCurrentVersion%
+) else if "%lxUpgradeLock%"=="false" (
     set "whetherToLog=true"
-    call scripts\DoDeploy.bat Upgrade annie
+    call scripts\DoDeploy.bat Upgrade lux
 )
 
 :: Re-create a pip3.cmd in case of the whole folder had been moved.

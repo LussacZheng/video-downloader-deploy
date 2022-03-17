@@ -7,11 +7,11 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/LussacZheng/video-downloader-deploy?logo=github)
 ![version](https://img.shields.io/github/package-json/v/LussacZheng/video-downloader-deploy_info?color=important)
 
-快速配置和使用 **[You-Get][you-get] , [Youtube-dl][youtube-dl] , [Annie][annie] , 和 [FFmpeg][ffmpeg]** 的一键配置脚本。
+快速配置和使用 **[You-Get][you-get] , [Youtube-dl][youtube-dl] , [Lux][lux] (原 annie) , 和 [FFmpeg][ffmpeg]** 的一键配置脚本。
 
 - 无需安装 Python ，一键配置绿色便携版的 you-get , youtube-dl 。
 - 此绿色版基于 Python 的 embeddable 版。
-- 除了一键部署，后续 you-get, youtube-dl, annie 的更新同样一键完成。
+- 除了一键部署，后续 you-get, youtube-dl, lux 的更新同样一键完成。
 
 ## 使用方法
 
@@ -48,7 +48,7 @@
 | proxy &asymp; `set HTTP(S)_PROXY=...`                 | 快速为当前 CMD 窗口启用/禁用代理 (`proxy help`)      |
 | yb = `youtube-dl -f bestvideo+bestaudio`              | 使用 youtube-dl 下载最佳清晰度                       |
 | yf = `youtube-dl --proxy socks5://127.0.0.1:10808 -F` | 使用 youtube-dl 查看所有可下载的清晰度，同时启用代理 |
-| ac = `annie -c cookies.txt`                           | 使用 annie 下载并加载 cookies 文件                   |
+| lc = `lux -c cookies.txt`                           | 使用 lux 下载并加载 cookies 文件                   |
 | ygc = `you-get -c cookies.txt`                        | 使用 you-get 下载并加载 cookies 文件                 |
 | ...                                                   | ...                                                  |
 
@@ -113,7 +113,7 @@ git pull
 | :----------------------------: | :-------------------------------------: |
 |       [you-get][you-get]       |     [MIT License][you-get license]      |
 |    [youtube-dl][youtube-dl]    |   [The Unlicense][youtube-dl license]   |
-|         [annie][annie]         |      [MIT License][annie license]       |
+|         [lux][lux]         |      [MIT License][lux license]       |
 | [FFmpeg Builds][ffmpeg builds] |    [GPL 3.0][ffmpeg builds license]     |
 |        [Python][python]        | [PSF LICENSE AGREEMENT][python license] |
 
@@ -127,8 +127,8 @@ git pull
 [you-get license]: https://github.com/soimort/you-get/blob/develop/LICENSE.txt
 [youtube-dl]: https://github.com/ytdl-org/youtube-dl
 [youtube-dl license]: https://github.com/ytdl-org/youtube-dl/blob/master/LICENSE
-[annie]: https://github.com/iawia002/annie
-[annie license]: https://github.com/iawia002/annie/blob/master/LICENSE
+[lux]: https://github.com/iawia002/lux
+[lux license]: https://github.com/iawia002/lux/blob/master/LICENSE
 [ffmpeg]: https://ffmpeg.org
 [ffmpeg builds]: https://ffmpeg.zeranoe.com/builds/
 [ffmpeg builds license]: http://www.gnu.org/licenses/gpl-3.0.html
