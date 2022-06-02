@@ -92,7 +92,8 @@ jobs:
         set "lxLatestVersion=%lxLatestVersion:v=%"
         echo lxLatestVersion_Tag: %lxLatestVersion_Tag% >> %OUTPUT%
         echo lxLatestVersion: %lxLatestVersion% >> %OUTPUT%
-        for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" lxLatestRelease.txt') do ( set "lxLatestReleasedTime=%%b" )
+        for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" lxLatestRelease.txt') do ( set "lxLatestReleasedTime=%%b" && goto :lx_next )
+        :lx_next
         set "lxLatestReleasedTime=%lxLatestReleasedTime:~1,10%"
         echo lxLatestReleasedTime: %lxLatestReleasedTime% >> %OUTPUT%
         echo. >> %OUTPUT%
@@ -104,8 +105,8 @@ jobs:
         echo  - The update-checking of FFmpeg is temporarily disabled. >> %OUTPUT%
         @REM for /f "delims=:" %%a in ('findstr /n /i "latest" ffLatestRelease.txt') do ( set "lineNum=%%a" )
         @REM set /a lineNum-=2
-        @REM for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :next )
-        @REM :next
+        @REM for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :ff_next )
+        @REM :ff_next
         @REM for /f "tokens=3,9-11 delims=- " %%c in (%ffInfo%) do (
         @REM     set "ffLatestVersion=%%c"
         @REM     set "ffLatestReleasedTime_day=%%d" && set "ffLatestReleasedTime_month=%%e" && set "ffLatestReleasedTime_year=%%f"

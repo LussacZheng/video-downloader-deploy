@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2022-03-17
+:: Last updated: 2022-06-02
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
@@ -190,9 +190,10 @@ set "lxLatestVersion=%lxLatestVersion:v=%"
 echo lxLatestVersion: %lxLatestVersion%
 
 :: The output of 'findstr /n /i "datetime" lxLatestRelease.txt' should be like:
-::     999: <relative-time datetime="2022-03-14T02:14:06Z" class="no-wrap"></relative-time>
-for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" lxLatestRelease.txt') do ( set "lxLatestReleasedTime=%%b" )
-:: Now %lxLatestReleasedTime% is like: `"2021-08-28T06`
+::     1014: <relative-time datetime="2022-05-05T03:11:51Z" class="no-wrap"></relative-time>
+for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" lxLatestRelease.txt') do ( set "lxLatestReleasedTime=%%b" && goto :lx_next )
+:lx_next
+:: Now %lxLatestReleasedTime% is like: `"2022-05-05T03`
 set "lxLatestReleasedTime=%lxLatestReleasedTime:~1,10%"
 echo lxLatestReleasedTime: %lxLatestReleasedTime%
 echo.
@@ -206,8 +207,8 @@ REM @param  %ffLatestVersion%,  %ffLatestReleasedTime%
 
 for /f "delims=:" %%a in ('findstr /n /i "latest" ffLatestRelease.txt') do ( set "lineNum=%%a" )
 set /a lineNum-=2
-for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :next )
-:next
+for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :ff_next )
+:ff_next
 :: Use ` set "ffInfo="%%b"" ` instead of ` set "ffInfo=%%b" `, since %%b contains '<' and '>'
 :: Now %ffInfo% is like: "<a href="ffmpeg-4.2.2-win64-static.zip">ffmpeg-4.2.2-win64-static.zip</a>  27-Jan-2020 00:51  66M"
 :: %ffInfo% contains "" , so next command should not have additional "" as following:
