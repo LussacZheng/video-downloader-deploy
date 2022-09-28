@@ -20,7 +20,7 @@ Download*Video*.bat
 # Dev / Lab Features
 res/dev/AutoGenerateWithSpecificVersion.settings
 res/dev/sources.txt
-res/dev/wget.exe
+res/dev/temp
 
 # Used for test when coding
 _test/

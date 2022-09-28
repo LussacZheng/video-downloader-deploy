@@ -64,7 +64,7 @@ goto :eof
 pushd "%root%"
 setlocal EnableDelayedExpansion
 set /a dl_Count=0
-for /f "delims=" %%i in ('dir /b /a-d ^| findstr "\.zip$ \.gz$"') do ( set /a dl_Count=!dl_Count!+1 )
+for /f "delims=" %%i in ('dir /b /a-d ^| findstr "\.zip$ \.tar\.gz$ \.7z$"') do ( set /a dl_Count=!dl_Count!+1 )
 if NOT "%dl_Count%"=="0" (
     echo %str_manually-downloaded% %dl_Count% %str_manually-downloaded2%...
     echo.
@@ -86,6 +86,7 @@ if NOT "%dl_Count%"=="0" (
     if exist lux*Windows*.zip ( move /Y lux*Windows*.zip res\download\ > NUL )
     if exist annie*Windows*.zip ( move /Y annie*Windows*.zip res\download\ > NUL )
     if exist ffmpeg*.zip ( move /Y ffmpeg*.zip res\download\ > NUL )
+    if exist ffmpeg*.7z ( move /Y ffmpeg*.7z res\download\ > NUL )
     echo.
 )
 endlocal

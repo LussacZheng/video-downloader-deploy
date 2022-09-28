@@ -35,7 +35,7 @@ rem ================= FUNCTIONS =================
 for /f "delims=" %%i in ('dir /b /a:a /o:d python*embed*.zip') do ( set "pyZip=%%i" )
 echo %str_unzipping% %pyZip%...
 :: https://superuser.com/questions/331148/7-zip-command-line-extract-silently-quietly
-7za x %pyZip% -o"%pyBin%" > NUL
+7za x -aoa -o"%pyBin%" %pyZip% > NUL
 echo Python-embed %str_already-deploy%
 goto :eof
 
@@ -88,16 +88,17 @@ goto :eof
 for /f "delims=" %%i in ('dir /b /a:a /o:d lux*Windows*.zip') do ( set "lxZip=%%i" )
 if NOT "%~1"=="" ( set "lxZip=%~1" )
 echo %str_unzipping% %lxZip%...
-7za x %lxZip% -o"%lxBin%" > NUL
+7za x -aoa -o"%lxBin%" %lxZip% > NUL
 echo Lux %str_already-deploy%
 goto :eof
 
 
 :Setup_ffmpeg
-for /f "delims=" %%i in ('dir /b /a:a /o:d ffmpeg*.zip') do ( set "ffZip=%%i" )
+for /f "delims=" %%i in ('dir /b /a:a /o:d ffmpeg*.zip ffmpeg*.7z') do ( set "ffZip=%%i" )
 echo %str_unzipping% %ffZip% ...
-7za x %ffZip% > NUL
-set "ffDir=%ffZip:~0,-4%"
+7za x -aoa %ffZip% > NUL
+:: trim file extension
+for /f %%i in ("%ffZip%") do ( set "ffDir=%%~ni" )
 move %ffDir% "%root%\usr\ffmpeg" > NUL
 goto :eof
 

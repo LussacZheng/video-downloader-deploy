@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2022-06-26
+:: Last updated: 2022-09-28
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
@@ -26,9 +26,15 @@ rem ================= Preparation =================
 
 
 :RequirementCheck
-if NOT exist wget.exe (
-    if exist ..\wget.exe (
-        xcopy ..\wget.exe .\ > NUL
+pushd "%~dp0"
+if exist ..\wget.exe (
+    set "wget=..\wget.exe"
+) else if exist .\wget.exe (
+    set "wget=.\wget.exe"
+) else (
+    where /Q $path:wget && set "isExternalWget=true"
+    if "!isExternalWget!"=="true" (
+        set "wget=wget"
     ) else (
         echo "wget.exe" not founded. Please download it from
         echo https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res/wget.exe
@@ -47,18 +53,20 @@ echo Please be patient while waiting for the download...
 echo. & echo.
 echo py=python, yg=you-get, yd=youtube-dl, lx=lux, ff=ffmpeg, pip=pip
 echo.
+
+if NOT exist .\temp md .\temp
+
 set "_WgetOptions_=-q --show-progress --progress=bar:force:noscroll --no-check-certificate -np"
-wget %_WgetOptions_% https://www.python.org/downloads/windows/ -O pyLatestRelease.txt
-wget %_WgetOptions_% https://pypi.org/project/you-get/ -O ygLatestRelease.txt
-wget %_WgetOptions_% https://github.com/ytdl-org/youtube-dl/releases/latest -O ydLatestRelease.txt
-wget %_WgetOptions_% https://pypi.org/project/youtube_dl/ -O ydLatestRelease2.txt
-wget %_WgetOptions_% https://github.com/iawia002/lux/releases/latest -O lxLatestRelease.txt
+%wget% %_WgetOptions_% https://www.python.org/downloads/windows/ -O temp/pyLatestRelease.txt
+%wget% %_WgetOptions_% https://pypi.org/project/you-get/ -O temp/ygLatestRelease.txt
+%wget% %_WgetOptions_% https://github.com/ytdl-org/youtube-dl/releases/latest -O temp/ydLatestRelease.txt
+%wget% %_WgetOptions_% https://pypi.org/project/youtube_dl/ -O temp/ydLatestRelease2.txt
+%wget% %_WgetOptions_% https://github.com/iawia002/lux/releases/latest -O temp/lxLatestRelease.txt
+%wget% %_WgetOptions_% https://www.gyan.dev/ffmpeg/builds/release-version -O temp/ffLatestVersion.txt
+%wget% %_WgetOptions_% https://www.gyan.dev/ffmpeg/builds/last-build-update -O temp/ffLatestReleasedTime.txt
+%wget% %_WgetOptions_% https://pypi.org/project/pip/ -O temp/pipLatestRelease.txt
 
-echo. & echo  - The update-checking of FFmpeg is temporarily disabled.
-        echo    Check here manually: http://ffmpeg.org/download.html#build-windows & echo.
-REM wget %_WgetOptions_% https://ffmpeg.zeranoe.com/builds/win64/static/ -O ffLatestRelease.txt
-
-wget %_WgetOptions_% https://pypi.org/project/pip/ -O pipLatestRelease.txt
+cd temp
 echo. & echo.
 
 
@@ -199,26 +207,12 @@ echo lxLatestReleasedTime: %lxLatestReleasedTime%
 echo.
 
 
-REM The update-checking of FFmpeg is temporarily disabled.
-goto :GetPipLatestVersion
-
 :GetFfmpegLatestVersion
 REM @param  %ffLatestVersion%,  %ffLatestReleasedTime%
 
-for /f "delims=:" %%a in ('findstr /n /i "latest" ffLatestRelease.txt') do ( set "lineNum=%%a" )
-set /a lineNum-=2
-for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :ff_next )
-:ff_next
-:: Use ` set "ffInfo="%%b"" ` instead of ` set "ffInfo=%%b" `, since %%b contains '<' and '>'
-:: Now %ffInfo% is like: "<a href="ffmpeg-4.2.2-win64-static.zip">ffmpeg-4.2.2-win64-static.zip</a>  27-Jan-2020 00:51  66M"
-:: %ffInfo% contains "" , so next command should not have additional "" as following:
-:: for /f "tokens=2 delims=-" %%c in ("%ffInfo%") do ( set "ffLatestVersion=%%c" )
-for /f "tokens=3,9-11 delims=- " %%c in (%ffInfo%) do (
-    set "ffLatestVersion=%%c"
-    set "ffLatestReleasedTime_day=%%d" && set "ffLatestReleasedTime_month=%%e" && set "ffLatestReleasedTime_year=%%f"
-)
+set /p ffLatestVersion=<ffLatestVersion.txt
+set /p ffLatestReleasedTime=<ffLatestReleasedTime.txt
 echo ffLatestVersion: %ffLatestVersion%
-set "ffLatestReleasedTime=%ffLatestReleasedTime_year%-%ffLatestReleasedTime_month%-%ffLatestReleasedTime_day%"
 echo ffLatestReleasedTime: %ffLatestReleasedTime%
 echo.
 
@@ -248,14 +242,9 @@ echo pipLatestReleasedTime: %pipLatestReleasedTime%
 
 
 :DeleteWebPages
-del /Q pyLatestRelease.txt >NUL 2>NUL
-del /Q ygLatestRelease.txt >NUL 2>NUL
-del /Q ydLatestRelease.txt >NUL 2>NUL
-del /Q ydLatestRelease2.txt >NUL 2>NUL
-del /Q lxLatestRelease.txt >NUL 2>NUL
-del /Q ffLatestRelease.txt >NUL 2>NUL
-del /Q pipLatestRelease.txt >NUL 2>NUL
-if exist .wget-hsts del .wget-hsts
+cd ..
+rd /S /Q .\temp\ >NUL 2>NUL
+if exist .\.wget-hsts del .\.wget-hsts
 echo. & echo.
 
 
@@ -284,6 +273,7 @@ if exist ..\sources.txt (
     echo. & echo.
     echo  * EOF *
 )
+popd
 pause > NUL
 exit
 
@@ -438,17 +428,17 @@ echo.) >> %filePath%
 goto :eof
 
 
-REM The update-checking of FFmpeg is temporarily disabled. So the version number and URLs are fixed.
 :WriteFfmpeg
 ( echo [ffmpeg]
 echo ## Release log - FFmpeg
-echo ## https://ffmpeg.org/download.html#releases   or   https://ffmpeg.zeranoe.com/builds/win64/static/
-echo ## Last released: 2020-Aug-04
+echo ## https://ffmpeg.org/download.html#releases   or   https://www.gyan.dev/ffmpeg/builds/
+echo ## Last released: %ffLatestReleasedTime%
 echo.
-echo ## ffmpeg-static.zip , v4.3.1
+echo ## ffmpeg.7z , v%ffLatestVersion%
 echo SystemType{
 echo     [64]
-echo     https://github.com/LussacZheng/video-downloader-deploy/releases/download/v1.6.0/ffmpeg-4.3.1-win64-shared.zip
+echo     https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z
+echo     $ https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-%ffLatestVersion%-essentials_build.7z
 echo     [32]
 echo     @ https://github.com/LussacZheng/video-downloader-deploy/releases/download/v1.6.0/ffmpeg-4.3.1-win32-shared.zip
 echo }

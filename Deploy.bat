@@ -1,15 +1,15 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:chs,cht,en; LineEndings:CRLF -
 :: Video Downloaders (You-Get, Youtube-dl, Lux) One-Click Deployment Batch (Windows)
 :: Author: Lussac (https://blog.lussac.net)
-:: Version: 1.8.0
-:: Last updated: 2022-03-17
+:: Version: 1.8.1
+:: Last updated: 2022-09-28
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
 :: >>> Attention! NEVER use `::` to comment in `( )` code block, use `REM` instead!!!
 @echo off
 setlocal EnableDelayedExpansion
-set "_Version_=1.8.0"
-set "lastUpdated=2022-03-17"
+set "_Version_=1.8.1"
+set "lastUpdated=2022-09-28"
 :: Remote resources url of 'sources.txt', 'wget.exe', '7za.exe', 'scripts/CurrentVersion'
 set "_RemoteRes_=https://raw.githubusercontent.com/LussacZheng/video-downloader-deploy/master/res"
 
@@ -221,7 +221,7 @@ echo. & echo %str_deploy-although-exist%
 set /p opt2_choice= %str_enter-to-cancel%
 echo.
 :: If we don't delete this directory, DoDeploy.bat will move
-::   the `ffmpeg-*-static\` into `usr\ffmpeg\ffmpeg-*-static\` ,
+::   the `ffmpeg-{version}\` into `usr\ffmpeg\ffmpeg-{version}\` ,
 ::   instead of renaming it to `usr\ffmpeg\` .
 if /i "%opt2_choice%"=="Y" (
     if exist "%root%\usr\ffmpeg" rd /S /Q "%root%\usr\ffmpeg"

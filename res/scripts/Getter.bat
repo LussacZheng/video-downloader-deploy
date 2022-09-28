@@ -61,7 +61,7 @@ goto :eof
 :Get_WgetOptions
 if exist wget.opt (
     for /f "eol=# delims=" %%i in (wget.opt) do ( set "_WgetOptions_=%%i" && goto :eof )
-) else ( set "_WgetOptions_=-q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc" )
+) else ( set "_WgetOptions_=-q --show-progress --progress=bar:force:noscroll --no-check-certificate --content-disposition -nc" )
 goto :eof
 
 

@@ -29,7 +29,8 @@ jobs:
         curl -s -L https://github.com/ytdl-org/youtube-dl/releases/latest >> ydLatestRelease.txt
         curl -s https://pypi.org/project/youtube_dl/ >> ydLatestRelease2.txt
         curl -s -L https://github.com/iawia002/lux/releases/latest >> lxLatestRelease.txt
-        @REM curl -s https://ffmpeg.zeranoe.com/builds/win64/static/ >> ffLatestRelease.txt
+        curl -s -L https://www.gyan.dev/ffmpeg/builds/release-version >> ffLatestVersion.txt
+        curl -s -L https://www.gyan.dev/ffmpeg/builds/last-build-update >> ffLatestReleasedTime.txt
         curl -s https://pypi.org/project/pip/ >> pipLatestRelease.txt
       shell: cmd
 
@@ -102,18 +103,10 @@ jobs:
 
     - name: Get the latest version of FFmpeg
       run: |
-        echo  - The update-checking of FFmpeg is temporarily disabled. >> %OUTPUT%
-        @REM for /f "delims=:" %%a in ('findstr /n /i "latest" ffLatestRelease.txt') do ( set "lineNum=%%a" )
-        @REM set /a lineNum-=2
-        @REM for /f "skip=%lineNum% delims=" %%b in (ffLatestRelease.txt) do ( set "ffInfo="%%b"" && goto :ff_next )
-        @REM :ff_next
-        @REM for /f "tokens=3,9-11 delims=- " %%c in (%ffInfo%) do (
-        @REM     set "ffLatestVersion=%%c"
-        @REM     set "ffLatestReleasedTime_day=%%d" && set "ffLatestReleasedTime_month=%%e" && set "ffLatestReleasedTime_year=%%f"
-        @REM )
-        @REM echo ffLatestVersion: %ffLatestVersion% >> %OUTPUT%
-        @REM set "ffLatestReleasedTime=%ffLatestReleasedTime_year%-%ffLatestReleasedTime_month%-%ffLatestReleasedTime_day%"
-        @REM echo ffLatestReleasedTime: %ffLatestReleasedTime% >> %OUTPUT%
+        set /p ffLatestVersion=<ffLatestVersion.txt
+        set /p ffLatestReleasedTime=<ffLatestReleasedTime.txt
+        echo ffLatestVersion: %ffLatestVersion% >> %OUTPUT%
+        echo ffLatestReleasedTime: %ffLatestReleasedTime% >> %OUTPUT%
         echo. >> %OUTPUT%
       shell: cmd
       continue-on-error: true
@@ -135,15 +128,4 @@ jobs:
       run: |
         echo.
         type %OUTPUT%
-      shell: cmd
-
-    - name: Delete all the files
-      run: |
-        del /Q pyLatestRelease.txt >NUL 2>NUL
-        del /Q ygLatestRelease.txt >NUL 2>NUL
-        del /Q ydLatestRelease.txt >NUL 2>NUL
-        del /Q lxLatestRelease.txt >NUL 2>NUL
-        @REM del /Q ffLatestRelease.txt >NUL 2>NUL
-        del /Q pipLatestRelease.txt >NUL 2>NUL
-        del %OUTPUT% >NUL 2>NUL
       shell: cmd

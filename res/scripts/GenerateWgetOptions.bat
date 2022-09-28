@@ -7,7 +7,7 @@
 @echo off
 ( echo # ^>^>^> EDIT AT YOUR OWN RISK. ^<^<^<
 echo #
-echo # This is a sample file used in "Deploy.bat" for the configuration of "wget.exe" options.
+echo # This is a example file used in "Deploy.bat" for the configuration of "wget.exe" options.
 echo #
 echo # 1*. Use a '#' symbol to comment.
 echo # 2. All options should be kept on an individual line.
@@ -22,7 +22,7 @@ echo #
 echo # ^( Only show progress bar; Ignore HTTPS; Skip downloading if file already exists. ^)
 echo # ^( https://stackoverflow.com/questions/4686464/how-to-show-wget-progress-bar-only ^)
 echo #
-echo -q --show-progress --progress=bar:force:noscroll --no-check-certificate -nc
+echo -q --show-progress --progress=bar:force:noscroll --no-check-certificate --content-disposition -nc
 echo #
 echo # ----------
 echo #
