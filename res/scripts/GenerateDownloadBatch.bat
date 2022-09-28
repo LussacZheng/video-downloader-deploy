@@ -128,7 +128,7 @@ echo.
 REM :: To custom the style, get usage by `help prompt`. Such as:
 REM :: PROMPT [$D $T$h$h$h$h$h$h]$_$P$_$G$G$G
 echo PROMPT $P$_$G$G$G
-echo cmd /Q /K) >> %dl-bat-filename%
+echo cmd /Q /T:f0 /K) >> %dl-bat-filename%
 goto :eof
 
 
