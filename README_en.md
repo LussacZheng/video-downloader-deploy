@@ -51,7 +51,7 @@ Take several aliases, which might be commonly used, as examples and references:
 | proxy &asymp; `set HTTP(S)_PROXY=...`    | Quickly enable/disable proxy for current CMD window (`proxy help`) |
 | yb = `youtube-dl -f bestvideo+bestaudio` | Use youtube-dl to download the video of best quality               |
 | yf = `youtube-dl -F`                     | Use youtube-dl to list all available formats of requested videos   |
-| lc = `lux -c cookies.txt`              | Use lux to download, with cookies loaded                         |
+| lc = `lux -c cookies.txt`                | Use lux to download, with cookies loaded                           |
 | ygc = `you-get -c cookies.txt`           | Use you-get to download, with cookies loaded                       |
 | ...                                      | ...                                                                |
 
@@ -110,7 +110,7 @@ git pull
 | :----------------------------: | :-------------------------------------: |
 |       [you-get][you-get]       |     [MIT License][you-get license]      |
 |    [youtube-dl][youtube-dl]    |   [The Unlicense][youtube-dl license]   |
-|         [lux][lux]         |      [MIT License][lux license]       |
+|           [lux][lux]           |       [MIT License][lux license]        |
 | [FFmpeg Builds][ffmpeg builds] |    [GPL 3.0][ffmpeg builds license]     |
 |        [Python][python]        | [PSF LICENSE AGREEMENT][python license] |
 
@@ -127,7 +127,7 @@ Check [Wiki](https://github.com/LussacZheng/video-downloader-deploy/wiki) for mo
 [lux]: https://github.com/iawia002/lux
 [lux license]: https://github.com/iawia002/lux/blob/master/LICENSE
 [ffmpeg]: https://ffmpeg.org
-[ffmpeg builds]: https://ffmpeg.zeranoe.com/builds/
+[ffmpeg builds]: https://www.gyan.dev/ffmpeg/builds/#about-these-builds
 [ffmpeg builds license]: http://www.gnu.org/licenses/gpl-3.0.html
 [python]: https://www.python.org
 [python license]: https://docs.python.org/3.7/license.html#terms-and-conditions-for-accessing-or-otherwise-using-python

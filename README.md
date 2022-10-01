@@ -48,7 +48,7 @@
 | proxy &asymp; `set HTTP(S)_PROXY=...`                 | 快速为当前 CMD 窗口启用/禁用代理 (`proxy help`)      |
 | yb = `youtube-dl -f bestvideo+bestaudio`              | 使用 youtube-dl 下载最佳清晰度                       |
 | yf = `youtube-dl --proxy socks5://127.0.0.1:10808 -F` | 使用 youtube-dl 查看所有可下载的清晰度，同时启用代理 |
-| lc = `lux -c cookies.txt`                           | 使用 lux 下载并加载 cookies 文件                   |
+| lc = `lux -c cookies.txt`                             | 使用 lux 下载并加载 cookies 文件                     |
 | ygc = `you-get -c cookies.txt`                        | 使用 you-get 下载并加载 cookies 文件                 |
 | ...                                                   | ...                                                  |
 
@@ -113,7 +113,7 @@ git pull
 | :----------------------------: | :-------------------------------------: |
 |       [you-get][you-get]       |     [MIT License][you-get license]      |
 |    [youtube-dl][youtube-dl]    |   [The Unlicense][youtube-dl license]   |
-|         [lux][lux]         |      [MIT License][lux license]       |
+|           [lux][lux]           |       [MIT License][lux license]        |
 | [FFmpeg Builds][ffmpeg builds] |    [GPL 3.0][ffmpeg builds license]     |
 |        [Python][python]        | [PSF LICENSE AGREEMENT][python license] |
 
@@ -130,7 +130,7 @@ git pull
 [lux]: https://github.com/iawia002/lux
 [lux license]: https://github.com/iawia002/lux/blob/master/LICENSE
 [ffmpeg]: https://ffmpeg.org
-[ffmpeg builds]: https://ffmpeg.zeranoe.com/builds/
+[ffmpeg builds]: https://www.gyan.dev/ffmpeg/builds/#about-these-builds
 [ffmpeg builds license]: http://www.gnu.org/licenses/gpl-3.0.html
 [python]: https://www.python.org
 [python license]: https://docs.python.org/3.7/license.html#terms-and-conditions-for-accessing-or-otherwise-using-python
