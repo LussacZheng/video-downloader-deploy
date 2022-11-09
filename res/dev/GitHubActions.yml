@@ -30,7 +30,7 @@ jobs:
         curl -s https://pypi.org/project/youtube_dl/ >> ydLatestRelease2.txt
         curl -s -L https://github.com/iawia002/lux/releases/latest >> lxLatestRelease.txt
         curl -s -L https://www.gyan.dev/ffmpeg/builds/release-version >> ffLatestVersion.txt
-        curl -s -L https://www.gyan.dev/ffmpeg/builds/last-build-update >> ffLatestReleasedTime.txt
+        curl -s -L https://www.gyan.dev/ffmpeg/builds/ >> ffLatestRelease.txt
         curl -s https://pypi.org/project/pip/ >> pipLatestRelease.txt
       shell: cmd
 
@@ -93,9 +93,9 @@ jobs:
         set "lxLatestVersion=%lxLatestVersion:v=%"
         echo lxLatestVersion_Tag: %lxLatestVersion_Tag% >> %OUTPUT%
         echo lxLatestVersion: %lxLatestVersion% >> %OUTPUT%
-        for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" lxLatestRelease.txt') do ( set "lxLatestReleasedTime=%%b" && goto :lx_next )
+        for /f "tokens=1 delims=T" %%b in ('findstr /n /i "datetime" lxLatestRelease.txt') do ( set "lxLatestReleasedTime=%%b" && goto :lx_next )
         :lx_next
-        set "lxLatestReleasedTime=%lxLatestReleasedTime:~1,10%"
+        set "lxLatestReleasedTime=%lxLatestReleasedTime:~-10%"
         echo lxLatestReleasedTime: %lxLatestReleasedTime% >> %OUTPUT%
         echo. >> %OUTPUT%
       shell: cmd
@@ -104,7 +104,8 @@ jobs:
     - name: Get the latest version of FFmpeg
       run: |
         set /p ffLatestVersion=<ffLatestVersion.txt
-        set /p ffLatestReleasedTime=<ffLatestReleasedTime.txt
+        set "pwsh_cmd=(Get-Content -Raw -Path ffLatestRelease.txt | Select-String -Pattern '(?s)release-version.*?(\d{4}-\d{2}-\d{2})').Matches.Groups[1].Value"
+        for /f "usebackq" %%i in (`powershell -command "%pwsh_cmd%"`) do ( set "ffLatestReleasedTime=%%i" )
         echo ffLatestVersion: %ffLatestVersion% >> %OUTPUT%
         echo ffLatestReleasedTime: %ffLatestReleasedTime% >> %OUTPUT%
         echo. >> %OUTPUT%
@@ -118,8 +119,8 @@ jobs:
         for /f "tokens=2 delims=-" %%b in ("%pipUrl%") do ( set "pipLatestVersion=%%b")
         set pipLatestVersion=%pipLatestVersion:.tar.gz=%
         echo pipLatestVersion: %pipLatestVersion% >> %OUTPUT%
-        for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
-        set "pipLatestReleasedTime=%pipLatestReleasedTime:~1,10%"
+        for /f "tokens=1 delims=T" %%c in ('findstr /n /i /c:"Released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
+        set "pipLatestReleasedTime=%pipLatestReleasedTime:~-10%"
         echo pipLatestReleasedTime: %pipLatestReleasedTime% >> %OUTPUT%
       shell: cmd
       continue-on-error: true

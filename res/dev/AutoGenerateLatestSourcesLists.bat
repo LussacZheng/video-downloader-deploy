@@ -1,7 +1,7 @@
 @rem - Encoding:utf-8; Mode:Batch; Language:en; LineEndings:CRLF -
 :: Auto-Generate Sources Lists for "Video Downloaders One-Click Deployment Batch"
 :: Author: Lussac (https://blog.lussac.net)
-:: Last updated: 2022-09-28
+:: Last updated: 2022-11-09
 :: >>> The extractor algorithm could be expired as the revision of websites. <<<
 :: >>> Get updated from: https://github.com/LussacZheng/video-downloader-deploy/tree/master/res/dev <<<
 :: >>> EDIT AT YOUR OWN RISK. <<<
@@ -63,7 +63,7 @@ set "_WgetOptions_=-q --show-progress --progress=bar:force:noscroll --no-check-c
 %wget% %_WgetOptions_% https://pypi.org/project/youtube_dl/ -O temp/ydLatestRelease2.txt
 %wget% %_WgetOptions_% https://github.com/iawia002/lux/releases/latest -O temp/lxLatestRelease.txt
 %wget% %_WgetOptions_% https://www.gyan.dev/ffmpeg/builds/release-version -O temp/ffLatestVersion.txt
-%wget% %_WgetOptions_% https://www.gyan.dev/ffmpeg/builds/last-build-update -O temp/ffLatestReleasedTime.txt
+%wget% %_WgetOptions_% https://www.gyan.dev/ffmpeg/builds/ -O temp/ffLatestRelease.txt
 %wget% %_WgetOptions_% https://pypi.org/project/pip/ -O temp/pipLatestRelease.txt
 
 cd temp
@@ -198,11 +198,11 @@ set "lxLatestVersion=%lxLatestVersion:v=%"
 echo lxLatestVersion: %lxLatestVersion%
 
 :: The output of 'findstr /n /i "datetime" lxLatestRelease.txt' should be like:
-::     1014: <relative-time datetime="2022-05-05T03:11:51Z" class="no-wrap"></relative-time>
-for /f "tokens=3 delims==:" %%b in ('findstr /n /i "datetime" lxLatestRelease.txt') do ( set "lxLatestReleasedTime=%%b" && goto :lx_next )
+::     1160: <relative-time class="no-wrap" prefix="" datetime="2022-11-07T10:14:14Z">
+for /f "tokens=1 delims=T" %%b in ('findstr /n /i "datetime" lxLatestRelease.txt') do ( set "lxLatestReleasedTime=%%b" && goto :lx_next )
 :lx_next
-:: Now %lxLatestReleasedTime% is like: `"2022-05-05T03`
-set "lxLatestReleasedTime=%lxLatestReleasedTime:~1,10%"
+:: Now %lxLatestReleasedTime% is like: `...datetime="2022-11-07`, only keep the last 10 chars.
+set "lxLatestReleasedTime=%lxLatestReleasedTime:~-10%"
 echo lxLatestReleasedTime: %lxLatestReleasedTime%
 echo.
 
@@ -211,7 +211,8 @@ echo.
 REM @param  %ffLatestVersion%,  %ffLatestReleasedTime%
 
 set /p ffLatestVersion=<ffLatestVersion.txt
-set /p ffLatestReleasedTime=<ffLatestReleasedTime.txt
+set "pwsh_cmd=(Get-Content -Raw -Path ffLatestRelease.txt | Select-String -Pattern '(?s)release-version.*?(\d{4}-\d{2}-\d{2})').Matches.Groups[1].Value"
+for /f "usebackq" %%i in (`powershell -command "%pwsh_cmd%"`) do ( set "ffLatestReleasedTime=%%i" )
 echo ffLatestVersion: %ffLatestVersion%
 echo ffLatestReleasedTime: %ffLatestReleasedTime%
 echo.
@@ -233,11 +234,10 @@ set pipLatestVersion=%pipLatestVersion:.tar.gz=%
 echo pipLatestVersion: %pipLatestVersion%
 
 :: The output of 'findstr /n /i /c:"Released" pipLatestRelease.txt' should be like:
-::     209:        Released: <time datetime="2019-10-18T08:21:23+0000" data-controller="localized-time" data-localized-time-relative="true" data-localized-time-show-time="false">
-::     580:<p>Updates are released regularly, with a new version every 3 months. More details can be found in our documentation:</p>
-for /f "tokens=4 delims==:" %%c in ('findstr /n /i /c:"Released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
-:: Now %pipLatestReleasedTime% is like: "2019-08-25T04
-set "pipLatestReleasedTime=%pipLatestReleasedTime:~1,10%"
+::     234: Released: <time datetime="2022-11-05T15:56:17+0000" data-controller="localized-time" ...>
+for /f "tokens=1 delims=T" %%c in ('findstr /n /i /c:"Released" pipLatestRelease.txt') do ( set "pipLatestReleasedTime=%%c" )
+:: Now %pipLatestReleasedTime% is like: `...datetime="2022-11-05`, only keep the last 10 chars.
+set "pipLatestReleasedTime=%pipLatestReleasedTime:~-10%"
 echo pipLatestReleasedTime: %pipLatestReleasedTime%
 
 
