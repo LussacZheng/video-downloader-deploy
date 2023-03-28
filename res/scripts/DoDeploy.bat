@@ -198,11 +198,17 @@ echo %str_upgrading% lux...
 :: %lxCurrentVersion% , %lxLatestVersion% and %lxLatestVersion_Tag%
 ::   were set in res\scripts\CheckUpdate.bat :CheckUpdate_lux
 del /Q download\lux_%lxCurrentVersion%_Windows*.zip >NUL 2>NUL
-set "lxLatestVersion_Url=https://github.com/iawia002/lux/releases/download/%lxLatestVersion_Tag%/lux_%lxLatestVersion%_Windows_%_SystemType_%-bit.zip"
+if "%_SystemType_%"=="64" (
+    set "lxArch=x86_64"
+) else (
+    set "lxArch=i386"
+)
+set "lxFinalFilename=lux_%lxLatestVersion%_Windows_%lxArch%.zip"
+set "lxLatestVersion_Url=https://github.com/iawia002/lux/releases/download/%lxLatestVersion_Tag%/%lxFinalFilename%"
 echo %lxLatestVersion_Url%>> download\to-be-downloaded.txt
 wget %_WgetOptions_% %lxLatestVersion_Url% -P download
 del /Q "%lxBin%\lux.exe" >NUL 2>NUL
-cd download && call :Setup_lux "lux_%lxLatestVersion%_Windows_%_SystemType_%-bit.zip"
+cd download && call :Setup_lux "%lxFinalFilename%"
 cd .. && echo Lux %str_already-upgrade%
 goto :eof
 

@@ -408,9 +408,9 @@ echo.
 echo ## lux_Windows.zip , v%lxLatestVersion%
 echo SystemType{
 echo     [64]
-echo     https://github.com/iawia002/lux/releases/download/%lxLatestVersion_Tag%/lux_%lxLatestVersion%_Windows_64-bit.zip
+echo     https://github.com/iawia002/lux/releases/download/%lxLatestVersion_Tag%/lux_%lxLatestVersion%_Windows_x86_64.zip
 echo     [32]
-echo     @ https://github.com/iawia002/lux/releases/download/%lxLatestVersion_Tag%/lux_%lxLatestVersion%_Windows_32-bit.zip
+echo     @ https://github.com/iawia002/lux/releases/download/%lxLatestVersion_Tag%/lux_%lxLatestVersion%_Windows_i386.zip
 echo }
 echo [/portable][/withpip]
 echo.
